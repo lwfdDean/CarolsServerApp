@@ -1,87 +1,114 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package co.za.carolsboutique.employee.servlet;
 
+import co.za.carolsBoutique.boutique.model.Boutique;
+import co.za.carolsBoutique.employee.model.Employee;
+import co.za.carolsBoutique.employee.model.Role;
+import co.za.carolsBoutique.employee.service.EmployeeRestClient;
+import co.za.carolsBoutique.employee.service.IServiceEmployee;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- *
- * @author 27609
- */
 @WebServlet(name = "EmployeeServlet", urlPatterns = {"/EmployeeServlet"})
 public class EmployeeServlet extends HttpServlet {
+    private IServiceEmployee service;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EmployeeServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EmployeeServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+    public EmployeeServlet() {
+        service = new EmployeeRestClient();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        switch (request.getParameter("submit")) {
+            case "getAllEmployees":
+                request.setAttribute("employees", service.getAllEmployees(
+                        ((Boutique)request.getSession().getAttribute("boutique")).getId()));
+                request.getRequestDispatcher("").forward(request, response);
+                break;
+            case "getAllByRole":    
+                request.setAttribute("employees", service.getAllByRole(request.getParameter("roleId"), 
+                        ((Boutique)request.getSession().getAttribute("boutique")).getId()));
+                request.getRequestDispatcher("").forward(request, response);
+                break;  
+            case "getAllRoles":    
+                request.setAttribute("roles", service.getAllRoles());
+                request.getRequestDispatcher("").forward(request, response);
+                break;  
+            case "getRole":    
+                request.setAttribute("role", service.getRole(request.getParameter("roleId")));
+                request.getRequestDispatcher("").forward(request, response);
+                break;  
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        switch (request.getParameter("submit")) {
+            case "login":
+                Map<String,String> loginDetails = new HashMap<>();
+                loginDetails.put(request.getParameter("employeeId"), request.getParameter("password"));
+                Employee employee = service.login(loginDetails);
+                if (employee!=null) {
+                    request.getSession().setAttribute("employee", employee);
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                }else{
+                    request.getSession().setAttribute("reply", "employee not found");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }
+                break;
+            case "register":    
+                Role role = service.getRole(request.getParameter("roleId"));
+                String managerCode = (!role.getName().equals("Manager"))?
+                        "zyshdtgeiamdof84264ef":
+                        request.getParameter("managerCode");
+                String password = (!role.getName().equals("Teller"))?
+                        "wihnnceqnw874hfquncvqphj984":
+                        request.getParameter("password");
+                Employee employee1 = new Employee();
+                employee1.setName(request.getParameter("name"));
+                employee1.setSurname(request.getParameter("surname"));
+                employee1.setEmailAddress(request.getParameter("email"));
+                employee1.setPassword("");
+                employee1.setManagerCode("");
+                employee1.setRole(role);
+                employee1.setBoutique(((Boutique)request.getSession().getAttribute("boutique")).getId());
+                String reply = service.register(employee1);
+                request.setAttribute("reply", reply);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                break;
+            case "promoteToTeller":    
+                List<String> employeeDetails = new ArrayList<>();
+                employeeDetails.add(request.getParameter("employeeId"));
+                employeeDetails.add(request.getParameter("password"));
+                employeeDetails.add(request.getParameter("roleId"));
+                request.setAttribute("reply", service.promoteToTeller(employeeDetails));
+                break;
+            case "promoteToManager":
+                List<String> empDetails = new ArrayList<>();
+                empDetails.add(request.getParameter("employeeId"));
+                empDetails.add(request.getParameter("managerCode"));
+                empDetails.add(request.getParameter("roleId"));
+                request.setAttribute("reply", service.promoteToTeller(empDetails));
+                break;  
+            case "addRole":    
+                Role role1 = new Role();
+                role1.setId(request.getParameter("roleId"));
+                role1.setName(request.getParameter("name"));
+                role1.setAuthorizationLevel(Integer.parseInt(request.getParameter("authLvl")));
+                break; 
+            case "verifyManagerCode": 
+                Map<String,String> details = new HashMap<>();
+                details.put(((Employee)request.getSession().getAttribute("employee")).getBoutique(), request.getParameter("managerCode"));
+                request.setAttribute("reply", service.verifyManagerCode(details));
+                request.getRequestDispatcher("").forward(request, response);
+                break;    
+        }
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
