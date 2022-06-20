@@ -43,7 +43,7 @@
     <body style="text-align:center; background-color:#D8C6B7;">
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <hr color="#22075E"><br><br>
-        <%List<Boutique> boutiques = (List<Boutique>)request.getServletContext().getAttribute("boutiques");%>
+  <%--      <%List<Boutique> boutiques = (List<Boutique>)request.getServletContext().getAttribute("boutiques");%>   --%>
     <center>
         <div align="center">
             <center><h2 style="color:#22077E;"><i><u>LOGIN TO CAROL'S BOUTIQUE</u></i></h2></center>
@@ -53,9 +53,9 @@
                     <select name="location" style="width:170px; height:29px">
                         <option value="-1" >Select boutique</option>
                         <ol>
-                            <%for(Boutique b:boutiques){%>
+                            <%--   <%for(Boutique b:boutiques){%>
                                 <li><option name="<%=b.getLocation()%>" value="<%=b.getId()%>"> <%=b.getLocation() %></option></li>
-                            <%}%>
+                            <%}%>      --%>
                         </ol>
                     </select> 
                     <br>
