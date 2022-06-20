@@ -135,30 +135,54 @@
                 </button>
                 <div class="dropdown-content">
                     <script>
-                    let code = prompt("Please enter manager Code", "");
-                    
-                    </script><a href="#">Promote to teller</a>
-                    <a href="#">Daily report</a>
-                    <a href="#">Monthly report</a>
-                    <a href="#">Custom report</a>
-                    <a href="#">Top achieving stores</a>
-                    <a href="#">Low achieving</a>
+                        let code = prompt("Please enter manager Code", "");
+                    </script>
+
+                    <a href="promotetoteller.jsp">Promote to teller</a>
+                    <a href="promotetomanager.jsp">Promote to manager</a>
+                    <a href="dailyreport.jsp">Daily report</a>
+                    <a href="monthlyreport.jsp">Monthly report</a>
+                    <a href="customreport.jsp">Custom report</a>
+                    <a href="topachieving.jsp">Top achieving stores</a>
+                    <a href="dailytarget.jsp">Daily targets</a>
+                    <a href="changeboutiquepassword.jsp">Change boutique password</a>
+                    <a href="changeboutiquetarget.jsp">Change boutique's target</a>
 
                 </div>
             </div>  
             <a href="#sale.jsp">SALE</a>
+
+            <div class="dropdown">
+                <button class="dropbtn">SALE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="newsale.jsp">New Sale</a>
+                    <a href="exchange.jsp">Exchange product</a>
+                    <a href="refund.jsp">Refund a product</a>
+                </div>
+            </div>    
             <div class="dropdown">
                 <button class="dropbtn">IBT
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Approve IBT</a>
-                    <a href="#">Request IBT</a>
+                    <a href="approveibt.jsp">Approve IBT</a>
+                    <a href="requestibt.jsp">Request IBT</a>
                 </div>
             </div>
-            <a href="#keep-aside">KEEP ASIDE</a>
-            <a href="#logstock">LOG STOCK</a>
-            <div class="topnav-right"><a href="logoutBoutique.jsp">LOGOUT</a></div>
+            
+            <a href="keepaside.jsp">KEEP ASIDE</a>
+            <div class="dropdown">
+                <button class="dropbtn">STOCK
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="logstock.jsp">Log new Stock</a>
+                    <a href="viewstock.jsp">Available Stock</a>
+                </div>
+            </div>
+            <div class="topnav-right"><a href="logout.jsp">LOGOUT</a></div>
         </div>
         <!--<script>
             let code = prompt("Please enter manager Code", "");
