@@ -1,6 +1,7 @@
 package co.za.carolsboutique.boutique.servlet;
 
 import co.za.carolsBoutique.boutique.model.Boutique;
+import co.za.carolsBoutique.boutique.model.Review;
 import co.za.carolsBoutique.boutique.service.BoutiqueRestClient;
 import co.za.carolsBoutique.boutique.service.IServiceBoutique;
 import co.za.carolsBoutique.employee.model.Employee;
@@ -84,9 +85,14 @@ public class BoutiqueServlet extends HttpServlet {
                     request.getRequestDispatcher("home.jsp").forward(request, response);
                 }
                 break;
-
-            case "rateStore":
-                
+////////////////////////////////////////////////////////////////////////////////////////
+            case "rateStore"://How would we get the boutique ID/////////////////////////
+                Review review = new Review();
+                review.setBoutique("");
+                review.setComment(request.getParameter("review"));
+                review.setContactMethod(request.getParameter("contactMethod"));
+                request.setAttribute("reply", service.rateTheBoutique(review));
+                request.getRequestDispatcher("").forward(request, response);//where do we send the client after leaving a review
                 break;
             default:
                 throw new AssertionError();
