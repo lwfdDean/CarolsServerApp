@@ -1,9 +1,3 @@
-<%-- 
-    Document   : logstock
-    Created on : 20 Jun 2022, 20:18:43
-    Author     : Administrator
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -98,11 +92,23 @@
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
+        <%
+            List<Categories> categories = (List<Categories>)request.getAttribute("categories");
+            List<String> sizes = (List<String>)request.getAttribute("sizes");
+            Product product = (product)request.getAttribute("product");
+        %>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
         <hr color="#22075E">
         <br>
         <h1>Log new stock</h1>
-
+        <form action="/ProductServlet" method="post">
+            <%if(product!=null){%>
+            <label><input type="text" name="name" placeholder="<%=product.getName()%>" readonly></label>
+            <%}else{%>
+                <label></label>
+            <%}%>
+        </form>
+        
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 

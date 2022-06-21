@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
-<%@page import="java.sql.*" %>
-
+<%@ page import="co.za.carolsBoutiqueServer.employee.model.Employee"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -124,20 +123,17 @@
     </head>
 
     <body style="text-align:center; background-color:#D8C6B7;">
-
+        <%Employee employee = (Employee)request.getSession().getAttribute("employee");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br>
-        <p><b>Welcome : <%=session.getAttribute("id")%></b></p>
+        <p><b>Welcome : <%=employee.getName()%></b></p>
         <div class="navbar">
             <div class="dropdown">
                 <button class="dropbtn">MENU 
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <script>
-                        let code = prompt("Please enter manager Code", "");
-                    </script>
-
+                    
                     <a href="promotetoteller.jsp">Promote to teller</a>
                     <a href="promotetomanager.jsp">Promote to manager</a>
                     <a href="dailyreport.jsp">Daily report</a>
@@ -150,14 +146,13 @@
 
                 </div>
             </div>  
-            <a href="#sale.jsp">SALE</a>
 
             <div class="dropdown">
                 <button class="dropbtn">SALE
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="newsale.jsp">New Sale</a>
+                    <a href="SaleServlet?submit=newSalePage">New Sale</a>
                     <a href="exchange.jsp">Exchange product</a>
                     <a href="refund.jsp">Refund a product</a>
                 </div>
@@ -178,7 +173,7 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="logstock.jsp">Log new Stock</a>
+                    <a href="findProductForLogStock.jsp">Log new Stock</a>
                     <a href="viewstock.jsp">Available Stock</a>
                 </div>
             </div>

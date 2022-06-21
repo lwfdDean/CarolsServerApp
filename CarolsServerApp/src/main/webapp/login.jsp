@@ -89,7 +89,7 @@
     <center>
         <div align="center">
             <center><h2 style="color:#22077E;"><i><u>EMPLOYEE LOGIN PAGE</u></i></h2></center>
-            <form action="<%=request.getContextPath() %>/emplLogin" method="post">
+            <form action="EmployeeServlet" method="post">
                 <table style="width:100">
 
                     <label style="color:#22075E;"><b>Employee Id    : </b></label>
