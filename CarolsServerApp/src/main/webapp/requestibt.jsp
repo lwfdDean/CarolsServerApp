@@ -102,7 +102,9 @@
         <hr color="#22075E">
         <br>
         <h1>Request an IBT</h1>
-
+        <form action="IbtServlet" method="post">
+            
+        </form>
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 

@@ -30,7 +30,14 @@ public class BoutiqueServlet extends HttpServlet {
                 request.setAttribute("boutiques", service.getAllBoutiques());
                 request.getRequestDispatcher("").forward(request, response);
                 break;
-
+            case "changeBoutiqueDailyTargetPage":
+                Employee emp = (Employee)request.getSession(false).getAttribute("employee");
+                if (emp.getRole().getAuthorizationLevel()==3) {
+                    //request.setAttribute("boutique", service.getBoutiques(emp.getBoutique()));
+                    //request.getRequestDispatcher("")
+                }else{
+                    
+                }
         }
     }
 
