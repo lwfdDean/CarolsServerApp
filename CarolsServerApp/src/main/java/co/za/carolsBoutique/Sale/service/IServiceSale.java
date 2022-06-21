@@ -1,7 +1,7 @@
-package co.za.carolsBoutique.Sale.service;
+package co.za.carolsBoutiqueServer.Sale.service;
 
-import co.za.carolsBoutique.Sale.model.ExchangeInfo;
-import co.za.carolsBoutique.Sale.model.Sale;
+import co.za.carolsBoutiqueServer.Sale.model.ExchangeInfo;
+import co.za.carolsBoutiqueServer.Sale.model.Sale;
 import java.util.Map;
 
 public interface IServiceSale {
