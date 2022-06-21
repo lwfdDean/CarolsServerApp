@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta charset="ISO-8859-1">
-        <title>home</title>
+        <title>new sale</title>
         <style>
             label {
                 display: inline-block;
@@ -126,67 +126,55 @@
     <body style="text-align:center; background-color:#D8C6B7;">
 
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
-        <br>
-        <p><b>Welcome : <%=session.getAttribute("id")%></b></p>
+        <br><hr color="#22075E">
+    <marquee><p style="color:#22077E;"><strong>TELLER :  <%=session.getAttribute("id")%></strong></p></marquee>
         <div class="navbar">
             <div class="dropdown">
                 <button class="dropbtn">MENU 
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <script>
-                        let code = prompt("Please enter manager Code", "");
-                    </script>
-
-                    <a href="promotetoteller.jsp">Promote to teller</a>
-                    <a href="promotetomanager.jsp">Promote to manager</a>
-                    <a href="dailyreport.jsp">Daily report</a>
-                    <a href="monthlyreport.jsp">Monthly report</a>
-                    <a href="customreport.jsp">Custom report</a>
-                    <a href="topachieving.jsp">Top achieving stores</a>
-                    <a href="dailytarget.jsp">Daily targets</a>
-                    <a href="changeboutiquepassword.jsp">Change boutique password</a>
-                    <a href="changeboutiquetarget.jsp">Change boutique's target</a>
+                    <a href="#">Promote to teller</a>
+                    <a href="#">Daily report</a>
+                    <a href="#">Monthly report</a>
+                    <a href="#">Custom report</a>
+                    <a href="#">Top achieving stores</a>
+                    <a href="#">Low achieving</a>
 
                 </div>
             </div>  
-            <a href="#sale.jsp">SALE</a>
-
+            <!--<a href="#sale.jsp">SALE</a>-->
             <div class="dropdown">
                 <button class="dropbtn">SALE
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="newsale.jsp">New Sale</a>
-                    <a href="exchange.jsp">Exchange product</a>
-                    <a href="refund.jsp">Refund a product</a>
+                    <a href="#">New sale</a>
+                    <a href="#">Exchange</a>
+                    <a href="#">Refund</a>
                 </div>
-            </div>    
+            </div>
+            
+            
+            
             <div class="dropdown">
                 <button class="dropbtn">IBT
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="approveibt.jsp">Approve IBT</a>
-                    <a href="requestibt.jsp">Request IBT</a>
+                    <a href="#">Approve IBT</a>
+                    <a href="#">Request IBT</a>
                 </div>
             </div>
-            
-            <a href="keepaside.jsp">KEEP ASIDE</a>
-            <div class="dropdown">
-                <button class="dropbtn">STOCK
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="logstock.jsp">Log new Stock</a>
-                    <a href="viewstock.jsp">Available Stock</a>
-                </div>
-            </div>
-            <div class="topnav-right"><a href="logout.jsp">LOGOUT</a></div>
+            <a href="#keep-aside">KEEP ASIDE</a>
+            <a href="#logstock">LOG STOCK</a>
+            <div class="topnav-right"><a href="logoutBoutique.jsp">LOGOUT</a></div>
         </div>
-        <!--<script>
+        
+        <center><h2 style="color:#22077E;"><i><u>MAKING A NEW SALE</u></i></h2></center><br>
+        <script>
             let code = prompt("Please enter manager Code", "");
-        </script>-->
+        </script>
     <center>
 
         <br><br><br> 
