@@ -1,9 +1,3 @@
-<%-- 
-    Document   : register
-    Created on : 20 Jun 2022, 11:56:02
-    Author     : Administrator
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,7 +19,7 @@
                 width: auto;
             }
             .button {
-                background-color: #585D87;
+                background-color: #555555;
                 border: 2px solid #555555;
                 border-radius: 15px;
                 color: white;
@@ -45,7 +39,7 @@
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
-        <hr color="#22075E"><br>   
+        <hr color="#22075E"><br><br>    
 
     <body>
     <center>

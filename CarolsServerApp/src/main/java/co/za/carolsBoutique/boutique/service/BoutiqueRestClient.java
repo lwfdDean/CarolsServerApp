@@ -76,6 +76,12 @@ public class BoutiqueRestClient implements IServiceBoutique{
         WebTarget webT = client.target(uri);
         return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(newTarget))).readEntity(String.class);
     }
+    
+    //////////////////////////////add change monthly target method
+    //////////////////////////////
+    //////////////////////////////
+    //////////////////////////////
+    //////////////////////////////
 
     @Override
     public String rateTheBoutique(Review review) {
