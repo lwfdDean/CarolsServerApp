@@ -13,5 +13,5 @@ public interface IServiceSale {
     
     String refund(Map<String,String> refundInfo);
 
-    public String exchange(ExchangeInfo exchangeInfo);
+    String exchange(ExchangeInfo exchangeInfo);
 }
