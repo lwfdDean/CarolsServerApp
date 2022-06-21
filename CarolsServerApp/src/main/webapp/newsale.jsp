@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
-<%@page import="java.sql.*" %>
+<%@ page import="co.za.carolsBoutiqueServer.employee.model.Employee"%>
+<%@ page import="co.za.carolsBoutiqueServer.Sale.model.Sale"%>
+<%@ page import="co.za.carolsBoutiqueServer.product.model.Product"%>
 
 <!DOCTYPE html>
 <html>
@@ -124,10 +126,19 @@
     </head>
 
     <body style="text-align:center; background-color:#D8C6B7;">
-
-        <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
+        
+            <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
+            <%String barcode = null;%>
+            <%Sale sale = (Sale)request.getSession(false).getAttribute("sale");%>
+            <%Product product = (Product)request.getAttribute("product");%>
+            <%
+            if (product!=null) {
+                sale.addNewSaleLineItem(product);
+            }
+            %>
+            <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br><hr color="#22075E">
-    <marquee><p style="color:#22077E;"><strong>TELLER :  <%=session.getAttribute("id")%></strong></p></marquee>
+    <marquee><p style="color:#22077E;"><strong>TELLER :  <%=employee.getName()%></strong></p></marquee>
         <div class="navbar">
             <div class="dropdown">
                 <button class="dropbtn">MENU 
@@ -172,11 +183,31 @@
         </div>
         
         <center><h2 style="color:#22077E;"><i><u>MAKING A NEW SALE</u></i></h2></center><br>
-        <script>
-            let code = prompt("Please enter manager Code", "");
-        </script>
+        
     <center>
-
+        <form action="ProductServlet" method="get">
+        <label>Product Code: <input type="text" name="productCode"></label>
+        <input type="submit" value="findProductForSale" name="submit">
+        </form>
+        
+        <ol>
+            <%for (Product p : sale.getItems()) {%>
+            <li>
+                <label>
+                    <%=p.getName()%>
+                </label>
+                <label>
+                    <%=p.getPrice()%>
+                </label>
+                <label>
+                    <%=p.getDiscountedPrice()%>
+                </label><br>
+            </li>
+            <%}%>
+        </ol><br>
+        <%if(sale!= null){%>
+        <h3>Total: <%=sale.getTotalPrice()%></h3>
+        <%}%>
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
