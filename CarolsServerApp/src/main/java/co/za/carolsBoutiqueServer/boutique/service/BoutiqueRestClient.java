@@ -12,6 +12,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ public class BoutiqueRestClient implements IServiceBoutique{
         WebTarget webT = client.target(uri);
         List<Boutique> boutiques = new ArrayList<>();
         try {
-            boutiques = (List<Boutique>) new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), TypeReference.class);
+            boutiques = Arrays.asList(new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), Boutique[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }

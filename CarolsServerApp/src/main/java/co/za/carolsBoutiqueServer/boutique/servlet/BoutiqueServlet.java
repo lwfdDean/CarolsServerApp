@@ -28,7 +28,7 @@ public class BoutiqueServlet extends HttpServlet {
         switch (request.getParameter("submit")) {
             case "getAll":
                 request.setAttribute("boutiques", service.getAllBoutiques());
-                request.getRequestDispatcher("").forward(request, response);
+                request.getRequestDispatcher("registerNewEmployee.jsp").forward(request, response);
                 break;
             case "changeBoutiqueDailyTargetPage":
                 Employee emp = (Employee)request.getSession(false).getAttribute("employee");
@@ -66,6 +66,41 @@ public class BoutiqueServlet extends HttpServlet {
                 newBoutique.setPassword(request.getParameter("password"));
                 service.registerNewBoutique(newBoutique);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
+
+            case "changePassword":
+                Map<String, String> newPassword = new HashMap<>();
+                Employee emp = (Employee) request.getSession().getAttribute("employee");
+                String password = request.getParameter("password");
+                newPassword.put(emp.getBoutique(), password);
+                request.setAttribute("reply", service.changePassword(newPassword));
+                request.getRequestDispatcher("home.jsp").forward(request, response);
+            case "changeDailyTarget":
+                Map<String, Double> newDailyTarget = new HashMap<>();
+                emp = (Employee) request.getSession().getAttribute("employee");
+                Double newTarget = Double.parseDouble(request.getParameter("newDailyTarget"));
+                newDailyTarget.put(emp.getBoutique(), newTarget);
+                if (newTarget > 15000) {
+                    request.setAttribute("reply", service.changeDailyTarget(newDailyTarget));
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("reply", "The new daily target must exceed 15000 or the value input is incorrect");
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                }
+                break;
+
+            case "changeMonthlyTarget":
+                Map<String, Double> newMonthlyTarget = new HashMap<>();
+                emp = (Employee) request.getSession().getAttribute("employee");
+                Double newMonthTarget = Double.parseDouble(request.getParameter("newDailyTarget"));
+                newMonthlyTarget.put(emp.getBoutique(), newMonthTarget);
+                if (newMonthTarget > 450000) {
+                    request.setAttribute("reply", service.changeDailyTarget(newMonthlyTarget));
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                } else {
+                    request.setAttribute("reply", "The new daily target must exceed 450000 or the value input is incorrect");
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                }
                 break;
 ////////////////////////////////////////////////////////////////////////////////////////
             case "rateStore"://How would we get the boutique ID/////////////////////////
