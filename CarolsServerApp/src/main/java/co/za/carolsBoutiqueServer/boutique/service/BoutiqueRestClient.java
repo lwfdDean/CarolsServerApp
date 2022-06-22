@@ -11,10 +11,8 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,45 +41,16 @@ public class BoutiqueRestClient implements IServiceBoutique{
         String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/register";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri);
-        return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(uri))).readEntity(String.class);
+        return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(boutique))).readEntity(String.class);
     }
-
+ 
     @Override
-    public Boutique login(Map<String, String> loginDetails) {
-        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/login";
+    public String updateBoutqiue(Boutique boutique) {
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/updateBoutqiue";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri);
-        Boutique boutique = null;
-        Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(loginDetails)));
-        try {
-            boutique = new ObjectMapper().readValue(rep.readEntity(String.class), Boutique.class);
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(BoutiqueRestClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return boutique;
+        return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(boutique))).readEntity(String.class);
     }
-
-    @Override
-    public String changePassword(Map<String, String> passwordDetails) {
-        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/changePassword";
-        Client client = ClientBuilder.newClient();
-        WebTarget webT = client.target(uri);
-        return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(passwordDetails))).readEntity(String.class);
-    }
-
-    @Override
-    public String changeDailyTarget(Map<String, Double> newTarget) {
-        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/changePassword";
-        Client client = ClientBuilder.newClient();
-        WebTarget webT = client.target(uri);
-        return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(newTarget))).readEntity(String.class);
-    }
-    
-    //////////////////////////////add change monthly target method
-    //////////////////////////////
-    //////////////////////////////
-    //////////////////////////////
-    //////////////////////////////
 
     @Override
     public String rateTheBoutique(Review review) {
@@ -100,4 +69,19 @@ public class BoutiqueRestClient implements IServiceBoutique{
         }
         return null;
     }
+
+    @Override
+    public Boutique findBoutique(String boutiqueId) {
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/findBoutqiue/{boutiqueId}";
+        Client client = ClientBuilder.newClient();
+        WebTarget webT = client.target(uri).resolveTemplate("boutiqueId", boutiqueId);
+        Boutique boutique = null;
+        try {
+            boutique = new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), Boutique.class);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(BoutiqueRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return boutique;
+    }
+
 }

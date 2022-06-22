@@ -137,7 +137,7 @@
                     <a href="registerNewEmployee.jsp">Register new Employee</a>
                     <a href="promoteEmployee.jsp">Promote Employee</a>
                     <a href="registerNewBoutique.jsp">Register new Boutique</a>
-                    <a href="changeboutiquetarget.jsp">Change boutique's target</a>
+                    <a href="BoutiqueServlet?submit=updateBoutiquePage">Change boutique's target</a>
 
                 </div>
             </div>  

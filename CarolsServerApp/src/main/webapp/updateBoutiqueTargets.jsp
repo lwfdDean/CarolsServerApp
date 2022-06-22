@@ -1,10 +1,5 @@
-<%-- 
-    Document   : logstock
-    Created on : 20 Jun 2022, 20:18:43
-    Author     : Administrator
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="co.za.carolsBoutiqueServer.boutique.model.Boutique"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -98,11 +93,18 @@
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
+        <%Boutique boutique = (Boutique)request.getAttribute("boutique");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
         <hr color="#22075E">
         <br>
         <h1>CHANGE BOUTIQUE'S TARGET</h1>
-
+        <form method="post" action="BoutiqueServlet">
+            <label>Location: <input type="text" name="location" placeholder="<%=boutique.getLocation()%>" readonly></label><br>
+            <input type="text" name="id" placeholder="<%=boutique.getId()%>" hidden>
+            <label>Daily Target: <input type="number" min="10000" max="25000" name="daily" placeholder="<%=boutique.getDailyTarget()%>"></label><br>
+            <label>Monthly Target: <input type="number" min="250000" max="1000000" name="monthly" placeholder="<%=boutique.getMonthlyTarget()%>"></label><br>
+            <input type="submit" name="submit" value="updateBoutqiue">
+        </form>
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 

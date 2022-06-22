@@ -31,10 +31,15 @@ public class EmployeeRestClient implements IServiceEmployee{
         String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/employee/login";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri);
+        System.out.println("hello");
         Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(loginDetails)));
         Employee e = null;
         try {
-            e = new ObjectMapper().readValue(rep.readEntity(String.class), Employee.class);
+            System.out.println("Hello2");
+            System.out.println(rep);
+            String a = rep.readEntity(String.class);
+            System.out.println(a);
+            e = new ObjectMapper().readValue(a, Employee.class);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(EmployeeRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
