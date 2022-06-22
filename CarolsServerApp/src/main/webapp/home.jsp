@@ -123,7 +123,11 @@
     </head>
 
     <body style="text-align:center; background-color:#D8C6B7;">
-        <%Employee employee = (Employee)request.getSession().getAttribute("employee");%>
+        <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
+        <%String reply = (String)request.getAttribute("registerReply");%>
+        <%if(reply!=null){%>
+        <script>alert("<%=reply%>");</script>
+        <%}%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br>
         <p><b>Welcome : <%=employee.getName()%></b></p>
@@ -134,7 +138,7 @@
                 </button>
                 <div class="dropdown-content">
                     
-                    <a href="registerNewEmployee.jsp">Register new Employee</a>
+                    <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
                     <a href="promoteEmployee.jsp">Promote Employee</a>
                     <a href="registerNewBoutique.jsp">Register new Boutique</a>
                     <a href="changeboutiquetarget.jsp">Change boutique's target</a>
@@ -187,7 +191,7 @@
                     <a href="dailyreport.jsp">Current Daily Sales</a>
                 </div>
             </div>
-            <div class="topnav-right"><a href="logout.jsp">LOGOUT</a></div>
+            <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
         <!--<script>
             let code = prompt("Please enter manager Code", "");

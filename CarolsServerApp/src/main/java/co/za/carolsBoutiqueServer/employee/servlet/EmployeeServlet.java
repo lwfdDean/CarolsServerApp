@@ -27,6 +27,7 @@ public class EmployeeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
         switch (request.getParameter("submit")) {
             case "getAllEmployees":
                 request.setAttribute("employees", service.getAllEmployees(
@@ -40,11 +41,15 @@ public class EmployeeServlet extends HttpServlet {
                 break;
             case "getAllRoles":
                 request.setAttribute("roles", service.getAllRoles());
-                request.getRequestDispatcher("").forward(request, response);
+                request.getRequestDispatcher("BoutiqueServlet?submit=getAll").forward(request, response);
                 break;
             case "getRole":
                 request.setAttribute("role", service.getRole(request.getParameter("roleId")));
                 request.getRequestDispatcher("").forward(request, response);
+                break;
+            case "logout":
+                request.getSession(false).setAttribute("employee",null);
+                request.getRequestDispatcher("logout.jsp").forward(request, response);
                 break;
         }
     }
@@ -67,22 +72,21 @@ public class EmployeeServlet extends HttpServlet {
             case "register":
                 Role role = service.getRole(request.getParameter("roleId"));
                 String managerCode = (!role.getName().equals("Manager"))
-                        ? "zyshdtgeiamdof84264ef"
+                        ? "zyshdtgeiamd"
                         : request.getParameter("managerCode");
                 String password = (!role.getName().equals("Teller"))
-                        ? "wihnnceqnw874hfquncvqphj984"
+                        ? "wihn3456"
                         : request.getParameter("password");
                 Employee employee1 = new Employee();
                 employee1.setName(request.getParameter("name"));
                 employee1.setSurname(request.getParameter("surname"));
-                employee1.setEmailAddress(request.getParameter("email"));
+                employee1.setEmailAddress(request.getParameter("emailAddress"));
                 employee1.setPassword(password);
                 employee1.setManagerCode(managerCode);
                 employee1.setRole(role);
-                employee1.setBoutique(((Boutique) request.getSession().getAttribute("boutique")).getId());
-                String reply = service.register(employee1);
-                request.setAttribute("reply", reply);
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                employee1.setBoutique(request.getParameter("boutique"));
+                request.setAttribute("registerReply", service.register(employee1));
+                request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             case "promoteEmployee":
                 String role2 = request.getParameter("role");

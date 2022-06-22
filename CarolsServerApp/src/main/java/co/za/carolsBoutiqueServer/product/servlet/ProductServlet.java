@@ -91,8 +91,8 @@ public class ProductServlet extends HttpServlet {
             
             case "logStock":
                 StockEntry stockEntry = new StockEntry();
-                stockEntry.setBoutiqueId(((Employee) request.getSession().getAttribute("employee")).getBoutique());
-                stockEntry.setEmployeeId(((Employee) request.getSession().getAttribute("employee")).getId());
+                stockEntry.setBoutiqueId(((Employee) request.getSession(false).getAttribute("employee")).getBoutique());
+                stockEntry.setEmployeeId(((Employee) request.getSession(false).getAttribute("employee")).getId());
                 stockEntry.setProductCode(request.getParameter("productCode"));
                 stockEntry.setQuantity(Integer.parseInt(request.getParameter("quantity")));
                 Product product = new Product();
