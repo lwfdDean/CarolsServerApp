@@ -10,7 +10,6 @@ import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -69,40 +68,40 @@ public class BarCodeScanner extends JFrame implements Runnable, ThreadFactory {
 
     @Override
     public void run() {
-        do {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(BarCodeScanner.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Result result = null;
-            BufferedImage image = null;
-
-            if (webcam.isOpen()) {
-                if ((image = webcam.getImage()) == null) {
-                    continue;
-                }
-            }
-            LuminanceSource source = new BufferedImageLuminanceSource(image);
-            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
-            try {
-                result = new MultiFormatReader().decode(bitmap);
-            } catch (NotFoundException ex) {
-                Logger.getLogger(BarCodeScanner.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            if (result != null) {
-		String readIn = result.getText();
-                
-                    barcode = readIn;
-                    System.out.println(barcode);
-                    play = false;
-                
-            }
-        } while (play);
-        this.dispose();
-        System.exit(0);
+//        do {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(BarCodeScanner.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            Result result = null;
+//            BufferedImage image = null;
+//
+//            if (webcam.isOpen()) {
+//                if ((image = webcam.getImage()) == null) {
+//                    continue;
+//                }
+//            }
+//            LuminanceSource source = new BufferedImageLuminanceSource(image);
+//            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+//
+//            try {
+//                result = new MultiFormatReader().decode(bitmap);
+//            } catch (NotFoundException ex) {
+//                Logger.getLogger(BarCodeScanner.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//            if (result != null) {
+//		String readIn = result.getText();
+//                
+//                    barcode = readIn;
+//                    System.out.println(barcode);
+//                    play = false;
+//                
+//            }
+//        } while (play);
+//        this.dispose();
+//        System.exit(0);
     }
 
     @Override

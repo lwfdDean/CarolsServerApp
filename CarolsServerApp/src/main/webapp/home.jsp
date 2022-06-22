@@ -134,14 +134,9 @@
                 </button>
                 <div class="dropdown-content">
                     
-                    <a href="promotetoteller.jsp">Promote to teller</a>
-                    <a href="promotetomanager.jsp">Promote to manager</a>
-                    <a href="dailyreport.jsp">Daily report</a>
-                    <a href="monthlyreport.jsp">Monthly report</a>
-                    <a href="customreport.jsp">Custom report</a>
-                    <a href="topachieving.jsp">Top achieving stores</a>
-                    <a href="dailytarget.jsp">Daily targets</a>
-                    <a href="changeboutiquepassword.jsp">Change boutique password</a>
+                    <a href="registerNewEmployee.jsp">Register new Employee</a>
+                    <a href="promoteEmployee.jsp">Promote Employee</a>
+                    <a href="registerNewBoutique.jsp">Register new Boutique</a>
                     <a href="changeboutiquetarget.jsp">Change boutique's target</a>
 
                 </div>
@@ -175,6 +170,21 @@
                 <div class="dropdown-content">
                     <a href="findProductForLogStock.jsp">Log new Stock</a>
                     <a href="viewstock.jsp">Available Stock</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">REPORT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="topachieving.jsp">Top Achieving Stores</a>
+                    <a href="monthlyreport.jsp">Monthly Sales for any store</a>
+                    <a href="topachievingemployees.jsp">Top achieving Employees</a>
+                    <a href="reachedtarget.jsp">Reached Target</a>
+                    <a href="topproducts.jsp">Top 40 products</a>
+                    <a href="worstperforming.jsp">Worst Performing Stores</a>
+                    <a href="productreport.jsp">Product</a>
+                    <a href="dailyreport.jsp">Current Daily Sales</a>
                 </div>
             </div>
             <div class="topnav-right"><a href="logout.jsp">LOGOUT</a></div>

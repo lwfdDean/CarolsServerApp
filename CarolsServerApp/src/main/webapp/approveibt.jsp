@@ -1,10 +1,6 @@
-<%-- 
-    Document   : logstock
-    Created on : 20 Jun 2022, 20:18:43
-    Author     : Administrator
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="co.za.carolsBoutiqueServer.ibt.model.IBT"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -98,11 +94,21 @@
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
+        <%List<IBT> ibtlist = (List<IBT>)request.getAttribute("ibtlist");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
         <hr color="#22075E">
         <br>
         <h1>Approve an IBT</h1>
-
+        <h4>Here are your stores IBT's</h4>
+        <p>Please check the IBT's that you would like to approve/reject</p>
+        <form action="IbtServlet" method="post">
+            <ol>
+                <%for(IBT i : ibtlist){%>
+                    <li><label><input type="checkbox" name="<%=i.getId()%>"><%=i.getProductCode()%></label></li>
+                <%}%>
+            </ol>
+            <input type="submit" name="submit" value="approveIBT">
+        </form>
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 
