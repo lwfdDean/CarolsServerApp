@@ -100,10 +100,10 @@
         <h1>CHANGE BOUTIQUE'S TARGET</h1>
         <form method="post" action="BoutiqueServlet">
             <label>Location: <input type="text" name="location" placeholder="<%=boutique.getLocation()%>" readonly></label><br>
-            <input type="text" name="id" placeholder="<%=boutique.getId()%>" hidden>
+            <input type="text" name="id" value="<%=boutique.getId()%>" hidden>
             <label>Daily Target: <input type="number" min="10000" max="25000" name="daily" placeholder="<%=boutique.getDailyTarget()%>"></label><br>
             <label>Monthly Target: <input type="number" min="250000" max="1000000" name="monthly" placeholder="<%=boutique.getMonthlyTarget()%>"></label><br>
-            <input type="submit" name="submit" value="updateBoutqiue">
+            <input type="submit" name="submit" value="updateBoutique">
         </form>
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
