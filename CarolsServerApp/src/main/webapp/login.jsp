@@ -98,7 +98,6 @@
                     <label style="color:#22075E;"><b>Password    : </b></label>
                     <input type="password" placeholder="Password" name="password" style="width:165px; height:23px" required>
                 </table>
-                <br><a href="register.jsp" class="tab" style="color:#E43E1A" > <b>Register new Boutique</b></a>
                 <input type="submit" value="Login" name="submit" style="width:110px; height:35px" class="button"/>
 
             </form>

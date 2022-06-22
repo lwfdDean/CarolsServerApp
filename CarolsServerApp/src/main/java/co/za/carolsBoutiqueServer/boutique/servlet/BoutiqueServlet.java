@@ -38,6 +38,11 @@ public class BoutiqueServlet extends HttpServlet {
                 }else{
                     
                 }
+                break;
+            case "updateBoutiquePage":
+                request.setAttribute("boutique", service.findBoutique(((Employee)request.getSession(false).getAttribute("employee")).getBoutique()));
+                request.getRequestDispatcher("updateBoutiqueTargets.jsp").forward(request, response);
+                break;
         }
     }
 
@@ -45,15 +50,22 @@ public class BoutiqueServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         switch (request.getParameter("submit")) {
 
+            case "updateBoutique":
+                Boutique boutique = new Boutique();
+                boutique.setId(request.getParameter("id"));
+                boutique.setMonthlyTarget(Double.parseDouble(request.getParameter("monthly")));
+                boutique.setDailyTarget(Double.parseDouble(request.getParameter("daily")));
+                request.setAttribute("reply", service.updateBoutqiue(boutique));
+                break;
+            
             case "registerNewBoutique":
                 Boutique newBoutique = new Boutique();
                 newBoutique.setLocation(request.getParameter("location"));
-                newBoutique.setDailyTarget(Double.parseDouble(request.getParameter("DailyTarget")));
+                newBoutique.setDailyTarget(Double.parseDouble(request.getParameter("dailyTarget")));
                 newBoutique.setMonthlyTarget(Double.parseDouble(request.getParameter("monthlyTarget")));
                 newBoutique.setPassword(request.getParameter("password"));
                 service.registerNewBoutique(newBoutique);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
-
                 break;
 
             case "changePassword":
