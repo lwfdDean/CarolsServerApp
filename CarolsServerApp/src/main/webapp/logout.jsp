@@ -1,9 +1,3 @@
-<%-- 
-    Document   : logstock
-    Created on : 20 Jun 2022, 20:18:43
-    Author     : Administrator
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

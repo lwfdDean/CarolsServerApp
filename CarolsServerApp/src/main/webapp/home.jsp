@@ -130,7 +130,7 @@
         <%}%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br>
-        <p><b>Welcome : <%=employee.getName()%></b></p>
+        <p style="color:#22075E" class="topnav-left"><b><u>Teller name</u> : <%=employee.getName()%></b></p>
         <div class="navbar">
             <div class="dropdown">
                 <button class="dropbtn">MENU 
