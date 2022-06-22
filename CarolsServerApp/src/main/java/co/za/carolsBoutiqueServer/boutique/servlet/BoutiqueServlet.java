@@ -28,7 +28,7 @@ public class BoutiqueServlet extends HttpServlet {
         switch (request.getParameter("submit")) {
             case "getAll":
                 request.setAttribute("boutiques", service.getAllBoutiques());
-                request.getRequestDispatcher("").forward(request, response);
+                request.getRequestDispatcher("registerNewEmployee.jsp").forward(request, response);
                 break;
             case "changeBoutiqueDailyTargetPage":
                 Employee emp = (Employee)request.getSession(false).getAttribute("employee");
@@ -63,8 +63,6 @@ public class BoutiqueServlet extends HttpServlet {
                 newPassword.put(emp.getBoutique(), password);
                 request.setAttribute("reply", service.changePassword(newPassword));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
-                break;
-
             case "changeDailyTarget":
                 Map<String, Double> newDailyTarget = new HashMap<>();
                 emp = (Employee) request.getSession().getAttribute("employee");

@@ -13,6 +13,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class EmployeeRestClient implements IServiceEmployee{
         WebTarget webT = client.target(uri);
         List<Role> emps = new ArrayList<>();
         try {
-            emps = (List<Role>) new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), TypeReference.class);
+            emps = Arrays.asList(new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), Role[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(EmployeeRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
