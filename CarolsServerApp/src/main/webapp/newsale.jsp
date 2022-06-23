@@ -130,12 +130,6 @@
             <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
             <%String barcode = null;%>
             <%Sale sale = (Sale)request.getSession(false).getAttribute("sale");%>
-            <%Product product = (Product)request.getAttribute("product");%>
-            <%
-            if (product!=null) {
-                sale.addNewSaleLineItem(product);
-            }
-            %>
             <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br><hr color="#22075E">
     <marquee><p style="color:#22077E;"><strong>TELLER :  <%=employee.getName()%></strong></p></marquee>
@@ -189,7 +183,6 @@
         <label>Product Code: <input type="text" name="productCode"></label>
         <input type="submit" value="findProductForSale" name="submit">
         </form>
-        
         <ol>
             <%for (Product p : sale.getItems()) {%>
             <li>

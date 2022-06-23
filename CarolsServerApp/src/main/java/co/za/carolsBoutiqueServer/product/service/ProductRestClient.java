@@ -5,6 +5,7 @@ import co.za.carolsBoutiqueServer.product.model.Category;
 import co.za.carolsBoutiqueServer.product.model.NewProduct;
 import co.za.carolsBoutiqueServer.product.model.Product;
 import co.za.carolsBoutiqueServer.product.model.PromoCode;
+import co.za.carolsBoutiqueServer.product.model.Size;
 import co.za.carolsBoutiqueServer.report.service.ReportRestClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,6 +17,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +121,7 @@ public class ProductRestClient implements IServiceProduct{
         WebTarget webT = client.target(uri);
         List<Category> cates = new ArrayList<>();
         try {
-            cates = (List<Category>) new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), TypeReference.class);
+            cates = Arrays.asList(new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), Category[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -177,5 +179,19 @@ public class ProductRestClient implements IServiceProduct{
             Logger.getLogger(ProductRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public List<Size> findAllSizes() {
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findAllSizes";
+        Client client = ClientBuilder.newClient();
+        WebTarget webT = client.target(uri);
+        List<Size> sizes = new ArrayList<>();
+        try {
+            sizes = Arrays.asList(new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), Size[].class));
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sizes;
     }
 }
