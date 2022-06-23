@@ -71,12 +71,12 @@ public class EmployeeServlet extends HttpServlet {
                 break;
             case "register":
                 Role role = service.getRole(request.getParameter("roleId"));
-                String managerCode = (!role.getName().equals("Manager"))
-                        ? "zyshdtgeiamd"
-                        : request.getParameter("managerCode");
-                String password = (!role.getName().equals("Teller"))
-                        ? "wihn3456"
-                        : request.getParameter("password");
+                String managerCode = ((role.getName().equalsIgnoreCase("Manager")))
+                        ? request.getParameter("managerCode")
+                        : "zyshdtgeiamd";
+                String password = (role.getName().equalsIgnoreCase("Teller") || (role.getName().equalsIgnoreCase("Manager")))
+                        ? request.getParameter("password")
+                        : "wihn3456";
                 Employee employee1 = new Employee();
                 employee1.setName(request.getParameter("name"));
                 employee1.setSurname(request.getParameter("surname"));
@@ -110,7 +110,7 @@ public class EmployeeServlet extends HttpServlet {
                 break;
             case "verifyManagerCode":
                 Map<String, String> details = new HashMap<>();
-                details.put(((Employee) request.getSession().getAttribute("employee")).getBoutique(), request.getParameter("managerCode"));
+                details.put(((Employee) request.getSession(false).getAttribute("employee")).getBoutique(), request.getParameter("managerCode"));
                 request.setAttribute("reply", service.verifyManagerCode(details));
                 request.getRequestDispatcher("").forward(request, response);
                 break;
