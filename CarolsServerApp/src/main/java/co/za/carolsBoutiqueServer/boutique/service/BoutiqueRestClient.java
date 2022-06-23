@@ -4,7 +4,6 @@ import co.za.carolsBoutiqueServer.boutique.model.Boutique;
 import co.za.carolsBoutiqueServer.boutique.model.Review;
 import co.za.carolsBoutiqueServer.report.service.ReportRestClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -47,7 +46,7 @@ public class BoutiqueRestClient implements IServiceBoutique{
  
     @Override
     public String updateBoutqiue(Boutique boutique) {
-        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/updateBoutqiue";
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/updateBoutique";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri);
         return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(boutique))).readEntity(String.class);

@@ -85,7 +85,7 @@ public class EmployeeServlet extends HttpServlet {
                 employee1.setManagerCode(managerCode);
                 employee1.setRole(role);
                 employee1.setBoutique(request.getParameter("boutique"));
-                request.setAttribute("registerReply", service.register(employee1));
+                request.setAttribute("reply", service.register(employee1));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             case "promoteEmployee":

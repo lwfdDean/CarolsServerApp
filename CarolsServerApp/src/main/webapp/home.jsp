@@ -124,7 +124,7 @@
 
     <body style="text-align:center; background-color:#D8C6B7;">
         <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
-        <%String reply = (String)request.getAttribute("registerReply");%>
+        <%String reply = (String)request.getAttribute("reply");%>
         <%if(reply!=null){%>
         <script>alert("<%=reply%>");</script>
         <%}%>
@@ -151,7 +151,7 @@
                     <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
                     <a href="promoteEmployee.jsp">Promote Employee</a>
                     <a href="registerNewBoutique.jsp">Register new Boutique</a>
-                    <a href="BoutiqueServlet?submit=updateBoutiquePage">Change boutique's target</a>
+                    <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
 
                 </div>
             </div>  
@@ -177,15 +177,16 @@
             </div>
             
             <a href="keepaside.jsp">KEEP ASIDE</a>
-            <div class="dropdown">
+            <a href="ProductServlet?submit=logStockPage">Log new Stock</a>
+<!--            <div class="dropdown">
                 <button class="dropbtn">STOCK
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="findProductForLogStock.jsp">Log new Stock</a>
+                    
                     <a href="viewstock.jsp">Available Stock</a>
                 </div>
-            </div>
+            </div>-->
             <div class="dropdown">
                 <button class="dropbtn">REPORT
                     <i class="fa fa-caret-down"></i>

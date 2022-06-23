@@ -11,8 +11,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 @WebServlet(name = "BoutiqueServlet", urlPatterns = {"/BoutiqueServlet"})
 public class BoutiqueServlet extends HttpServlet {
@@ -30,18 +28,16 @@ public class BoutiqueServlet extends HttpServlet {
                 request.setAttribute("boutiques", service.getAllBoutiques());
                 request.getRequestDispatcher("registerNewEmployee.jsp").forward(request, response);
                 break;
-            case "changeBoutiqueDailyTargetPage":
-                Employee emp = (Employee)request.getSession(false).getAttribute("employee");
-                if (emp.getRole().getAuthorizationLevel()==3) {
-                    //request.setAttribute("boutique", service.getBoutiques(emp.getBoutique()));
-                    //request.getRequestDispatcher("")
-                }else{
-                    
-                }
-                break;
             case "updateBoutiquePage":
-                request.setAttribute("boutique", service.findBoutique(((Employee)request.getSession(false).getAttribute("employee")).getBoutique()));
-                request.getRequestDispatcher("updateBoutiqueTargets.jsp").forward(request, response);
+                Employee emp = (Employee)request.getSession(false).getAttribute("employee");
+                System.out.println(emp.toString());
+                if (emp.getRole().getAuthorizationLevel()==3) {
+                    request.setAttribute("boutique", service.findBoutique(emp.getBoutique()));
+                    request.getRequestDispatcher("updateBoutiqueTargets.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("reply", "you do not have access to this function");
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                }
                 break;
         }
     }
@@ -55,7 +51,10 @@ public class BoutiqueServlet extends HttpServlet {
                 boutique.setId(request.getParameter("id"));
                 boutique.setMonthlyTarget(Double.parseDouble(request.getParameter("monthly")));
                 boutique.setDailyTarget(Double.parseDouble(request.getParameter("daily")));
-                request.setAttribute("reply", service.updateBoutqiue(boutique));
+                String reply = service.updateBoutqiue(boutique);
+                System.out.println(reply);
+                request.setAttribute("reply", reply);
+                request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             
             case "registerNewBoutique":
@@ -64,44 +63,10 @@ public class BoutiqueServlet extends HttpServlet {
                 newBoutique.setDailyTarget(Double.parseDouble(request.getParameter("dailyTarget")));
                 newBoutique.setMonthlyTarget(Double.parseDouble(request.getParameter("monthlyTarget")));
                 newBoutique.setPassword(request.getParameter("password"));
-                service.registerNewBoutique(newBoutique);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-                break;
-
-            case "changePassword":
-                Map<String, String> newPassword = new HashMap<>();
-                Employee emp = (Employee) request.getSession().getAttribute("employee");
-                String password = request.getParameter("password");
-                newPassword.put(emp.getBoutique(), password);
-               // request.setAttribute("reply", service.changePassword(newPassword));
+                request.setAttribute("reply", service.registerNewBoutique(newBoutique));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
-            case "changeDailyTarget":
-                Map<String, Double> newDailyTarget = new HashMap<>();
-                emp = (Employee) request.getSession().getAttribute("employee");
-                Double newTarget = Double.parseDouble(request.getParameter("newDailyTarget"));
-                newDailyTarget.put(emp.getBoutique(), newTarget);
-                if (newTarget > 15000) {
-                //    request.setAttribute("reply", service.changeDailyTarget(newDailyTarget));
-                    request.getRequestDispatcher("home.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("reply", "The new daily target must exceed 15000 or the value input is incorrect");
-                    request.getRequestDispatcher("home.jsp").forward(request, response);
-                }
                 break;
-
-            case "changeMonthlyTarget":
-                Map<String, Double> newMonthlyTarget = new HashMap<>();
-                emp = (Employee) request.getSession().getAttribute("employee");
-                Double newMonthTarget = Double.parseDouble(request.getParameter("newDailyTarget"));
-                newMonthlyTarget.put(emp.getBoutique(), newMonthTarget);
-                if (newMonthTarget > 450000) {
-                //    request.setAttribute("reply", service.changeDailyTarget(newMonthlyTarget));
-                    request.getRequestDispatcher("home.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("reply", "The new daily target must exceed 450000 or the value input is incorrect");
-                    request.getRequestDispatcher("home.jsp").forward(request, response);
-                }
-                break;
+                
 ////////////////////////////////////////////////////////////////////////////////////////
             case "rateStore"://How would we get the boutique ID/////////////////////////
                 Review review = new Review();
@@ -111,8 +76,6 @@ public class BoutiqueServlet extends HttpServlet {
                 request.setAttribute("reply", service.rateTheBoutique(review));
                 request.getRequestDispatcher("").forward(request, response);//where do we send the client after leaving a review
                 break;
-            default:
-                throw new AssertionError();
         }
     }
 

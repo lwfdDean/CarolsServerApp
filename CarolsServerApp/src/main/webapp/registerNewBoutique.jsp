@@ -44,7 +44,7 @@
     <body>
     <center>
         <center><h2 style="color:#22077E;"><i><u>REGISTER  A  NEW  BOUTIQUE</u></i></h2></center><br>
-        <form action="/" method="post">
+        <form action="BoutiqueServlet" method="post">
             <label style="color:#22075E;"><b>Location : </b></label>
             <input type="text" placeholder="location" name="location" required>
             <br><br>
@@ -57,7 +57,7 @@
             <label style="color:#22075E;"><b>password : </b></label>
             <input type="password" placeholder="password" name="password" required>
             <br><br>
-            <input type="submit" name="submit" value="Submit" style="width:110px; height:35px" class="button"/>
+            <input type="submit" name="submit" value="registerNewBoutique" style="width:110px; height:35px" class="button"/>
         </form>
         <br>
         <hr width="400px;" color="#22075E">       

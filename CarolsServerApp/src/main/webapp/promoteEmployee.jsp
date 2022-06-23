@@ -45,22 +45,13 @@
 
     <center>
         <div align="center">
-            <center><h2 style="color:#22077E;"><i><u>PROMOTE EMPLOYEE TO MANAGER</u></i></h2></center>
+            <center><h2 style="color:#22077E;"><i><u>PROMOTE EMPLOYEE</u></i></h2></center>
             <form action="EmployeeServlet" method="post"> 
                 <label>Manager<input type="radio" name="role" value="man101"></label>
                 <label>Teller<input type="radio" name="role" value="tel101"></label><br>
                 <label>Employee ID: <input type="text" name="employeeId" required></label><br>
                 <label>Password: <input type="password" name="password" required>*only if teller is selected</label><br>
                 <label>Manager Unique Code: <input type="password" name="managercode">*only if manager is selected</label><br>
-<!--                <table style="width:100">
-                    <label style="color:#22075E;"><b>Select employee : </b></label>
-                    <select name="name" style="width:170px; height:30px">
-                        <option value="1" > Select teller</option>
-                    </select> 
-                    <br>
-                    <label style="color:#22075E;"><b>New password    : </b></label>
-                    <input type="password" placeholder="Password" name="password" style="width:165px; height:23px" required>
-                </table><br>-->
                 <input type="submit" value="promoteEmployee" name="submit"> 
             </form>
         </div>

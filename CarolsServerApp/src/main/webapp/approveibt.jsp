@@ -101,6 +101,9 @@
         <h1>Approve an IBT</h1>
         <h4>Here are your stores IBT's</h4>
         <p>Please check the IBT's that you would like to approve/reject</p>
+        <%if (ibtlist==null || ibtlist.isEmpty()) {%>
+        <h3>No Ibts</h3>
+        <%}else{%>
         <form action="IbtServlet" method="post">
             <ol>
                 <%for(IBT i : ibtlist){%>
@@ -109,6 +112,7 @@
             </ol>
             <input type="submit" name="submit" value="approveIBT">
         </form>
+        <%}%>    
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 
