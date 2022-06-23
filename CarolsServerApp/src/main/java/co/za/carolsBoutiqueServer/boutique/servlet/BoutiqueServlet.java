@@ -73,7 +73,7 @@ public class BoutiqueServlet extends HttpServlet {
                 Employee emp = (Employee) request.getSession().getAttribute("employee");
                 String password = request.getParameter("password");
                 newPassword.put(emp.getBoutique(), password);
-                request.setAttribute("reply", service.changePassword(newPassword));
+               // request.setAttribute("reply", service.changePassword(newPassword));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
             case "changeDailyTarget":
                 Map<String, Double> newDailyTarget = new HashMap<>();
@@ -81,7 +81,7 @@ public class BoutiqueServlet extends HttpServlet {
                 Double newTarget = Double.parseDouble(request.getParameter("newDailyTarget"));
                 newDailyTarget.put(emp.getBoutique(), newTarget);
                 if (newTarget > 15000) {
-                    request.setAttribute("reply", service.changeDailyTarget(newDailyTarget));
+                //    request.setAttribute("reply", service.changeDailyTarget(newDailyTarget));
                     request.getRequestDispatcher("home.jsp").forward(request, response);
                 } else {
                     request.setAttribute("reply", "The new daily target must exceed 15000 or the value input is incorrect");
@@ -95,7 +95,7 @@ public class BoutiqueServlet extends HttpServlet {
                 Double newMonthTarget = Double.parseDouble(request.getParameter("newDailyTarget"));
                 newMonthlyTarget.put(emp.getBoutique(), newMonthTarget);
                 if (newMonthTarget > 450000) {
-                    request.setAttribute("reply", service.changeDailyTarget(newMonthlyTarget));
+                //    request.setAttribute("reply", service.changeDailyTarget(newMonthlyTarget));
                     request.getRequestDispatcher("home.jsp").forward(request, response);
                 } else {
                     request.setAttribute("reply", "The new daily target must exceed 450000 or the value input is incorrect");

@@ -128,6 +128,16 @@
         <%if(reply!=null){%>
         <script>alert("<%=reply%>");</script>
         <%}%>
+        
+        <%String exchangeReply = (String)request.getAttribute("exchangeReply");%>
+        <%if(exchangeReply!=null){%>
+        <script>alert("<%=exchangeReply%>");</script>
+        <%}%>
+       
+        <%String refundReply = (String)request.getAttribute("refundReply");%>
+        <%if(refundReply!=null){%>
+        <script>alert("<%=refundReply%>");</script>
+        <%}%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br>
         <p style="color:#22075E" class="topnav-left"><b><u>Teller name</u> : <%=employee.getName()%></b></p>
