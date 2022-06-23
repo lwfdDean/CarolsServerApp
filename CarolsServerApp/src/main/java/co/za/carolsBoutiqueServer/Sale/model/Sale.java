@@ -20,6 +20,10 @@ public class Sale {
     private String boutique;
     private String cardNumber;
     private String customerEmail;
+    
+    {
+        totalPrice = 0.0;
+    }
 
     public Sale() {
     }

@@ -49,7 +49,7 @@ public class ProductServlet extends HttpServlet {
                 break;
             case "findProduct":
                 request.setAttribute("categories", service.findAllCategories());
-                //request.setAttribute("sizes", service.findAllSizes());
+                request.setAttribute("sizes", service.findAllSizes());
                 request.setAttribute("product", service.findProduct(request.getParameter("productId")));
                 request.getRequestDispatcher("logstock.jsp").forward(request, response);
                 break;
@@ -74,6 +74,10 @@ public class ProductServlet extends HttpServlet {
                     request.setAttribute("product", product);
                 }
                 request.getRequestDispatcher("logstock.jsp").forward(request, response);
+                break;
+            case "addPromoPage":
+                request.setAttribute("categories", service.findAllCategories());
+                request.getRequestDispatcher("addPromoCode.jsp").forward(request, response);
                 break;
         }
     }
@@ -181,8 +185,8 @@ public class ProductServlet extends HttpServlet {
                 PromoCode promoCode = new PromoCode();
                 promoCode.setCategory(request.getParameter("category"));
                 promoCode.setCode(request.getParameter("code"));//will the promoCode be auto generated
-                promoCode.setDate(LocalDate.now());
-                promoCode.setDiscount(Double.parseDouble(request.getParameter("discountPrice")));
+                System.out.println(request.getParameter("expiry"));
+                promoCode.setDiscount(Double.parseDouble(request.getParameter("discount")));
                 promoCode.setType(Integer.parseInt(request.getParameter("type")));
                 request.setAttribute("reply", service.addNewPromoCode(promoCode));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
