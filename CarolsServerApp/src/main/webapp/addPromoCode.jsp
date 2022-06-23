@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
+<%@ page import="co.za.carolsBoutiqueServer.product.model.Category"%>
 <%@ page import="co.za.carolsBoutiqueServer.employee.model.Employee"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -124,20 +126,6 @@
 
     <body style="text-align:center; background-color:#D8C6B7;">
         <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
-        <%String reply = (String)request.getAttribute("reply");%>
-        <%if(reply!=null){%>
-        <script>alert("<%=reply%>");</script>
-        <%}%>
-
-        <%String exchangeReply = (String)request.getAttribute("exchangeReply");%>
-        <%if(exchangeReply!=null){%>
-        <script>alert("<%=exchangeReply%>");</script>
-        <%}%>
-
-        <%String refundReply = (String)request.getAttribute("refundReply");%>
-        <%if(refundReply!=null){%>
-        <script>alert("<%=refundReply%>");</script>
-        <%}%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br>
         <p style="color:#22075E" class="topnav-left"><b><u>Teller name</u> : <%=employee.getName()%></b></p>
@@ -178,15 +166,7 @@
 
             <a href="keepaside.jsp">KEEP ASIDE</a>
             <a href="ProductServlet?submit=logStockPage">LOG STOCK</a>
-            <!--            <div class="dropdown">
-                            <button class="dropbtn">STOCK
-                                <i class="fa fa-caret-down"></i>
-                            </button>
-                            <div class="dropdown-content">
-                                
-                                <a href="viewstock.jsp">Available Stock</a>
-                            </div>
-                        </div>-->
+            
             <div class="dropdown">
                 <button class="dropbtn">REPORT
                     <i class="fa fa-caret-down"></i>
@@ -207,17 +187,32 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="ProductServlet?submit=addPromoPage">Add New PromoCode</a>
+                    <a href="###">Add New PromoCode</a>
                     <a href="###">Put Product On Sale</a>
                 </div>
             </div>
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
-        <!--<script>
-            let code = prompt("Please enter manager Code", "");
-        </script>-->
-    <center>
 
+    <center>
+        <%List<Category> categories = (List<Category>)request.getAttribute("categories");%>
+        <table>
+            <form action="ProductServlet" method="post">
+                <label>Code: <input type="text" name="code"></label><br>
+                <label>Discount(%): <input type="number" min="1" max="100" name="discount"></label><br>
+                <label>Type: <input type="numbers" min="1" max="2" name="type"></label><br>
+                <label>Expiry Date: <input type="date" name="expiry"></label><br>
+                <label>Category (optional): </label>
+                <select name="category">
+                    <ol>
+                        <%for(Category cat : categories){%>
+                        <li><option label="<%=cat.getName()%>" value="<%=cat.getId()%>"><%=cat.getName()%></option></li>
+                        <%}%>
+                    </ol>
+                </select>
+                <input type="submit" name="submit" value="addNewPromoCode">
+            </form>
+        </table>
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
