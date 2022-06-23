@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 public class Sale {
 
     private String Id;
@@ -22,6 +20,9 @@ public class Sale {
     private String boutique;
     private String cardNumber;
     private String customerEmail;
+
+    public Sale() {
+    }
 
     public Sale(String Id, String employee, Boolean approved, Double totalPrice, List<Product> items, String boutique, String cardNumber) {
         this.Id = Id;

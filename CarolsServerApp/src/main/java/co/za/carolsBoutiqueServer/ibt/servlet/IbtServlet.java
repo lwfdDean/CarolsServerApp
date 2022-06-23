@@ -31,10 +31,10 @@ public class IbtServlet extends HttpServlet {
                 request.setAttribute("IBT", service.getIBT(request.getParameter("ibtId")));
                 request.getRequestDispatcher("approveibt.jsp").forward(request, response);
                 break;
-            case "approveIBTpage":
+            case "getBoutiqueIbts":
                 Employee emp = (Employee)request.getSession().getAttribute("employee");
                 if (emp.getRole().getAuthorizationLevel()==3) {
-                    request.setAttribute("ibts", service.findStoreIBTS(emp.getBoutique()));
+                    request.setAttribute("ibtlist", service.findStoreIBTS(emp.getBoutique()));
                     request.getRequestDispatcher("approveibt.jsp").forward(request, response);
                 }else{
                     request.setAttribute("reply","you are not authorized to access this page");
@@ -65,7 +65,7 @@ public class IbtServlet extends HttpServlet {
                 List<String> replies = new ArrayList<>();
                 for (String approvedOne : approvedOnes) {
                     Map<String,Boolean> details = new HashMap<>();
-                    details.put(approvedOne, true);
+                    details.put(request.getParameter(approvedOne), true);
                     String reply = service.approveIBT(details);
                     if (reply.equals("Successfully Updated")) {
                         replies.add(reply);

@@ -98,13 +98,22 @@
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
+        <%String saleId = (String)request.getAttribute("saleId");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
         <hr color="#22075E">
         <br>
         <h1>EXCHANGE A PRODUCT</h1>
+        <form action="SaleServlet" method="get">
+            <%if (saleId == null) {%>
+                <label>Sale Id:<input type="text" name="saleId"></label><br>
+            <%}else{%>
+                <label>Sale Id:<input type="text" name="saleId" placeholder="<%=saleId%>"></label><br>
+            <%}%>    
+            <input type="submit" name="submit" value="findSale">
+        </form><br><br><br><br><br><br>
         <form action="SaleServlet" method="post">
              <table style="width:100">
-
+                <%if (saleId != null) {%>
                     <label style="color:#22075E;"><b>Email  : </b></label>
                     <input type="text" placeholder="Email address" name="email" style="width:165px; height:23px" required> 
                     <br>
@@ -113,6 +122,7 @@
                     <br>
                     <label style="color:#22075E;"><b>Old Product  : </b></label>
                     <input type="text" placeholder="Old Product" name="oldProduct" style="width:165px; height:23px" required> 
+                 <%}%>   
              </table><br>
             <input type="submit" value="exchange" name="submit" style="width:110px; height:35px" class="button"/>
         </form>

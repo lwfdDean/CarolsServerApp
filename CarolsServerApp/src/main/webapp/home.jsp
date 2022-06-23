@@ -171,7 +171,7 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="approveibt.jsp">Approve IBT</a>
+                    <a href="IbtServlet?submit=getBoutiqueIbts">Approve IBT</a>
                     <a href="requestibt.jsp">Request IBT</a>
                 </div>
             </div>

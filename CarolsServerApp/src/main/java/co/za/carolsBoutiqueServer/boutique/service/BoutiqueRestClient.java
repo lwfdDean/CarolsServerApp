@@ -72,7 +72,7 @@ public class BoutiqueRestClient implements IServiceBoutique{
 
     @Override
     public Boutique findBoutique(String boutiqueId) {
-        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/findBoutqiue/{boutiqueId}";
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/boutique/findBoutique/{boutiqueId}";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri).resolveTemplate("boutiqueId", boutiqueId);
         Boutique boutique = null;

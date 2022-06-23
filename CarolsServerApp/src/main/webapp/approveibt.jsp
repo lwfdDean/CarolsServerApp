@@ -107,7 +107,7 @@
         <form action="IbtServlet" method="post">
             <ol>
                 <%for(IBT i : ibtlist){%>
-                    <li><label><input type="checkbox" name="<%=i.getId()%>"><%=i.getProductCode()%></label></li>
+                <li><label><input type="checkbox" name="<%=i.getId()%>" value="<%=i.getId()%>"><%=i.getProductCode()%></label></li>
                 <%}%>
             </ol>
             <input type="submit" name="submit" value="approveIBT">

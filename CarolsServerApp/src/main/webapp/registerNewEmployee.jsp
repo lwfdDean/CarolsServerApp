@@ -139,6 +139,9 @@
             <label style="color:#22075E;"><b>Password : </b></label>
             <input type="password" placeholder="Enter a password 8 characters long" name="password" required>
             <br><br>
+             <label style="color:#22075E;"><b>Manager Unique code : </b></label>
+            <input type="password" placeholder="Enter a manager code 6 characters long" name="managerCode" required>
+            <br><br>
             <label style="color:#22075E;"><b>Boutique : </b></label>
             <select name="boutique">
                 <ol>

@@ -10,6 +10,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -17,6 +18,10 @@ import java.util.logging.Logger;
 
 public class IBTRestClient implements IServiceIBT {
     //http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/ibt/
+    
+
+    public IBTRestClient() {
+    }
 
     @Override
     public String requestIBT(IBT ibt) {
@@ -47,7 +52,7 @@ public class IBTRestClient implements IServiceIBT {
         WebTarget webT = client.target(uri).resolveTemplate("storeId", storeId);
         List<IBT> ibts = new ArrayList<>();
         try {
-            ibts = (List<IBT>) new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), TypeReference.class);
+            ibts = Arrays.asList(new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), IBT[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(IBTRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
