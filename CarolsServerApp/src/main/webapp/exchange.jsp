@@ -102,6 +102,20 @@
         <hr color="#22075E">
         <br>
         <h1>EXCHANGE A PRODUCT</h1>
+        <form action="SaleServlet" method="post">
+             <table style="width:100">
+
+                    <label style="color:#22075E;"><b>Email  : </b></label>
+                    <input type="text" placeholder="Email address" name="email" style="width:165px; height:23px" required> 
+                    <br>
+                    <label style="color:#22075E;"><b>New Product : </b></label>
+                    <input type="text" placeholder="New Product" name="newProduct" style="width:165px; height:23px" required>
+                    <br>
+                    <label style="color:#22075E;"><b>Old Product  : </b></label>
+                    <input type="text" placeholder="Old Product" name="oldProduct" style="width:165px; height:23px" required> 
+             </table><br>
+            <input type="submit" value="exchange" name="submit" style="width:110px; height:35px" class="button"/>
+        </form>
 
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

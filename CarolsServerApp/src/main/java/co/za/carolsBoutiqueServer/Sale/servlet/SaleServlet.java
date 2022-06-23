@@ -49,7 +49,7 @@ public class SaleServlet extends HttpServlet {
             case "refund":
                 Map<String, String> refundInfo = new HashMap<>();
                 refundInfo.put(request.getParameter("saleId"), request.getParameter("product"));
-                request.setAttribute("reply", service.refund(refundInfo));
+                request.setAttribute("refundReply", service.refund(refundInfo));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             case "exchange":
@@ -57,9 +57,9 @@ public class SaleServlet extends HttpServlet {
                 ei.setCustomerEmail(request.getParameter("email"));
                 ei.setNewProductId(request.getParameter("newProduct"));
                 ei.setReturnedProductId(request.getParameter("oldProduct"));
-                ei.setReturnedProductId(((Sale) request.getSession().getAttribute("sale")).getId());
+                ei.setReturnedProductId(((Sale) request.getSession().getAttribute("sale")).getId());//how are we going to get the sale instance
                 ei.setPrice(Double.parseDouble(request.getParameter("price")));
-                request.setAttribute("reply", service.exchange(ei));
+                request.setAttribute("exchangeReply", service.exchange(ei));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
         }
