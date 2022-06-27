@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
 <%@ page import="co.za.carolsBoutiqueServer.employee.model.Employee"%>
@@ -7,9 +8,20 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,
+              initial-scale=1, shrink-to-fit=no" />
         <meta charset="ISO-8859-1">
-        <title>new sale</title>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"></script>
+        <title>New Sale</title>
         <style>
+            #preview{
+                width:500px;
+                height: 500px;
+                margin:0px auto;
+            }
             label {
                 display: inline-block;
                 width: 150px;
@@ -126,81 +138,315 @@
     </head>
 
     <body style="text-align:center; background-color:#D8C6B7;">
-        
-            <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
-            <%String barcode = null;%>
-            <%Sale sale = (Sale)request.getSession(false).getAttribute("sale");%>
-            <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
-        <br><hr color="#22075E">
-    <marquee><p style="color:#22077E;"><strong>TELLER :  <%=employee.getName()%></strong></p></marquee>
+        <%Employee emp = (Employee)request.getSession(false).getAttribute("employee");%>
+
+        <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
+        <br>
+        <p style="color:#22075E" class="topnav-left"><b><u>Teller name</u> : <%=emp.getName()%></b></p>
         <div class="navbar">
             <div class="dropdown">
                 <button class="dropbtn">MENU 
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Promote to teller</a>
-                    <a href="#">Daily report</a>
-                    <a href="#">Monthly report</a>
-                    <a href="#">Custom report</a>
-                    <a href="#">Top achieving stores</a>
-                    <a href="#">Low achieving</a>
+
+                    <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
+                    <a href="promoteEmployee.jsp">Promote Employee</a>
+                    <a href="registerNewBoutique.jsp">Register new Boutique</a>
+                    <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
 
                 </div>
             </div>  
-            <!--<a href="#sale.jsp">SALE</a>-->
+
             <div class="dropdown">
                 <button class="dropbtn">SALE
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">New sale</a>
-                    <a href="#">Exchange</a>
-                    <a href="#">Refund</a>
+                    <a href="SaleServlet?submit=newSalePage">New Sale</a>
+                    <a href="exchange.jsp">Exchange product</a>
+                    <a href="refund.jsp">Refund a product</a>
                 </div>
-            </div>
-            
-            
-            
+            </div>    
             <div class="dropdown">
                 <button class="dropbtn">IBT
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Approve IBT</a>
-                    <a href="#">Request IBT</a>
+                    <a href="IbtServlet?submit=getBoutiqueIbts">Approve IBT</a>
+                    <a href="requestibt.jsp">Request IBT</a>
                 </div>
             </div>
-            <a href="#keep-aside">KEEP ASIDE</a>
-            <a href="#logstock">LOG STOCK</a>
-            <div class="topnav-right"><a href="logoutBoutique.jsp">LOGOUT</a></div>
+
+            <div class="dropdown">
+                <button class="dropbtn">KEEP ASIDE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="keepaside.jsp">Create</a>
+                    <a href="keepaside.jsp">Collect</a>
+                </div>
+            </div>
+            <a href="logstock.jsp">LOG STOCK</a>
+
+            <div class="dropdown">
+                <button class="dropbtn">REPORT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="topAchievingReport.jsp">Top Achieving Stores</a>
+                    <a href="monthlySalesReport.jsp">Monthly Sales for any store</a>
+                    <a href="topachievingemployees.jsp">Top achieving Employees</a>
+                    <a href="reachedtarget.jsp">Reached Target</a>
+                    <a href="topproducts.jsp">Top 40 products</a>
+                    <a href="worstperforming.jsp">Worst Performing Stores</a>
+                    <a href="specificProductReport.jsp">Product</a>
+                    <a href="dailyreport.jsp">Current Daily Sales</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">PRODUCT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="ProductServlet?submit=addPromoPage">Add New PromoCode</a>
+                    <a href="putProductOnSale.jsp">Put Product On Sale</a>
+                </div>
+            </div>
+            <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
-        
-        <center><h2 style="color:#22077E;"><i><u>MAKING A NEW SALE</u></i></h2></center><br>
-        
+    <center><h2 style="color:#22077E;"><i><u>MAKING A NEW SALE</u></i></h2></center><br>
     <center>
-        <form action="ProductServlet" method="get">
-        <label>Product Code: <input type="text" name="productCode"></label>
-        <input type="submit" value="findProductForSale" name="submit">
-        </form>
-        <ol>
-            <%for (Product p : sale.getItems()) {%>
-            <li>
-                <label>
-                    <%=p.getName()%>
-                </label>
-                <label>
-                    <%=p.getPrice()%>
-                </label>
-                <label>
-                    <%=p.getDiscountedPrice()%>
-                </label><br>
-            </li>
-            <%}%>
-        </ol><br>
-        <%if(sale!= null){%>
-        <h3>Total: <%=sale.getTotalPrice()%></h3>
-        <%}%>
+        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <script src="<a class="vglnk" href="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"><span>https</span> < span > ://</span><span>rawgit</span><span>.</span><span>com</span><span>/</span><span>schmich</span><span>/</span><span>instascan</span><span>-</span><span>builds</span><span>/</span><span>master</span><span>/</span><span>instascan</span><span>.</span><span>min</span><span>.</span><span>js</span></a>"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@9.0.2/dist/dbr.js"></script>
+        <input type="text" name="id" id="prod">
+        <button id="findProduct">Find Product</button>
+        <div id="display"></div><br><br>
+        <div id="total"></div>
+        <label>Customer Email: <input type="text" name="id" id="email" required></label><br>
+        <label>Card Num: <input type="text" name="id" id="card" required></label><br>
+        <button id="checkout">Checkout</button>
+        <div id="reply"></div>
+
+        <script>
+            let items = [];
+            var index = 0;
+            var totalPrice = 0;
+            document.getElementById("findProduct").addEventListener("click", getProduct);
+            document.getElementById("checkout").addEventListener("click", checkout);
+            function getProduct() {
+                var proid = document.getElementById("prod").value;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findProduct/" + proid, true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        var product1 = JSON.parse(this.responseText);
+                        let sizes = [];
+                        let categories = [];
+                        for (var i in product1.categories) {
+                            categories.splice(i, 0, new Category(product1.categories[i].id, product1.categories[i].name));
+                            console.log(categories[i]);
+                        }
+                        for (var i in product1.sizes) {
+                            sizes.splice(i, 0, new Size(product1.sizes[i].id, product1.sizes[i].name));
+                        }
+                        items.splice(index, 0, new Product(
+                                product1.id,
+                                product1.name,
+                                product1.description,
+                                sizes,
+                                product1.color,
+                                product1.price,
+                                product1.discountedPrice,
+                                categories));
+                        console.log[items[index]];
+                        index++;
+                        let output = "";
+                        output += "<table class='table table-nordered'>" +
+                                "<thead>" +
+                                "<tr>" +
+                                "<th class='per70 text-center'>Item</th>" +
+                                "<th class='per70 text-center'>Price</th>" +
+                                "<th class='per70 text-center'>Discounted Price</th>" +
+                                "</tr>" +
+                                "</thead>" +
+                                "<tbody>";
+                        let calculatedTotal = 0;
+                        for (var i in items) {
+                            console.log[items[i]];
+                            calculatedTotal += items[i].discountedPrice;
+                            console.log(totalPrice);
+                            output += "<tr height='35px'>" +
+                                    "<td>" + items[i].name + "</td>" +
+                                    "<td class='text-center'>" + items[i].price + "</td>" +
+                                    "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
+                                    "</tr>";
+                        }
+                        totalPrice = calculatedTotal;
+                        output += "</tbody>" +
+                                "<tfoot>" +
+                                "<tr>" +
+                                "<th colspan='3' class='text-right'>Total</th>" +
+                                "<th class='text-center'>" + totalPrice + "</th>" +
+                                "</tr>" +
+                                "</tofoot>" +
+                                "</table>";
+                        document.getElementById("display").innerHTML = output;
+                    }
+                };
+                xhr.send();
+            }
+
+            function getProduct2(productId) {
+                let proid = productId;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findProduct/" + proid, true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        var product1 = JSON.parse(this.responseText);
+                        let sizes = [];
+                        let categories = [];
+                        for (var i in product1.categories) {
+                            categories.splice(i, 0, new Category(product1.categories[i].id, product1.categories[i].name));
+                            console.log(categories[i]);
+                        }
+                        for (var i in product1.sizes) {
+                            sizes.splice(i, 0, new Size(product1.sizes[i].id, product1.sizes[i].name));
+                        }
+                        items.splice(index, 0, new Product(
+                                product1.id,
+                                product1.name,
+                                product1.description,
+                                sizes,
+                                product1.color,
+                                product1.price,
+                                product1.discountedPrice,
+                                categories));
+                        console.log[items[index]];
+                        index++;
+                        let output = "";
+                        output += "<table class='table table-nordered'>" +
+                                "<thead>" +
+                                "<tr>" +
+                                "<th class='per70 text-center'>Item</th>" +
+                                "<th class='per70 text-center'>Price</th>" +
+                                "<th class='per70 text-center'>Discounted Price</th>" +
+                                "</tr>" +
+                                "</thead>" +
+                                "<tbody>";
+                        let calculatedTotal = 0;
+                        for (var i in items) {
+                            console.log[items[i]];
+                            calculatedTotal += items[i].discountedPrice;
+                            console.log(totalPrice);
+                            output += "<tr height='35px'>" +
+                                    "<td>" + items[i].name + "</td>" +
+                                    "<td class='text-center'>" + items[i].price + "</td>" +
+                                    "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
+                                    "</tr>";
+                        }
+                        totalPrice = calculatedTotal;
+                        output += "</tbody>" +
+                                "<tfoot>" +
+                                "<tr>" +
+                                "<th colspan='3' class='text-right'>Total</th>" +
+                                "<th class='text-center'>" + totalPrice + "</th>" +
+                                "</tr>" +
+                                "</tofoot>" +
+                                "</table>";
+                        console.log(output);
+                        document.getElementById("display").innerHTML = output;
+                    }
+                };
+                xhr.send();
+            }
+
+            function checkout() {
+                var email = document.getElementById("email").value;
+                var card = document.getElementById("card").value;
+                var sale = new Sale("", "<%=emp.getId()%>", false, totalPrice, items, "<%=emp.getBoutique()%>", card, email);
+                var toSend = JSON.stringify(sale);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/sale/checkout", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+//                xhr.onreadystatechange = function () {
+//                    if (this.readyState == 4) {
+//                        var reply = JSON.parse(this.responseText);
+//                        var output = "";
+//                        output += "<h5>" + reply + "</h5>";
+//                        document.getElementById("reply").innerHTML = output;
+//                    }
+//                };
+                xhr.send(toSend);
+            }
+
+            function Category(id, name) {
+                this.id = id;
+                this.name = name;
+            }
+
+            function Size(id, name) {
+                this.id = id;
+                this.name = name;
+            }
+
+            function Product(id, name, description, sizes, color, price, discountedPrice, categories) {
+                this.id = id;
+                this.name = name;
+                this.description = description;
+                this.sizes = sizes;
+                this.color = color;
+                this.price = price;
+                this.discountedPrice = discountedPrice;
+                this.categories = categories;
+            }
+
+            function Sale(id, employee, approved, totalPrice, items, boutique, cardNumber, customerEmail) {
+                this.id = id;
+                this.employee = employee;
+                this.approved = approved;
+                this.totalPrice = totalPrice;
+                this.items = items;
+                this.boutique = boutique;
+                this.cardNumber = cardNumber;
+                this.customerEmail = customerEmail;
+            }
+
+            var scanner = new Instascan.Scanner({video: document.getElementById('preview'), scanPeriod: 5, mirror: false});
+            scanner.addListener('scan', function (content) {
+                console.log(content);
+                getProduct2(content);
+                //window.location.href=content;
+            });
+            Instascan.Camera.getCameras().then(function (cameras) {
+                if (cameras.length > 0) {
+                    scanner.start(cameras[0]);
+                    $('[name="options"]').on('change', function () {
+                        if ($(this).val() == 1) {
+                            if (cameras[0] != "") {
+                                scanner.start(cameras[0]);
+                            } else {
+                                alert('No Front camera found!');
+                            }
+                        } else if ($(this).val() == 2) {
+                            if (cameras[1] != "") {
+                                scanner.start(cameras[1]);
+                            } else {
+                                alert('No Back camera found!');
+                            }
+                        }
+                    });
+                } else {
+                    console.error('No cameras found.');
+                    alert('No cameras found.');
+                }
+            }).catch(function (e) {
+                console.error(e);
+                alert(e);
+            }); //style ="display:none;"
+        </script>
+        <video id="preview"></video>
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

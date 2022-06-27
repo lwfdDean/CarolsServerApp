@@ -176,17 +176,17 @@
                 </div>
             </div>
 
-            <a href="keepaside.jsp">KEEP ASIDE</a>
-            <a href="ProductServlet?submit=logStockPage">LOG STOCK</a>
-            <!--            <div class="dropdown">
-                            <button class="dropbtn">STOCK
-                                <i class="fa fa-caret-down"></i>
-                            </button>
-                            <div class="dropdown-content">
-                                
-                                <a href="viewstock.jsp">Available Stock</a>
-                            </div>
-                        </div>-->
+            <div class="dropdown">
+                <button class="dropbtn">KEEP ASIDE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="keepaside.jsp">Create</a>
+                    <a href="keepaside.jsp">Collect</a>
+                </div>
+            </div>
+            <a href="logstock.jsp">LOG STOCK</a>
+
             <div class="dropdown">
                 <button class="dropbtn">REPORT
                     <i class="fa fa-caret-down"></i>
@@ -208,14 +208,11 @@
                 </button>
                 <div class="dropdown-content">
                     <a href="ProductServlet?submit=addPromoPage">Add New PromoCode</a>
-                    <a href="###">Put Product On Sale</a>
+                    <a href="putProductOnSale.jsp">Put Product On Sale</a>
                 </div>
             </div>
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
-        <!--<script>
-            let code = prompt("Please enter manager Code", "");
-        </script>-->
     <center>
 
         <br><br><br> 

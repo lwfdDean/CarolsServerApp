@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -41,7 +42,12 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("products", service.findAllProducts());
                 request.getRequestDispatcher("").forward(request, response);//which page must the user be forwarded to?
                 break;
-
+                
+            case "findProductToUpdate":
+                request.setAttribute("prod", service.findProduct(request.getParameter("productId")));
+                request.getRequestDispatcher("putProductOnSale.jsp").forward(request, response);
+                break;
+                
             case "findAllCategories":
                 request.setAttribute("categories", service.findAllCategories());
                 request.setAttribute("sizes", service.findAllSizes());
@@ -83,27 +89,13 @@ public class ProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         switch (request.getParameter("submit")) {
-            case "findProduct"://get method
-                String productId = request.getParameter("productId");
-                request.setAttribute("product", service.findProduct(productId));
-                request.getRequestDispatcher("").forward(request, response);//which page must the user be forwarded to?
-                //should we check to see if product is null
-                break;
-
-            case "findProductBySize":
-                String productSize = request.getParameter("productSize");
-                request.setAttribute("product", service.findProductBySize(productSize));
-                request.getRequestDispatcher("").forward(request, response);//which page must the user be forwarded to?
-                //should we check for null
-                break;
 
             case "putProductOnSale":
                 Map<String, Double> newPrice = new HashMap<>();
                 double price = Double.parseDouble(request.getParameter("newPrice"));
-                newPrice.put(request.getParameter("productId"), price);
+                newPrice.put(request.getParameter("id"), price);
                 if (price > 0) {
                     request.setAttribute("reply", service.putProductOnSale(newPrice));
                     request.getRequestDispatcher("home.jsp").forward(request, response);
@@ -114,13 +106,13 @@ public class ProductServlet extends HttpServlet {
                 break;
 
             case "logStock":
-                Employee emp = (Employee) request.getSession().getAttribute("employee");
+                Employee emp = (Employee) request.getSession(false).getAttribute("employee");
                 NewProduct np = new NewProduct();
                 Product product = new Product();
-                StockEntry stockEntry = new StockEntry();
                 if (request.getParameter("notnull").equalsIgnoreCase("notnull")) {
-                    np.setProduct(product);
+                    np.setNewProduct(false);
                 } else {
+                    np.setNewProduct(true);
                     List<Category> allCats = service.findAllCategories();
                     List<Size> allSizes = service.findAllSizes();
                     product.setId(request.getParameter("id"));
@@ -128,6 +120,7 @@ public class ProductServlet extends HttpServlet {
                     product.setDescription(request.getParameter("descript"));
                     product.setColor(request.getParameter("color"));
                     product.setPrice(Double.parseDouble(request.getParameter("price")));
+                    product.setDiscountedPrice(0.0);
                     List<Category> prodCats = new ArrayList<>();
                     List<Size> prodSizes = new ArrayList<>();
                     for (Enumeration<String> en = request.getParameterNames(); en.hasMoreElements();) {
@@ -142,6 +135,7 @@ public class ProductServlet extends HttpServlet {
                     product.setCategories(prodCats);
                     product.setSizes(prodSizes);
                 }
+                np.setProduct(product);
                 np.setStockEntry(
                         new StockEntry(
                                 (request.getParameter("id") + " " + request.getParameter("sizeLogged")),
@@ -154,7 +148,7 @@ public class ProductServlet extends HttpServlet {
                 break;
 
             case "findStockOfProduct":
-                productId = request.getParameter("productId");
+                String productId = request.getParameter("productId");
                 //should we check if the product is null
                 request.setAttribute("product", service.findStockOfProduct(productId));
                 request.getRequestDispatcher("").forward(request, response);//which page must the user be forwarded to?
@@ -185,7 +179,11 @@ public class ProductServlet extends HttpServlet {
                 PromoCode promoCode = new PromoCode();
                 promoCode.setCategory(request.getParameter("category"));
                 promoCode.setCode(request.getParameter("code"));//will the promoCode be auto generated
-                System.out.println(request.getParameter("expiry"));
+                String[] expiryInfo = request.getParameter("expiry").split("-");
+                promoCode.setDate(LocalDate.of(
+                        Integer.parseInt(expiryInfo[0]),
+                        Integer.parseInt(expiryInfo[1]),
+                        Integer.parseInt(expiryInfo[2])));
                 promoCode.setDiscount(Double.parseDouble(request.getParameter("discount")));
                 promoCode.setType(Integer.parseInt(request.getParameter("type")));
                 request.setAttribute("reply", service.addNewPromoCode(promoCode));

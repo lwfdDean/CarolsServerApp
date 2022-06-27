@@ -101,6 +101,7 @@ public class EmployeeServlet extends HttpServlet {
                     empDetails.add(role2);
                     request.setAttribute("reply", service.promoteToTeller(empDetails));
                 }
+                request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             case "addRole":
                 Role role1 = new Role();

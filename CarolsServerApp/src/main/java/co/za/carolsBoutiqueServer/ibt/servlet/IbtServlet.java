@@ -28,14 +28,14 @@ public class IbtServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         switch(request.getParameter("submit")){
             case "getIBT":
-                request.setAttribute("IBT", service.getIBT(request.getParameter("ibtId")));
-                request.getRequestDispatcher("approveibt.jsp").forward(request, response);
+                request.setAttribute("IBT", service.getIBT(request.getParameter("selectIbt")));
+                request.getRequestDispatcher("IBTDetails.jsp").forward(request, response);
                 break;
             case "getBoutiqueIbts":
-                Employee emp = (Employee)request.getSession().getAttribute("employee");
+                Employee emp = (Employee)request.getSession(false).getAttribute("employee");
                 if (emp.getRole().getAuthorizationLevel()==3) {
                     request.setAttribute("ibtlist", service.findStoreIBTS(emp.getBoutique()));
-                    request.getRequestDispatcher("approveibt.jsp").forward(request, response);
+                    request.getRequestDispatcher("IBTList.jsp").forward(request, response);
                 }else{
                     request.setAttribute("reply","you are not authorized to access this page");
                     request.getRequestDispatcher("home.jsp").forward(request, response);
@@ -58,22 +58,11 @@ public class IbtServlet extends HttpServlet {
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             case "approveIBT":
-                List<String> approvedOnes = new ArrayList<>();
-                for (Enumeration<String> en = request.getHeaderNames(); en.hasMoreElements();) {
-                    approvedOnes.add(en.nextElement());
-                }
-                List<String> replies = new ArrayList<>();
-                for (String approvedOne : approvedOnes) {
-                    Map<String,Boolean> details = new HashMap<>();
-                    details.put(request.getParameter(approvedOne), true);
-                    String reply = service.approveIBT(details);
-                    if (reply.equals("Successfully Updated")) {
-                        replies.add(reply);
-                    }
-                }
-                String reply = (approvedOnes.size()-1==replies.size())?"IBTs successfully approved":"error occured";
-                request.setAttribute("reply", reply);
+                Map<String,Boolean> approved = new HashMap<>();
+                approved.put(request.getParameter("id"), true);
+                request.setAttribute("reply", service.approveIBT(approved));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
+                break;
         }
     }
 }

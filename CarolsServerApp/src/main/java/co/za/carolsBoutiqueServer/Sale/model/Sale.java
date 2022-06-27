@@ -12,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Sale {
 
-    private String Id;
+    private String id;
     private String employee;
     private Boolean approved;
     private Double totalPrice;
@@ -23,13 +23,14 @@ public class Sale {
     
     {
         totalPrice = 0.0;
+        id = "";
     }
 
     public Sale() {
     }
 
-    public Sale(String Id, String employee, Boolean approved, Double totalPrice, List<Product> items, String boutique, String cardNumber) {
-        this.Id = Id;
+    public Sale(String id, String employee, Boolean approved, Double totalPrice, List<Product> items, String boutique, String cardNumber) {
+        this.id = id;
         this.employee = employee;
         this.approved = approved;
         this.totalPrice = totalPrice;

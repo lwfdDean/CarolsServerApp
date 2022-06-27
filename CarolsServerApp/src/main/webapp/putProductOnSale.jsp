@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
+<%@ page import="co.za.carolsBoutiqueServer.product.model.Product"%>
 <%@ page import="co.za.carolsBoutiqueServer.employee.model.Employee"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="ISO-8859-1">
-        <title>KEEP ASIDE</title>
+        <title>Put Product On Sale</title>
         <style>
             label {
                 display: inline-block;
@@ -123,6 +124,8 @@
     </head>
 
     <body style="text-align:center; background-color:#D8C6B7;">
+        <%Product product = (Product)request.getAttribute("prod");%>
+        <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
         <br>
         <p style="color:#22075E" class="topnav-left"><b><u>Teller name</u> : <%=employee.getName()%></b></p>
@@ -191,18 +194,19 @@
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
     <center>
-        <h1>KEEP ASIDE</h1>
-        <h4>create Keep Aside</h4>
-        <form action="ReserveProductServlet" method="post">
-            <label>Product Code:  <input type="text" name="productCode"></label>
-            <label>Customer Email:  <input type="text" name="customerEmail"></label>
-            <input type="submit" name="submit" value="makeReservedProduct">
-        </form><br><br><br>
-        <h4>Collect Keep Aside</h4>
-        <form action="ReserveProductServlet" method="get">
-            <label>Customer Email:  <input type="text" name="customerEmail"></label>
-            <input type="submit" name="submit" value="collectKeepAside">
+        <h1>Update Product Prices</h1>
+        <form action="ProductServlet" method="get">
+            <label>Product Id:<input type="text" name="productId"></label><br>    
+            <input type="submit" name="submit" value="findProductToUpdate">
         </form>
+        <%if(product!=null){%>
+        <form action="ProductServlet" method="post">
+            <label>Product ID: <input type="text" name="id" value="<%=product.getId()%>" readonly></label><br>
+            <label>Name: <input type="text" name="name" value="<%=product.getName()%>" readonly></label><br>
+            <label>Price: <input type="number" min="50" name="newPrice"></label><br>
+            <input type="submit" name="submit" value="putProductOnSale">
+        </form>
+        <%}%>
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

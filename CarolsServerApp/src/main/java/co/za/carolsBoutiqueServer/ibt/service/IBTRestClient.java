@@ -61,7 +61,7 @@ public class IBTRestClient implements IServiceIBT {
 
     @Override
     public String approveIBT(Map<String, Boolean> approvedIBT) {
-        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/ibt//approveIBT";
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/ibt/approveIBT";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri);
         return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(approvedIBT))).readEntity(String.class);
