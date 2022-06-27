@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="co.za.carolsBoutiqueServer.report.model.ReportCriteria"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -98,11 +100,52 @@
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
+        <%List<Report> results = (List<Report>)request.getAttribute("reportList");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
         <hr color="#22075E">
         <br>
-        <h1>TOP 10 ACHIEVING STORES</h1>
-
+        <h1 style="color:#22075E;">TOP ACHIEVING STORES</h1>
+       
+        <form action="ReportServlet" method="post">
+             <input type="radio" value="sale" name="type">Sales</option>
+                    <input type="radio" value="rating" name="type">Rating</option>
+                    <br><br>
+                    <table style="width:100">
+                    <label style="color:#22075E;" for="cars">Select month</label>
+                           <select name="month" id="month">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                            </select>
+                    <br><br>
+                    <label style="color:#22075E;" for="">Reports  :  </label>
+                           <select name="result" id="result">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            </select>
+                    
+                    <br><br>
+                    <br>
+                </table> <br>
+                <input type="submit" value="findTopStores" name="submit" style="width:170px; height:35px" class="button"/>
+        </form><br><br><br>
+        <%if(reportList!=null && !reportList.isEmpty()){%>
+            
+        <%}else{%>
+        
+        <%}%>
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 
