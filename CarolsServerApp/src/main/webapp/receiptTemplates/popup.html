@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>popup</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+      <!--  <div style="margin-top: 20px; text-align: center;">
+        <button style="padding: 10px 5px">Show Notification</button>
+        </div>
+        <script src="script.js"></script> -->
+      <script>
+          var name = prompt("Enter authCode");
+          if(name == null || name == ""){
+              txt = "No code entered!";
+          }else{
+              txt = "Code is "+name+ "!";
+              
+          }
+          alert(txt);
+          window.location.href= "http://localhost:8080/CarolsServerApp/index.html";
+      </script>
+    </body>
+</html>

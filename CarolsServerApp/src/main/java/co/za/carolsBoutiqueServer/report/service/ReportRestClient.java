@@ -13,6 +13,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +32,7 @@ public class ReportRestClient implements IServiceReport{
         List<Report> reports = new ArrayList<>();
         Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(rc)));
         try {
-            reports = (List<Report>) new ObjectMapper().readValue(rep.readEntity(String.class), TypeReference.class);
+            reports = Arrays.asList( new ObjectMapper().readValue(rep.readEntity(String.class), Report[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -46,7 +47,7 @@ public class ReportRestClient implements IServiceReport{
         List<Report> reports = new ArrayList<>();
         Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(rc)));
         try {
-            reports = (List<Report>) new ObjectMapper().readValue(rep.readEntity(String.class), TypeReference.class);
+            reports = Arrays.asList( new ObjectMapper().readValue(rep.readEntity(String.class), Report[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,7 +62,7 @@ public class ReportRestClient implements IServiceReport{
         List<Report> reports = new ArrayList<>();
         Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(rc)));
         try {
-            reports = (List<Report>) new ObjectMapper().readValue(rep.readEntity(String.class), TypeReference.class);
+            reports = Arrays.asList( new ObjectMapper().readValue(rep.readEntity(String.class), Report[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -91,7 +92,7 @@ public class ReportRestClient implements IServiceReport{
         List<Report> reports = new ArrayList<>();
         Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(rc)));
         try {
-            reports = (List<Report>) new ObjectMapper().readValue(rep.readEntity(String.class), TypeReference.class);
+            reports = Arrays.asList( new ObjectMapper().readValue(rep.readEntity(String.class), Report[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -120,7 +121,7 @@ public class ReportRestClient implements IServiceReport{
         List<Report> reports = new ArrayList<>();
         Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(rc)));
         try {
-            reports = (List<Report>) new ObjectMapper().readValue(rep.readEntity(String.class), TypeReference.class);
+            reports = Arrays.asList( new ObjectMapper().readValue(rep.readEntity(String.class), Report[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }

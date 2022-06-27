@@ -1,15 +1,11 @@
-<%-- 
-    Document   : logstock
-    Created on : 20 Jun 2022, 20:18:43
-    Author     : Administrator
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="co.za.carolsBoutiqueServer.report.model.ReportCriteria"%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>monthly report</title>
+        <title>Top achieving store</title>
     </head>
     <style>
             body {
@@ -81,51 +77,23 @@
                 width: 33.33%;
                 padding: 5px;
             }
-
             /* Clear floats after image containers */
             .row::after {
                 content: "";
                 clear: both;
                 display: table;
             }
-            .multicolortext {
-                background-image: linear-gradient(to left, violet, indigo, green, blue, yellow, orange, red);
-                -webkit-background-clip: text;
-                -moz-background-clip: text;
-                background-clip: text;
-                color: transparent;
-            }
+           
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
         <hr color="#22075E">
         <br>
-        <h1>MONTHLY REPORT</h1>
+        <h1>TOP ACHIEVING STORES</h1>
         
-        
-        <form action="SaleServlet" method="post">
-             <table style="width:100">
+        <%for(ReportCriteria rc: )%>
 
-                    <label style="color:#22075E;"><b>Boutique  : </b></label>
-                    <input type="text" placeholder="Sale id" name="saleId" style="width:165px; height:23px" required> 
-                    <br><br/>
-                    <label style="color:#22075E;"><b>Product : </b></label>
-                    <input type="text" placeholder="Product" name="product" style="width:165px; height:23px" required>
-             </table><br>
-            <input type="submit" value="refund" name="submit" style="width:110px; height:35px" class="button"/>
-        </form>
-        
-        
-        
-    <br><br><br><hr color="#22075E" width="400px;">
-    <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
-            <strong style="color:#22075E;">© Copyright 
-                <span style="color:#22075E;" id="ctl00_YearLbl">2022</span>, Carol's Boutique (Pty) Ltd. All rights reserved.<br />A Fashion Company.<br/>      
-            </strong><p style="color:#22075E;">All brands, trademarks, tradenames, and logos are the<br/> property of Carol's Boutique.</p>
-            <strong style="color:#22075E;"><i><u>Developed by LWFD-GROUP.</u></i></strong>  
-            <br />
-        </span>
-    </span>
-</body>
+    
+    </body>
 </html>
