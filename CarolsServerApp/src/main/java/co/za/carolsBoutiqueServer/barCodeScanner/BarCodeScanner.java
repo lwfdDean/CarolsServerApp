@@ -27,12 +27,12 @@ public class BarCodeScanner extends JFrame implements Runnable, ThreadFactory {
     private Executor executor = Executors.newSingleThreadExecutor(this);
     private boolean play;
     private String barcode;
-    private IServiceProduct service;
+   // private IServiceProduct service;
 
     public BarCodeScanner(String barcode) {
         this.barcode = barcode;
         play = true;
-        service = new ProductRestClient();
+       // service = new ProductRestClient();
     }
     
     
@@ -95,8 +95,6 @@ public class BarCodeScanner extends JFrame implements Runnable, ThreadFactory {
 //		String readIn = result.getText();
 //                
 //                    barcode = readIn;
-//                    System.out.println(barcode);
-//                    play = false;
 //                
 //            }
 //        } while (play);

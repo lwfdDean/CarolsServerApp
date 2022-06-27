@@ -7,15 +7,17 @@ package co.za.carolsBoutiqueServer.ReserveProduct.servlet;
 import co.za.carolsBoutiqueServer.ReserveProduct.model.Reservedproduct;
 import co.za.carolsBoutiqueServer.ReserveProduct.service.IServiceReservedproduct;
 import co.za.carolsBoutiqueServer.ReserveProduct.service.ReservedProductRestClient;
+import co.za.carolsBoutiqueServer.Sale.model.Sale;
 import co.za.carolsBoutiqueServer.employee.model.Employee;
+import co.za.carolsBoutiqueServer.product.model.Product;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @WebServlet(name = "ReserveProductServlet", urlPatterns = {"/ReserveProductServlet"})
 public class ReserveProductServlet extends HttpServlet {
@@ -29,6 +31,19 @@ public class ReserveProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        switch (request.getParameter("submit")) {
+            
+            case "collectKeepAside":
+                Product p = service.collectKeepAside(request.getParameter("customerEmail"));
+                Sale sale = new Sale();
+                sale.setItems(List.of(p));
+                request.getSession(false).setAttribute("sale", sale);
+                request.getRequestDispatcher("newSale.jsp").forward(request, response);
+                break;
+                
+            default:
+                throw new AssertionError();
+        }
     }
 
     @Override
@@ -37,7 +52,7 @@ public class ReserveProductServlet extends HttpServlet {
         switch (request.getParameter("submit")) {
             case "makeReservedProduct":
                 Reservedproduct reservedproduct = new Reservedproduct();
-                reservedproduct.setBoutiqueId(((Employee) request.getSession().getAttribute("employee")).getBoutique());
+                reservedproduct.setBoutiqueId(((Employee) request.getSession(false).getAttribute("employee")).getBoutique());
                 reservedproduct.setCustomerEmail(request.getParameter("customerEmail"));
                 reservedproduct.setDate(LocalDateTime.now());
                 reservedproduct.setProductCode(request.getParameter("productCode"));

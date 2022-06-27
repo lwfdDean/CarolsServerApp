@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>approve ibt</title>
+        <title>IBT List</title>
     </head>
     <style>
             body {
@@ -104,13 +104,13 @@
         <%if (ibtlist==null || ibtlist.isEmpty()) {%>
         <h3>No Ibts</h3>
         <%}else{%>
-        <form action="IbtServlet" method="post">
+        <form action="IbtServlet" method="get">
             <ol>
                 <%for(IBT i : ibtlist){%>
-                <li><label><input type="checkbox" name="<%=i.getId()%>" value="<%=i.getId()%>"><%=i.getProductCode()%></label></li>
+                <li><label><input type="radio" name="selectIbt" value="<%=i.getId()%>"><%=i.getProductCode()%></label></li>
                 <%}%>
             </ol>
-            <input type="submit" name="submit" value="approveIBT">
+            <input type="submit" name="submit" value="getIBT">
         </form>
         <%}%>    
     <br><br><br><hr color="#22075E" width="400px;">

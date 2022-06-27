@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>LOGSTOCK</title>
+        <title>log new stock</title>
     </head>
     <style>
         body {
@@ -96,18 +96,14 @@
     </style>
 </head>
 <body style="text-align:center; background-color:#D8C6B7;">
+    <%List<Category> categories = (List<Category>)request.getAttribute("categories");%>
+    <%List<Size> sizes = (List<Size>)request.getAttribute("sizes");%>
+    <% Product product = (product)request.getAttribute("product");%>
+    <% String prodId = (String)request.getAttribute("productId");%>
     <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
     <hr color="#22075E">
     <br>
-    <h1>LOGSTOCK</h1>
-    <%List<Category> categories = (List<Category>)request.getAttribute("categories");%>
-    <%List<Size> sizes = (List<Size>)request.getAttribute("sizes");%>
-    <%Product product = (Product)request.getAttribute("product");%>
-    <%String prodId = (String)request.getAttribute("productId");%>
-    <%String reply = (String)request.getAttribute("reply");%>
-    <%if(reply!=null){%>
-    <script>alert("<%=reply%>")</script>
-    <%}%>
+    <h1>Log new stock</h1>
     <form action="ProductServlet" method="get">
         <%if (prodId == null) {%>
         <label>Product Id:<input type="text" name="productId"></label><br>
@@ -116,9 +112,9 @@
             <%}%>    
         <input type="submit" name="submit" value="findProductToLogStock">
     </form><br><br><br><br><br><br>
-    <form action="ProductServlet" method="post">
-    <%if (prodId!=null){%>
-    <%if (product!=null) {%>
+    <%if (prodId!=null)%>
+    <form action="ProductServlet" method="post">   
+        <%if (product!=null) {%>
         <input type="text" name="notnull" value="notnull" hidden> 
         <label>Product Id: <input type="text" name="id" placeholder="<%=product.getId()%>" value="<%=product.getId()%>" readonly></label><br>
         <label>Name: <input type="text" name="name" placeholder="<%=product.getName()%>" readonly></label><br>
@@ -133,7 +129,7 @@
         </ol><br>
         <label>Categories:</label><br><br>
         <ol>
-            <%for(Category category:product.getCategories()){%>
+            <%for(Category size:product.getCaegories()){%>
             <li><label><%=category.getName()%></label></li><br>
                     <%}%>
         </ol><br><br><br><br>
@@ -159,7 +155,7 @@
         </ol><br>
         <label>Categories:</label><br><br>
         <ol>
-            <%for(Category category:categories){%>
+            <%for(Category size:categories){%>
             <li><label><%=category.getName()%> <input type="checkbox" name="<%=category.getName()%>" value="<%=category.getId()%>"></label></li><br>
                     <%}%>
         </ol><br><br><br><br>
@@ -172,9 +168,9 @@
         </select>
         <%}%>
         <label>Quantity being added: <input type="number" min="1" max="100" name="quantity"></label><br>
-        <input type="submit" name="submit" value="logStock">   
-    <%}%>
+        <input type="submit" name="submit" value="logStock">
     </form>
+    <%}%>
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 

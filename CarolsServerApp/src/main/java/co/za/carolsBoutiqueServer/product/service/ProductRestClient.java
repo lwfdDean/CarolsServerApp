@@ -10,6 +10,7 @@ import co.za.carolsBoutiqueServer.report.service.ReportRestClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.datatype;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -43,6 +44,7 @@ public class ProductRestClient implements IServiceProduct{
 
     @Override
     public Product findProduct(String productId) {
+        System.out.println("hello");
         String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findProduct/{productId}";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri).resolveTemplate("productId", productId);

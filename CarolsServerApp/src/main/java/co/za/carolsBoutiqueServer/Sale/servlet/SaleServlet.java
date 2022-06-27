@@ -4,12 +4,14 @@ import co.za.carolsBoutiqueServer.Sale.model.ExchangeInfo;
 import co.za.carolsBoutiqueServer.Sale.model.Sale;
 import co.za.carolsBoutiqueServer.Sale.service.IServiceSale;
 import co.za.carolsBoutiqueServer.Sale.service.SaleRestClient;
+import co.za.carolsBoutiqueServer.employee.model.Employee;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +29,8 @@ public class SaleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         switch (request.getParameter("submit")) {
             case "newSalePage":
-                Sale sale = new Sale();
-                sale.setItems(new ArrayList<>());
+                Sale sale = new Sale(((Employee)request.getSession(false).getAttribute("employee")).getId(),
+                        ((Employee)request.getSession(false).getAttribute("employee")).getBoutique());
                 request.getSession(false).setAttribute("sale", sale);
                 request.getRequestDispatcher("newsale.jsp").forward(request, response);
                 break;
@@ -45,7 +47,11 @@ public class SaleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         switch (request.getParameter("submit")) {
             case "checkout":
-                request.setAttribute("reply", service.checkout((Sale) request.getSession().getAttribute("sale")));
+                Sale sale = (Sale) request.getSession(false).getAttribute("sale");
+                sale.setApproved(false);
+                sale.setCardNumber(request.getParameter("card"));
+                sale.setCustomerEmail(request.getParameter("email"));
+                request.setAttribute("reply", service.checkout(sale));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             case "refund":
