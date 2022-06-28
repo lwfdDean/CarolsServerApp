@@ -1,6 +1,7 @@
 package co.za.carolsBoutiqueServer.product.servlet;
 
 import co.za.carolsBoutiqueServer.Sale.model.Sale;
+import co.za.carolsBoutiqueServer.boutique.service.IServiceBoutique;
 import co.za.carolsBoutiqueServer.employee.model.Employee;
 import co.za.carolsBoutiqueServer.product.model.Category;
 import co.za.carolsBoutiqueServer.product.model.NewProduct;
@@ -16,8 +17,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -29,9 +28,11 @@ import java.util.stream.Collectors;
 public class ProductServlet extends HttpServlet {
 
     private IServiceProduct service;
+    private IServiceBoutique boutiqueService;
 
     public ProductServlet() {
         service = new ProductRestClient();
+        
     }
 
     @Override
@@ -42,12 +43,12 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("products", service.findAllProducts());
                 request.getRequestDispatcher("").forward(request, response);//which page must the user be forwarded to?
                 break;
-                
+
             case "findProductToUpdate":
                 request.setAttribute("prod", service.findProduct(request.getParameter("productId")));
                 request.getRequestDispatcher("putProductOnSale.jsp").forward(request, response);
                 break;
-                
+
             case "findAllCategories":
                 request.setAttribute("categories", service.findAllCategories());
                 request.setAttribute("sizes", service.findAllSizes());
@@ -60,12 +61,12 @@ public class ProductServlet extends HttpServlet {
                 request.getRequestDispatcher("logstock.jsp").forward(request, response);
                 break;
             case "findProductForSale":
-                Sale sale = (Sale)request.getSession(false).getAttribute("sale");
+                Sale sale = (Sale) request.getSession(false).getAttribute("sale");
                 Product p = service.findProductBySize(request.getParameter("productCode"));
-                if (p!=null) {
-                   sale.addNewSaleLineItem(p);
-                   request.getSession(false).setAttribute("sale",null);
-                   request.getSession(false).setAttribute("sale",sale);
+                if (p != null) {
+                    sale.addNewSaleLineItem(p);
+                    request.getSession(false).setAttribute("sale", null);
+                    request.getSession(false).setAttribute("sale", sale);
                 }
                 request.getRequestDispatcher("newsale.jsp").forward(request, response);
                 break;
@@ -85,11 +86,18 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("categories", service.findAllCategories());
                 request.getRequestDispatcher("addPromoCode.jsp").forward(request, response);
                 break;
+
+            case "findStockOfProduct":
+                String productId = request.getParameter("productId");
+                request.setAttribute("availableStock", service.findStockOfProduct(productId));
+                request.getRequestDispatcher("BoutiqueServlet?submit=getAll").forward(request, response);
+
+                break;
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         switch (request.getParameter("submit")) {
 
             case "putProductOnSale":
@@ -125,15 +133,20 @@ public class ProductServlet extends HttpServlet {
                     List<Size> prodSizes = new ArrayList<>();
                     for (Enumeration<String> en = request.getParameterNames(); en.hasMoreElements();) {
                         String name = en.nextElement();
-                        if(allCats.stream().anyMatch(c -> c.getName().equalsIgnoreCase(name))){
+                        if (allCats.stream().anyMatch(c -> c.getName().equalsIgnoreCase(name))) {
                             prodCats.add(allCats.stream().filter(c -> c.getName().equalsIgnoreCase(name)).collect(Collectors.toList()).get(0));
                         }
-                        if(allSizes.stream().anyMatch(s -> s.getName().equalsIgnoreCase(name))){
+                        if (allSizes.stream().anyMatch(s -> s.getName().equalsIgnoreCase(name))) {
                             prodSizes.add(allSizes.stream().filter(s -> s.getName().equalsIgnoreCase(name)).collect(Collectors.toList()).get(0));
                         }
                     }
                     product.setCategories(prodCats);
                     product.setSizes(prodSizes);
+                    
+                    
+                    
+                    //call barcode method here
+                    
                 }
                 np.setProduct(product);
                 np.setStockEntry(
@@ -145,14 +158,6 @@ public class ProductServlet extends HttpServlet {
                 );
                 request.setAttribute("reply", service.logStock(np));
                 request.getRequestDispatcher("logstock.jsp").forward(request, response);
-                break;
-
-            case "findStockOfProduct":
-                String productId = request.getParameter("productId");
-                //should we check if the product is null
-                request.setAttribute("product", service.findStockOfProduct(productId));
-                request.getRequestDispatcher("").forward(request, response);//which page must the user be forwarded to?
-                //should we check for null
                 break;
 
             case "searchForItem":

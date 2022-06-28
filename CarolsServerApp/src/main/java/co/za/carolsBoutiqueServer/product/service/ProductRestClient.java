@@ -89,9 +89,9 @@ public class ProductRestClient implements IServiceProduct{
     
     @Override
     public Map<String, String> findStockOfProduct(String productId) {
-        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product//findAvailableStock/{productId}";
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findAvailableStock/{productId}";
         Client client = ClientBuilder.newClient();
-        WebTarget webT = client.target(uri);
+        WebTarget webT = client.target(uri).resolveTemplate("productId", productId);
         Map<String, String> rep = new HashMap<>();
         try {
             rep = new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), Map.class);

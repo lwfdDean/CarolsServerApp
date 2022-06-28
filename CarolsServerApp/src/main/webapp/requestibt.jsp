@@ -5,6 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@ page import="co.za.carolsBoutiqueServer.boutique.model.Boutique"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,110 +16,131 @@
         <title>request ibt</title>
     </head>
     <style>
-            body {
-                font-family: Arial, Helvetica, sans-serif;
-            }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-            .navbar {
-                overflow: hidden;
-                background-color: #130E3C;
-            }
+        .navbar {
+            overflow: hidden;
+            background-color: #130E3C;
+        }
 
-            .navbar a {
-                float: left;
-                font-size: 16px;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
+        .navbar a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
 
-            .dropdown {
-                float: left;
-                overflow: hidden;
-            }
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
 
-            .dropdown .dropbtn {
-                font-size: 16px;
-                border: none;
-                outline: none;
-                color: white;
-                padding: 14px 16px;
-                background-color: inherit;
-                font-family: inherit;
-                margin: 0;
-            }
+        .dropdown .dropbtn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
 
-            .navbar a:hover, .dropdown:hover .dropbtn {
-                background-color: #C70039;
-            }
+        .navbar a:hover, .dropdown:hover .dropbtn {
+            background-color: #C70039;
+        }
 
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                background-color: #f9f9f9;
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
-            }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
 
-            .dropdown-content a {
-                float: none;
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                text-align: left;
-            }
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
 
-            .dropdown-content a:hover {
-                background-color: #ddd;
-            }
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
 
-            .dropdown:hover .dropdown-content {
-                display: block;
-            }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
-            .column {
-                float: left;
-                width: 33.33%;
-                padding: 5px;
-            }
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 5px;
+        }
 
-            /* Clear floats after image containers */
-            .row::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
-            .multicolortext {
-                background-image: linear-gradient(to left, violet, indigo, green, blue, yellow, orange, red);
-                -webkit-background-clip: text;
-                -moz-background-clip: text;
-                background-clip: text;
-                color: transparent;
-            }
-        </style>
-    </head>
-    <body style="text-align:center; background-color:#D8C6B7;">
-        <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
-        <hr color="#22075E">
-        <br>
-        <h1>Request an IBT</h1>
-        <form action="IbtServlet" method="post">
-             <table style="width:100">
-                    <label style="color:#22075E;"><b>Email   : </b></label>
-                    <input type="text" placeholder="Enter an email address" name="customerEmail" style="width:165px; height:23px" required> 
-                    <br><br/>
-                    <label style="color:#22075E;"><b>Approving Store : </b></label>
-                    <input type="text" placeholder="Enter the boutique of the store" name="boutique" style="width:165px; height:23px" required>
-                    <br><br/>
-                    <label style="color:#22075E;"><b>Product   : </b></label>
-                    <input type="text" placeholder="Enter the product Id" name="product" style="width:165px; height:23px" required> 
-                    <br><br/>
-             </table><br>
-            <input type="submit" value="requestIBT" name="submit" style="width:110px; height:35px" class="button"/>
-        </form>
+        /* Clear floats after image containers */
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .multicolortext {
+            background-image: linear-gradient(to left, violet, indigo, green, blue, yellow, orange, red);
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body style="text-align:center; background-color:#D8C6B7;">
+    <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
+    <hr color="#22075E">
+    <br>
+    <h1>Request an IBT</h1>
+
+    <%Map<String, String> availableStock = (Map<String, String>)request.getAttribute("availableStock");%>
+    <%if (availableStock == null) {%>
+    <form action="ProductServlet" method = "get">
+        <table style="width:100">
+            <label style="color:#22075E;"><b>Product Code   : </b></label>
+            <input type="text" placeholder="Enter a product Code" name="productId" style="width:165px; height:23px" required> 
+            <br><br/>
+        </table><br>
+        <input type="submit" value="findStockOfProduct" name="submit" style="width:170px; height:35px" class="button"/>
+    </form>
+    <%}%>
+
+    <%if (availableStock != null) {%>
+    <h2><%=availableStock.keySet().iterator().next()%></h2>
+    <form action="IbtServlet" method="post">
+        <table style="width:100">
+            <label style="color:#22075E;"><b>Email   : </b></label>
+            <input type="text" placeholder="Enter an email address" name="customerEmail" style="width:165px; height:23px" required> 
+            <br><br/>
+            <label style="color:#22075E;"><b>Boutique   : </b></label>
+            <select name="boutique">
+                <ol>
+                    
+                    
+                
+                </ol>
+            </select>
+            <br><br>
+        </table><br>
+        <input type="submit" value="requestIBT" name="submit" style="width:110px; height:35px" class="button"/>
+    </form>
+    <%}%>
+
+
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 
