@@ -36,7 +36,7 @@ public class SaleServlet extends HttpServlet {
                 String saleId = request.getParameter("saleId");
                 request.setAttribute("sale", service.findSale(saleId));
                 request.setAttribute("saleId", saleId);
-                request.getRequestDispatcher("sale.jsp").forward(request, response);
+                request.getRequestDispatcher("exchange.jsp").forward(request, response);
                 break;
         }
     }

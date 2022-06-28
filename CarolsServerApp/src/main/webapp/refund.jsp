@@ -107,8 +107,8 @@
         <form action="SaleServlet" method="post">
              <table style="width:100">
 
-                    <label style="color:#22075E;"><b>Sale Id  : </b></label>
-                    <input type="text" placeholder="Sale id" name="saleId" style="width:165px; height:23px" required> 
+                    <label style="color:#22075E;"><b>Sale Id   : </b></label>
+                    <input type="text" placeholder="Sale Id" name="saleId" style="width:165px; height:23px" required> 
                     <br><br/>
                     <label style="color:#22075E;"><b>Product : </b></label>
                     <input type="text" placeholder="Product" name="product" style="width:165px; height:23px" required>
