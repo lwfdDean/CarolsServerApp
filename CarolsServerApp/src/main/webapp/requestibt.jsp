@@ -103,7 +103,18 @@
         <br>
         <h1>Request an IBT</h1>
         <form action="IbtServlet" method="post">
-            
+             <table style="width:100">
+                    <label style="color:#22075E;"><b>Email   : </b></label>
+                    <input type="text" placeholder="Enter an email address" name="customerEmail" style="width:165px; height:23px" required> 
+                    <br><br/>
+                    <label style="color:#22075E;"><b>Approving Store : </b></label>
+                    <input type="text" placeholder="Enter the boutique of the store" name="boutique" style="width:165px; height:23px" required>
+                    <br><br/>
+                    <label style="color:#22075E;"><b>Product   : </b></label>
+                    <input type="text" placeholder="Enter the product Id" name="product" style="width:165px; height:23px" required> 
+                    <br><br/>
+             </table><br>
+            <input type="submit" value="requestIBT" name="submit" style="width:110px; height:35px" class="button"/>
         </form>
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

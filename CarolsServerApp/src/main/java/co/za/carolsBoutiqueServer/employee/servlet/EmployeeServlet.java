@@ -65,7 +65,7 @@ public class EmployeeServlet extends HttpServlet {
                     request.getSession().setAttribute("employee", employee);
                     request.getRequestDispatcher("home.jsp").forward(request, response);
                 } else {
-                    request.getSession().setAttribute("reply", "employee not found");
+                    request.getSession().setAttribute("empReply", "employee not found");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
                 break;

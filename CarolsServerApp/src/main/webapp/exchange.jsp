@@ -4,6 +4,9 @@
     Author     : Administrator
 --%>
 
+<%@ page import="co.za.carolsBoutiqueServer.Sale.model.Sale"%>
+<%@ page import="co.za.carolsBoutiqueServer.product.model.Product"%>
+<%@ page import="co.za.carolsBoutiqueServer.product.model.Category"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -110,10 +113,24 @@
                 <label>Sale Id:<input type="text" name="saleId" placeholder="<%=saleId%>"></label><br>
             <%}%>    
             <input type="submit" name="submit" value="findSale">
-        </form><br><br><br><br><br><br>
+        </form><br><br>
         <form action="SaleServlet" method="post">
              <table style="width:100">
                 <%if (saleId != null) {%>
+                <%for (Product p : sale.getItems()) {%>
+            <li>
+                <label>
+                    <%=p.getName()%>
+                </label>
+                <label>
+                    <%=p.getPrice()%>
+                </label>
+                <label>
+                    <%=p.getDiscountedPrice()%>
+                </label><br>
+            </li>
+            <%}%>
+            <%}%>
                     <label style="color:#22075E;"><b>Email  : </b></label>
                     <input type="text" placeholder="Email address" name="email" style="width:165px; height:23px" required> 
                     <br>
