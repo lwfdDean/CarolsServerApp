@@ -5,8 +5,18 @@
 <html>
     <head>
         <meta charset="ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,
+              initial-scale=1, shrink-to-fit=no" />
+        <meta charset="ISO-8859-1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
         <title>KEEP ASIDE</title>
         <style>
+            #preview{
+                width:500px;
+                height: 500px;
+                margin:0px auto;
+            }
             label {
                 display: inline-block;
                 width: 150px;
@@ -192,17 +202,10 @@
         </div>
     <center>
         <h1>KEEP ASIDE</h1>
-        <h4>create Keep Aside</h4>
-        <form action="ReserveProductServlet" method="post">
-            <label>Product Code:  <input type="text" name="productCode"></label>
-            <label>Customer Email:  <input type="text" name="customerEmail"></label>
-            <input type="submit" name="submit" value="makeReservedProduct">
-        </form><br><br><br>
-        <h4>Collect Keep Aside</h4>
-        <form action="ReserveProductServlet" method="get">
-            <label>Customer Email:  <input type="text" name="customerEmail"></label>
-            <input type="submit" name="submit" value="collectKeepAside">
-        </form>
+        
+        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <script src="<a class="vglnk" href="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"><span>https</span> < span > ://</span><span>rawgit</span><span>.</span><span>com</span><span>/</span><span>schmich</span><span>/</span><span>instascan</span><span>-</span><span>builds</span><span>/</span><span>master</span><span>/</span><span>instascan</span><span>.</span><span>min</span><span>.</span><span>js</span></a>"></script>
+        
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

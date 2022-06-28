@@ -178,12 +178,8 @@ public class ProductServlet extends HttpServlet {
             case "addNewPromoCode":
                 PromoCode promoCode = new PromoCode();
                 promoCode.setCategory(request.getParameter("category"));
-                promoCode.setCode(request.getParameter("code"));//will the promoCode be auto generated
-                String[] expiryInfo = request.getParameter("expiry").split("-");
-                promoCode.setDate(LocalDate.of(
-                        Integer.parseInt(expiryInfo[0]),
-                        Integer.parseInt(expiryInfo[1]),
-                        Integer.parseInt(expiryInfo[2])));
+                promoCode.setCode(request.getParameter("code"));
+                promoCode.setDate(request.getParameter("expiry"));
                 promoCode.setDiscount(Double.parseDouble(request.getParameter("discount")));
                 promoCode.setType(Integer.parseInt(request.getParameter("type")));
                 request.setAttribute("reply", service.addNewPromoCode(promoCode));

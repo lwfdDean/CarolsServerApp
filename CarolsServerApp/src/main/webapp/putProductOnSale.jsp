@@ -5,7 +5,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,
+              initial-scale=1, shrink-to-fit=no" />
         <meta charset="ISO-8859-1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"></script>
         <title>Put Product On Sale</title>
         <style>
             label {
@@ -195,18 +201,162 @@
         </div>
     <center>
         <h1>Update Product Prices</h1>
-        <form action="ProductServlet" method="get">
-            <label>Product Id:<input type="text" name="productId"></label><br>    
-            <input type="submit" name="submit" value="findProductToUpdate">
-        </form>
-        <%if(product!=null){%>
-        <form action="ProductServlet" method="post">
-            <label>Product ID: <input type="text" name="id" value="<%=product.getId()%>" readonly></label><br>
-            <label>Name: <input type="text" name="name" value="<%=product.getName()%>" readonly></label><br>
-            <label>Price: <input type="number" min="50" name="newPrice"></label><br>
-            <input type="submit" name="submit" value="putProductOnSale">
-        </form>
-        <%}%>
+        <label>Product Id:<input id="prod" type="text" name="productId"></label><br>    
+        <button id="findProductWithCode">Search via Product ID</button>
+        <button id="findProductWithScanner">Scan Product Code</button>
+        <br><br><br>
+        
+        <div id ="display"></div>
+
+        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <script src="<a class="vglnk" href="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"><span>https</span> < span > ://</span><span>rawgit</span><span>.</span><span>com</span><span>/</span><span>schmich</span><span>/</span><span>instascan</span><span>-</span><span>builds</span><span>/</span><span>master</span><span>/</span><span>instascan</span><span>.</span><span>min</span><span>.</span><span>js</span></a>"></script>
+        
+        <script>
+            document.getElementById("findProductWithCode").addEventListener("click", getProduct);
+            document.getElementById("findProductWithScanner").addEventListener("click", startScanner);
+
+            function getProduct() {
+                var proid = document.getElementById("prod").value;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findProductBySize/" + proid, true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        var product1 = JSON.parse(this.responseText);
+                        let sizes = [];
+                        let categories = [];
+                        for (var i in product1.categories) {
+                            categories.splice(i, 0, new Category(product1.categories[i].id, product1.categories[i].name));
+                            console.log(categories[i]);
+                        }
+                        for (var i in product1.sizes) {
+                            sizes.splice(i, 0, new Size(product1.sizes[i].id, product1.sizes[i].name));
+                        }
+                        let productFound = new Product(
+                                product1.id,
+                                product1.name,
+                                product1.description,
+                                sizes,
+                                product1.color,
+                                product1.price,
+                                product1.discountedPrice,
+                                categories);
+                        let output = "";
+                        output += "<form method='post' action='ProductServlet'>" +
+                                    "<label>Product id: " +
+                                        "<input type='text' name='id' value='"+productFound.id+"' readOnly>"+ 
+                                    "</label><br>" +
+                                    "<label>New Price: " + 
+                                        "<input type='number' min='50' max='"+productFound.price+"' name='newPrice' required>" + 
+                                    "</label><br>" + 
+                                        "<input type='submit' name='submit' value='putProductOnSale'>" + 
+                                    "</form>";
+                        document.getElementById("display").innerHTML = output;
+                    }
+                };
+                xhr.send();
+            }
+
+            function getProduct2(productId) {
+                let proid = productId;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findProductBySize/" + proid, true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        var product1 = JSON.parse(this.responseText);
+                        let sizes = [];
+                        let categories = [];
+                        for (var i in product1.categories) {
+                            categories.splice(i, 0, new Category(product1.categories[i].id, product1.categories[i].name));
+                            console.log(categories[i]);
+                        }
+                        for (var i in product1.sizes) {
+                            sizes.splice(i, 0, new Size(product1.sizes[i].id, product1.sizes[i].name));
+                        }
+                        let productFound = new Product(
+                                product1.id,
+                                product1.name,
+                                product1.description,
+                                sizes,
+                                product1.color,
+                                product1.price,
+                                product1.discountedPrice,
+                                categories);
+                        let output = "";
+                        output += "<form method='post' action='ProductServlet'>" +
+                                    "<label>Product id: " +
+                                        "<input type='text' name='id' value='"+productFound.id+"' readOnly>"+ 
+                                    "</label>" +
+                                    "<label>New Price: " + 
+                                        "<input type='number' min='50' max='"+productFound.price+"' name='newPrice' required>" + 
+                                    "</label>" + 
+                                        "<input type='submit' name='submit' value='putProductOnSale'>" + 
+                                    "</form>";
+                        document.getElementById("display").innerHTML = output;
+                    }
+                };
+                xhr.send();
+            }
+            
+            function Category(id, name) {
+                this.id = id;
+                this.name = name;
+            }
+
+            function Size(id, name) {
+                this.id = id;
+                this.name = name;
+            }
+
+            function Product(id, name, description, sizes, color, price, discountedPrice, categories) {
+                this.id = id;
+                this.name = name;
+                this.description = description;
+                this.sizes = sizes;
+                this.color = color;
+                this.price = price;
+                this.discountedPrice = discountedPrice;
+                this.categories = categories;
+            }
+            
+            function startScanner() {
+                var scanner = new Instascan.Scanner({video: document.getElementById('preview'), scanPeriod: 5, mirror: false});
+                scanner.addListener('scan', function (content) {
+                    console.log(content);
+                    getProduct2(content);
+                    if(content.length == 13 ){
+                        return;
+                    }
+                });
+                Instascan.Camera.getCameras().then(function (cameras) {
+                    if (cameras.length > 0) {
+                        scanner.start(cameras[0]);
+                        $('[name="options"]').on('change', function () {
+                            if ($(this).val() == 1) {
+                                if (cameras[0] != "") {
+                                    scanner.start(cameras[0]);
+                                } else {
+                                    alert('No Front camera found!');
+                                }
+                            } else if ($(this).val() == 2) {
+                                if (cameras[1] != "") {
+                                    scanner.start(cameras[1]);
+                                } else {
+                                    alert('No Back camera found!');
+                                }
+                            }
+                        });
+                    } else {
+                        console.error('No cameras found.');
+                        alert('No cameras found.');
+                    }
+                }).catch(function (e) {
+                    console.error(e);
+                    alert(e);
+                }); //style ="display:none;"
+            }
+        </script>
+        <video id="preview" style ="display:none;"></video>
+        
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

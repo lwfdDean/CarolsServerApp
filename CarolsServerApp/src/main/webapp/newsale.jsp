@@ -17,10 +17,22 @@
         <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"></script>
         <title>New Sale</title>
         <style>
+            #removeSaleLineItem{
+                display:none;
+                position: relative;
+                z-index: 90
+            }
+            #itemToRemove{
+                display:none;
+                position: relative;
+                z-index: 90
+            }
             #preview{
                 width:500px;
                 height: 500px;
                 margin:0px auto;
+                display: none;
+                z-index: 20
             }
             label {
                 display: inline-block;
@@ -223,9 +235,9 @@
         <input type="text" name="id" id="prod">
         <button id="findProduct">Find Product</button>
         <div id="display"></div><br><br>
-        <div id="total"></div>
+        <button id="removeItem">Remove Item</button>
         <label>Customer Email: <input type="text" name="id" id="email" required></label><br>
-        <label>Card Num: <input type="text" name="id" id="card" required></label><br>
+        <label>Card Number: <input type="text" name="id" id="card" required></label><br>
         <button id="checkout">Checkout</button>
         <div id="reply"></div>
 
@@ -235,6 +247,90 @@
             var totalPrice = 0;
             document.getElementById("findProduct").addEventListener("click", getProduct);
             document.getElementById("checkout").addEventListener("click", checkout);
+            document.getElementById("removeItem").addEventListener("click", function(){
+                document.getElementById("removeSaleLineItem").style.display = "block";
+            });
+            
+            function closePopup(){
+                 document.getElementById("removeSaleLineItem").style.display = "none";
+            }
+            
+            function submitCode(){
+                var manaCode = document.getElementById("managerCode").value;
+                var storeId = "<%=emp.getBoutique()%>";
+                var map = new Map();
+                map.set(storeId,manaCode);
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function(){
+                    if(this.readyState == 4){
+                        var rep = this.responseText;
+                        if(rep == "Code valid"){
+                            var output = "<ol>";
+                            for(var i in items){
+                                output += "<li>" +
+                                        "<label>" + items[i].name + "-" + items[i].color +":  " +
+                                        "<input id='productSelected' type='radio' name='sli' value='"+items[i].id+"'>"+
+                                        "</label>" +
+                                        "</li><br>";
+                            }
+                            output += "</ol><br>";
+                            
+                            document.getElementById("checkList").innerHTML = output;
+                            document.getElementById("itemToRemove").style.display = "block";
+                        }
+                    }
+                };
+                xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/employee/verifyManagerCode", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send(JSON.stringify(map));
+            }
+            
+            function cancelRemove(){
+                document.getElementById("itemToRemove").style.display = "none";
+            }
+                
+            function removeSLI(){
+                document.getElementById("itemToRemove").style.display = "none";
+                var idSelected = document.getElementById("productSelected").value;
+                for(var i in items){
+                    if(items[i].id == idSelected){
+                        items.splice(i,1);
+                    }    
+                }
+                let output = "";
+                        output += "<table class='table table-nordered'>" +
+                                "<thead>" +
+                                "<tr>" +
+                                "<th class='per70 text-center'>Item</th>" +
+                                "<th class='per70 text-center'>Price</th>" +
+                                "<th class='per70 text-center'>Discounted Price</th>" +
+                                "</tr>" +
+                                "</thead>" +
+                                "<tbody>";
+                        let calculatedTotal = 0;
+                        for (var i in items) {
+                            console.log[items[i]];
+                            calculatedTotal += items[i].discountedPrice;
+                            console.log(totalPrice);
+                            output += "<tr height='35px'>" +
+                                    "<td>" + items[i].name + "</td>" +
+                                    "<td class='text-center'>" + items[i].price + "</td>" +
+                                    "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
+                                    "</tr>";
+                        }
+                        totalPrice = calculatedTotal;
+                        output += "</tbody>" +
+                                "<tfoot>" +
+                                "<tr>" +
+                                "<th colspan='3' class='text-right'>Total</th>" +
+                                "<th class='text-center'>" + totalPrice + "</th>" +
+                                "</tr>" +
+                                "</tofoot>" +
+                                "</table>";
+                        console.log(output);
+                        document.getElementById("display").innerHTML = output;
+            }    
+            
             function getProduct() {
                 var proid = document.getElementById("prod").value;
                 var xhr = new XMLHttpRequest();
@@ -370,14 +466,6 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/sale/checkout", true);
                 xhr.setRequestHeader("Content-Type", "application/json");
-//                xhr.onreadystatechange = function () {
-//                    if (this.readyState == 4) {
-//                        var reply = JSON.parse(this.responseText);
-//                        var output = "";
-//                        output += "<h5>" + reply + "</h5>";
-//                        document.getElementById("reply").innerHTML = output;
-//                    }
-//                };
                 xhr.send(toSend);
             }
 
@@ -416,7 +504,9 @@
             var scanner = new Instascan.Scanner({video: document.getElementById('preview'), scanPeriod: 5, mirror: false});
             scanner.addListener('scan', function (content) {
                 console.log(content);
-                getProduct2(content);
+                if (content.length == 13) {
+                    getProduct2(content);
+                }
                 //window.location.href=content;
             });
             Instascan.Camera.getCameras().then(function (cameras) {
@@ -446,7 +536,22 @@
                 alert(e);
             }); //style ="display:none;"
         </script>
+        
         <video id="preview"></video>
+        
+        <div class="form-popup" id="removeSaleLineItem">
+            <h1>Enter Manager Code</h1>
+            <label>Manager Unique Code: <input id="managerCode" type="text" required></label><br>
+            <button id="submitCode" style="background-color:green" onclick="submitCode()">Submit</button>
+            <button id="closePopup" style="background-color:red" onclick="closePopup()">Close</button>
+        </div>
+        
+        <div class="form-popup" id="itemToRemove"> 
+            <div id="checkList"></div>
+            <button id='remove' style='background-color:red' onClick="removeSLI()">Remove</button>
+            <button id='cancelRemove' style='background-color:grey' onclick="cancelRemove()">Cancel</button>
+        </div>
+        
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
