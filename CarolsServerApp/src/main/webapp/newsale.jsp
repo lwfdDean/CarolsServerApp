@@ -17,9 +17,14 @@
         <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"></script>
         <title>New Sale</title>
         <style>
+            .form-container{
+                max-width: 300px;
+                padding: 10px;
+                background-color: white;
+            }
             #removeSaleLineItem{
                 display:none;
-                position: relative;
+                position: center;
                 z-index: 90
             }
             #itemToRemove{
@@ -258,9 +263,9 @@
             function submitCode(){
                 var manaCode = document.getElementById("managerCode").value;
                 var storeId = "<%=emp.getBoutique()%>";
-                var map = new Map();
-                map.set(storeId,manaCode);
+                var toSend = storeId+"@"+manaCode;
                 var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/employee/verifyManagerCode/"+toSend, true);
                 xhr.onreadystatechange = function(){
                     if(this.readyState == 4){
                         var rep = this.responseText;
@@ -276,13 +281,12 @@
                             output += "</ol><br>";
                             
                             document.getElementById("checkList").innerHTML = output;
+                            document.getElementById("removeSaleLineItem").style.display = "none";
                             document.getElementById("itemToRemove").style.display = "block";
                         }
                     }
                 };
-                xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/employee/verifyManagerCode", true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.send(JSON.stringify(map));
+                xhr.send();
             }
             
             function cancelRemove(){
@@ -295,6 +299,7 @@
                 for(var i in items){
                     if(items[i].id == idSelected){
                         items.splice(i,1);
+                        break;
                     }    
                 }
                 let output = "";
@@ -309,7 +314,6 @@
                                 "<tbody>";
                         let calculatedTotal = 0;
                         for (var i in items) {
-                            console.log[items[i]];
                             calculatedTotal += items[i].discountedPrice;
                             console.log(totalPrice);
                             output += "<tr height='35px'>" +
@@ -535,11 +539,19 @@
                 console.error(e);
                 alert(e);
             }); //style ="display:none;"
+        
         </script>
+        
+        <div class="form-popup" id="removeSaleLineItem" class="form-container">
+            <h1>Enter Manager Code</h1>
+            <label>Manager Unique Code: <input id="managerCode" type="text" required></label><br>
+            <button id="submitCode" style="background-color:green" onclick="submitCode()">Submit</button>
+            <button id="closePopup" style="background-color:red" onclick="closePopup()">Close</button>
+        </div>
         
         <video id="preview"></video>
         
-        <div class="form-popup" id="removeSaleLineItem">
+        <div class="form-popup" id="removeSaleLineItem" class="form-container">
             <h1>Enter Manager Code</h1>
             <label>Manager Unique Code: <input id="managerCode" type="text" required></label><br>
             <button id="submitCode" style="background-color:green" onclick="submitCode()">Submit</button>
