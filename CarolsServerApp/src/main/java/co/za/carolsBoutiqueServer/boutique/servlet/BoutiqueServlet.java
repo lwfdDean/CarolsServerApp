@@ -41,6 +41,10 @@ public class BoutiqueServlet extends HttpServlet {
                     request.getRequestDispatcher("home.jsp").forward(request, response);
                 }
                 break;
+                case "getAllReq":
+                request.setAttribute("boutiques", service.getAllBoutiques());
+                request.getRequestDispatcher("ProducServlet?submit=getAllSizes").forward(request, response);
+                break;
         }
     }
 

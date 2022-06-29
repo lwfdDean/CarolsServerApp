@@ -9,6 +9,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page import="co.za.carolsBoutiqueServer.boutique.model.Boutique"%>
+<%@ page import="co.za.carolsBoutiqueServer.product.model.Size"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -108,11 +109,14 @@
     <h1>Request an IBT</h1>
 
     <%Map<String, String> availableStock = (Map<String, String>)request.getAttribute("availableStock");%>
+    <%List<Boutique> boutiques = (List<Boutique>) request.getAttribute("boutiques");%>
+    <%List<Size> sizes = (List<Size>) request.getAttribute("sizes");%>
+    
     <%if (availableStock == null) {%>
     <form action="ProductServlet" method = "get">
         <table style="width:100">
             <label style="color:#22075E;"><b>Product Code   : </b></label>
-            <input type="text" placeholder="Enter a product Code" name="productId" style="width:165px; height:23px" required> 
+            <input type="text" placeholder="Enter a product Code" name="productId" style="width:165px; height:23px" required>
             <br><br/>
         </table><br>
         <input type="submit" value="findStockOfProduct" name="submit" style="width:170px; height:35px" class="button"/>
@@ -120,7 +124,7 @@
     <%}%>
 
     <%if (availableStock != null) {%>
-    <h2><%=availableStock.keySet().iterator().next()%></h2>
+
     <form action="IbtServlet" method="post">
         <table style="width:100">
             <label style="color:#22075E;"><b>Email   : </b></label>
@@ -129,9 +133,13 @@
             <label style="color:#22075E;"><b>Boutique   : </b></label>
             <select name="boutique">
                 <ol>
-                    
-                    
-                
+                    <%for(Boutique bout : boutiques){%>
+                      
+                        <%if(availableStock.containsKey(bout.getId())){%>
+                        
+                    <li><option label="<%=bout.getLocation()%>" value="<%=bout.getId()%>"><%=bout.getLocation()%></option></li>
+                        <%}
+                    }%>
                 </ol>
             </select>
             <br><br>

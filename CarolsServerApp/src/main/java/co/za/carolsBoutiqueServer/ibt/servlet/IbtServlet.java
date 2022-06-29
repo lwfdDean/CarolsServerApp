@@ -51,7 +51,7 @@ public class IbtServlet extends HttpServlet {
                 IBT ibt = new IBT();
                 ibt.setApproved(false);
                 ibt.setCustomerEmail(request.getParameter("customerEmail"));
-                ibt.setRequestingBoutique(((Employee)request.getSession(false).getAttribute("employee")).getBoutique());
+                ibt.setRequestingBoutique(((Employee) request.getSession(false).getAttribute("employee")).getBoutique());
                 ibt.setApprovingBoutique(request.getParameter("boutique"));
                 ibt.setProductCode(request.getParameter("product"));
                 request.setAttribute("reply", service.requestIBT(ibt));
