@@ -201,7 +201,14 @@
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
     <center>
-        <h1>KEEP ASIDE</h1>
+        <h1>COLLECT KEEP ASIDE</h1>
+        <form action="ReserveProductServlet" method="post">
+            <table style="width:100">
+                <label style="color:#22075E;"><b>Customer Email    : </b></label>
+                <input type="text" placeholder="customerEmail" name="customerEmail" style="width:165px; height:23px" required> 
+            </table> <br>
+            <input type="submit" value="Collect Keep Aside" name="submit" style="width:200px; height:35px" class="button"/>
+        </form>
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

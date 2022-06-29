@@ -181,8 +181,8 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="keepaside.jsp">Create</a>
-                    <a href="keepaside.jsp">Collect</a>
+                    <a href="MakeReservedProduct.jsp">Create</a>
+                    <a href="CollectKeepAside.jsp">Collect</a>
                 </div>
             </div>
             <a href="logstock.jsp">LOG STOCK</a>
