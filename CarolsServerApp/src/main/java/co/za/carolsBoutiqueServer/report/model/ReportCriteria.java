@@ -14,5 +14,4 @@ public class ReportCriteria {
     private String product;
     private Integer month;
     private Integer results;
-    
 }
