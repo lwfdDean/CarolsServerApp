@@ -1,7 +1,7 @@
 package co.za.carolsBoutiqueServer.product.servlet;
 
 import co.za.carolsBoutiqueServer.Sale.model.Sale;
-import co.za.carolsBoutiqueServer.boutique.service.IServiceBoutique;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
 import co.za.carolsBoutiqueServer.employee.model.Employee;
 import co.za.carolsBoutiqueServer.product.model.Category;
 import co.za.carolsBoutiqueServer.product.model.NewProduct;
@@ -11,28 +11,36 @@ import co.za.carolsBoutiqueServer.product.model.Size;
 import co.za.carolsBoutiqueServer.product.model.StockEntry;
 import co.za.carolsBoutiqueServer.product.service.IServiceProduct;
 import co.za.carolsBoutiqueServer.product.service.ProductRestClient;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 
 @WebServlet(name = "ProductServlet", urlPatterns = {"/ProductServlet"})
 public class ProductServlet extends HttpServlet {
 
     private IServiceProduct service;
-    private IServiceBoutique boutiqueService;
 
     public ProductServlet() {
         service = new ProductRestClient();
-        
+
     }
 
     @Override
@@ -41,7 +49,7 @@ public class ProductServlet extends HttpServlet {
         switch (request.getParameter("submit")) {
             case "findAllProducts":
                 request.setAttribute("products", service.findAllProducts());
-                request.getRequestDispatcher("").forward(request, response);//which page must the user be forwarded to?
+                request.getRequestDispatcher("").forward(request, response);
                 break;
 
             case "findProductToUpdate":
@@ -52,7 +60,11 @@ public class ProductServlet extends HttpServlet {
             case "findAllCategories":
                 request.setAttribute("categories", service.findAllCategories());
                 request.setAttribute("sizes", service.findAllSizes());
-                request.getRequestDispatcher("logstock.jsp").forward(request, response);//which page must the user be forwarded to?
+                request.getRequestDispatcher("logstock.jsp").forward(request, response);
+                break;
+            case "getAllSizes":
+                request.setAttribute("sizes", service.findAllSizes());
+                request.getRequestDispatcher("requestibt.jsp").forward(request, response);
                 break;
             case "findProduct":
                 request.setAttribute("categories", service.findAllCategories());
@@ -90,7 +102,7 @@ public class ProductServlet extends HttpServlet {
             case "findStockOfProduct":
                 String productId = request.getParameter("productId");
                 request.setAttribute("availableStock", service.findStockOfProduct(productId));
-                request.getRequestDispatcher("BoutiqueServlet?submit=getAll").forward(request, response);
+                request.getRequestDispatcher("BoutiqueServlet?submit=getAllReq").forward(request, response);
 
                 break;
         }
@@ -142,11 +154,20 @@ public class ProductServlet extends HttpServlet {
                     }
                     product.setCategories(prodCats);
                     product.setSizes(prodSizes);
+
+                    for(Size prodSize: prodSizes){
+                        String pCode = product.getId() + " " + prodSize.getId();
+                        try {
+                            generateQRCodeImage(pCode, product.getName()+" "+prodSize.getId());
+                        } catch (Exception ex) {
+                            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                     
                     
                     
                     //call barcode method here
-                    
+
                 }
                 np.setProduct(product);
                 np.setStockEntry(
@@ -195,6 +216,15 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("promoCode", service.findPromoCode(request.getParameter("promoCode")));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
         }
+    }
+    
+    public static void generateQRCodeImage(String barcodeText, String fileName) throws Exception {
+        QRCodeWriter barcodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
+        BufferedImage img = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        File outputfile = new File(System.getProperty("user.home")+fileName+"QRCodeFile.png");
+        outputfile.createNewFile();
+        ImageIO.write(img, "PNG", outputfile);
     }
 
 }

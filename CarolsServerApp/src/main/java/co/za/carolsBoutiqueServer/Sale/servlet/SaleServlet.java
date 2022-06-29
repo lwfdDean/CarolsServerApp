@@ -5,6 +5,8 @@ import co.za.carolsBoutiqueServer.Sale.model.Sale;
 import co.za.carolsBoutiqueServer.Sale.service.IServiceSale;
 import co.za.carolsBoutiqueServer.Sale.service.SaleRestClient;
 import co.za.carolsBoutiqueServer.employee.model.Employee;
+import co.za.carolsBoutiqueServer.product.model.Product;
+import co.za.carolsBoutiqueServer.product.model.refundedProduct;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -40,6 +42,12 @@ public class SaleServlet extends HttpServlet {
                 request.setAttribute("saleId", saleId);
                 request.getRequestDispatcher("exchange.jsp").forward(request, response);
                 break;
+            case "findSaleInfo":
+                saleId = request.getParameter("saleId");
+                request.setAttribute("sale", service.findSale(saleId));
+                request.setAttribute("saleId", saleId);
+                request.getRequestDispatcher("refund.jsp").forward(request, response);
+                break;
         }
     }
 
@@ -55,8 +63,15 @@ public class SaleServlet extends HttpServlet {
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
             case "refund":
-                Map<String, String> refundInfo = new HashMap<>();
-                refundInfo.put(request.getParameter("saleId"), request.getParameter("product"));
+                refundedProduct refundInfo = new refundedProduct();
+                refundInfo.setSaleId(request.getParameter("saleId"));
+                refundInfo.setCardNumber(request.getParameter("cardNumber"));
+                refundInfo.setCustomerEmail(request.getParameter("customerEmail"));
+                refundInfo.setRefundProductId(request.getParameter("product"));
+                Sale saleInf = service.findSale(refundInfo.getSaleId());
+                saleInf.setCustomerEmail(refundInfo.getCustomerEmail());
+                saleInf.setCardNumber(refundInfo.getCardNumber());
+                request.setAttribute("sale", saleInf);
                 request.setAttribute("refundReply", service.refund(refundInfo));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
