@@ -176,15 +176,7 @@
                 </div>
             </div>
 
-            <div class="dropdown">
-                <button class="dropbtn">KEEP ASIDE
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="keepaside.jsp">Create</a>
-                    <a href="keepaside.jsp">Collect</a>
-                </div>
-            </div>
+            <a href="keepaside.jsp">KEEP ASIDE</a>
             <a href="logstock.jsp">LOG STOCK</a>
 
             <div class="dropdown">

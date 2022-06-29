@@ -186,7 +186,6 @@ public class ProductServlet extends HttpServlet {
                 promoCode.setCode(request.getParameter("code"));
                 promoCode.setDate(request.getParameter("expiry"));
                 promoCode.setDiscount(Double.parseDouble(request.getParameter("discount")));
-                promoCode.setType(Integer.parseInt(request.getParameter("type")));
                 request.setAttribute("reply", service.addNewPromoCode(promoCode));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;
