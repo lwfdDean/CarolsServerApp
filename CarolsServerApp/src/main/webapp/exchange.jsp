@@ -101,49 +101,41 @@
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
-        <%String saleId = (String)request.getAttribute("saleId");%>
+        <%Sale sale = (Sale)request.getAttribute("sale");%>
+         <%String saleId = (String)request.getAttribute("saleId");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
         <hr color="#22075E">
         <br>
         <h1>EXCHANGE A PRODUCT</h1>
-        <form action="SaleServlet" method="get">
+        
             <%if (saleId == null) {%>
-                <label>Sale Id:<input type="text" name="saleId"></label><br>
+                <form action="SaleServlet" method="get">
+                    <label>Sale Id:<input type="text" name="saleId"></label><br>
+                    <input type="submit" name="submit" value="findSale">
+                </form>
             <%}else{%>
-                <label>Sale Id:<input type="text" name="saleId" placeholder="<%=saleId%>"></label><br>
+                <form action="SaleServlet" method="post">
+                <table style="width:100">
+                <label style="color:#22075E;"><b>Email Address : </b></label>
+                <input type="text" placeholder="Enter customer email" name="emailAddress" required>
+                <br><br><!-- comment -->
+                <label style="color:#22075E;"><b>New product id : </b></label>
+                <input type="text" placeholder="Enter New product" name="newProduct" required>
+                <br><br><!-- comment -->
+                <label style="color:#22075E;"><b>Product to be exchanged: </b></label>
+                <ol>
+                    <%for(Product p : sale.getItems()){%>
+                        <%if(p.get)%>
+                            <li><input type="radio" value="<%=p.getId()%>" name="oldProduct"><%=p.getName()%>   <%=p.getPrice()%></option></li>
+                            <input name="price" type="text" value="<%=p.getPrice()%>"hidden>
+                        <%}%>    
+                    <%}%>
+                </ol>         
+                <input type="submit" name="submit" value="exchange">
+                </form>
+            </table>  
             <%}%>    
-            <input type="submit" name="submit" value="findSale">
         </form><br><br>
-        <form action="SaleServlet" method="post">
-             <table style="width:100">
-                <%if (saleId != null) {%>
-                <%for (Product p : sale.getItems()) {%>
-            <li>
-                <label>
-                    <%=p.getName()%>
-                </label>
-                <label>
-                    <%=p.getPrice()%>
-                </label>
-                <label>
-                    <%=p.getDiscountedPrice()%>
-                </label><br>
-            </li>
-            <%}%>
-            <%}%>
-                    <label style="color:#22075E;"><b>Email  : </b></label>
-                    <input type="text" placeholder="Email address" name="email" style="width:165px; height:23px" required> 
-                    <br>
-                    <label style="color:#22075E;"><b>New Product : </b></label>
-                    <input type="text" placeholder="New Product" name="newProduct" style="width:165px; height:23px" required>
-                    <br>
-                    <label style="color:#22075E;"><b>Old Product  : </b></label>
-                    <input type="text" placeholder="Old Product" name="oldProduct" style="width:165px; height:23px" required> 
-                 <%}%>   
-             </table><br>
-            <input type="submit" value="exchange" name="submit" style="width:110px; height:35px" class="button"/>
-        </form>
-
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Promote product</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="js/jquery-1.11.0.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+       <script src="js/wow.min.js"></script>		
+        
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link href="https://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+		
+        <style type="text/css">
+            body{
+                margin-top:10px;
+                background:#eee;
+            }
+        </style>
+        <script type="text/javascript">
+        </script>
+        </head>
+        <body>
+        <div class="container bootdey" id="invoice">
+            <div class="row invoice row-printable">
+                <div class="col-md-10">
+                    <!-- col-lg-12 start here -->
+                    <div class="panel panel-default plain" id="dash_0">
+                        <!-- Start .panel -->
+                        <div class="panel-body p30">
+                            <div class="row">
+                                <!-- Start .row -->
+                                <div class="col-lg-6">
+                                    
+                                </div>
+                                <div class="col-lg-12">
+                                    <!-- col-lg-12 start here -->
+                                    <div class="invoice-details mt25">
+									<div class="text-center" height="25" width="25">
+                                        <img src="images/carolsboutique.png" alt="logo" height="70" width="70">
+                                    </div>
+                                        <div class="well">
+                                            <ul class="list-unstyled mb0">
+								<li style="color:#b44809"><strong><u>PROMOTE A Category</u> </strong></li>
+                                                <li><strong>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :&nbsp; </strong>
+                                                        <script>
+                                                            date = new Date().toLocaleDateString();
+                                                            document.write(date);
+                                                        </script>                                     
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="invoice-items">
+                                        <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="0">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr >
+                                                        <th class="per70 text-center">categoryId</th>
+                                                        <th class="per70 text-center">promocode</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr></tr>
+                                                        <td class="text-center">  *3 </td>
+                                                        <td class="text-center">  *4 </td>  
+                                                    </tr>
+                                                </tbody> 
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="invoice-footer mt25"> 
+										<p class="text-center">Thank you please call again&nbsp;&nbsp; <a href="rateStore.html">Rate our store</a></p><br><button onclick="generatePDF()">Download Receipt</button>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<script>
+		function generatePDF() {
+        const element = document.getElementById('invoice');
+        html2pdf().from(element).save("promote_product.pdf");
+        }
+</script>
+    </body>
+</html>

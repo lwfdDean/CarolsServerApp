@@ -10,15 +10,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
+import jakarta.servlet.http.HttpServletResponse; 
 import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name = "SaleServlet", urlPatterns = {"/SaleServlet"})
 public class SaleServlet extends HttpServlet {
-
+    private String saleId;
     private IServiceSale service;
 
     public SaleServlet() {
@@ -35,7 +33,7 @@ public class SaleServlet extends HttpServlet {
                 request.getRequestDispatcher("newsale.jsp").forward(request, response);
                 break;
             case "findSale":
-                String saleId = request.getParameter("saleId");
+                saleId = request.getParameter("saleId");
                 request.setAttribute("sale", service.findSale(saleId));
                 request.setAttribute("saleId", saleId);
                 request.getRequestDispatcher("exchange.jsp").forward(request, response);
@@ -62,10 +60,11 @@ public class SaleServlet extends HttpServlet {
                 break;
             case "exchange":
                 ExchangeInfo ei = new ExchangeInfo();
-                ei.setCustomerEmail(request.getParameter("email"));
+                System.out.println("vheck hit the the exchange in servlet");
+                ei.setCustomerEmail(request.getParameter("emailAddress"));
                 ei.setNewProductId(request.getParameter("newProduct"));
                 ei.setReturnedProductId(request.getParameter("oldProduct"));
-                ei.setReturnedProductId(((Sale) request.getSession().getAttribute("sale")).getId());//how are we going to get the sale instance
+                ei.setSaleId(saleId);//how are we going to get the sale instance
                 ei.setPrice(Double.parseDouble(request.getParameter("price")));
                 request.setAttribute("exchangeReply", service.exchange(ei));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
