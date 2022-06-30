@@ -2,6 +2,7 @@ package co.za.carolsBoutiqueServer.Sale.service;
 
 import co.za.carolsBoutiqueServer.Sale.model.ExchangeInfo;
 import co.za.carolsBoutiqueServer.Sale.model.Sale;
+import co.za.carolsBoutiqueServer.product.model.refundedProduct;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.client.Client;
@@ -39,7 +40,7 @@ public class SaleRestClient implements IServiceSale{
     }
 
     @Override
-    public String refund(Map<String, String> refundInfo) {
+    public String refund(refundedProduct refundInfo) {
         String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/sale/refund";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri);

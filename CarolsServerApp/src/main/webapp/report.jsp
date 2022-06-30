@@ -1,13 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="co.za.carolsBoutiqueServer.boutique.model.Boutique"%>
+<%@ page import="co.za.carolsBoutiqueServer.product.model.Product"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>current daily report</title>
+        <title>Product Report</title>
+        <!--        <script src="Chart.min.js"></script>-->
     </head>
     <style>
+        #canvas{
+            display: none;
+        }
         body {
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -97,25 +101,26 @@
     <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
     <hr color="#22075E">
     <br>
-    <h1>DAILY REPORT</h1>
-    <%List<Boutique> bouts = (List<Boutique>)request.getAttribute("boutiques");%>
+    <h1 style="color:#22075E;">PRODUCT REPORT</h1>
+    <%List<Product> bouts = (List<Product>)request.getAttribute("Products");%>
+    
     <form id="form">
-        <br><br>
         <table style="width:100">
-            <label style="color:#22075E;" for="">Boutique  :  </label>
-            <select name="result" id="boutique">
+            <label style="color:#22075E;" for="">Products  :  </label>
+            <select name="result" id="product">
                 <ol>
-                    <%for(Boutique b:bouts){%>
-                        <li><option value="<%=b.getId()%>"><%=b.getLocation()%></option></li>
-                    <%}%>
+                    <%if(bouts!=null){%>
+                    <%for(Product b:bouts){%>
+                        <li><option value="<%=b.getId()%>"><%=b.getName()%></option></li>
+                    <%}}%>
                 </ol>
             </select>
             <br><br>
             <br>
         </table> <br>
-        <input type="submit" value="generate" name="submit" style="width:170px; height:35px" class="button"/>
+        <input type="submit" value="Generate" name="submit" style="width:170px; height:35px" class="button"/>
     </form><br><br><br>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <center>
         <div id="canvas">
@@ -124,84 +129,79 @@
         </div>
     </center>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-            integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer">
-    </script>
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <script>
-        var myChart =null;
+        var myChart = null;
+        var chartType;
         document.getElementById("form").addEventListener("submit", startGen);
 
-            function startGen(e) {
-                e.preventDefault();
-                document.getElementById("canvas").style.display = "block";
-                document.getElementById("myChart").innerHTML = null;
-                getReport();
-            }
+        function startGen(e) {
+            e.preventDefault();
+            document.getElementById("canvas").style.display = "block";
+            document.getElementById("myChart").innerHTML = null;
+            getReport();
+        }
 
-            function getReport() {
-                var boutique = document.getElementById("boutique").value;
-                let rc = new ReportCriteria(boutique, "", 0, 0);
-                var toSend = JSON.stringify(rc);
-                var xhr;
-                if (window.XMLHttpRequest) {
-                    xhr = new XMLHttpRequest();
-                } else {
-                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/report/findCurrentDailySales", true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.onreadystatechange = (function (_this) {
-                    return function () {
-                        if (xhr.readyState == 4 && xhr.status == 200) {
-                            var rep = JSON.parse(xhr.responseText);
-                            var stores = [];
-                            var totals = [];
-                            var a =rep.amount;
-                            stores.splice(0, 0, rep.id + " " + amount + "% away from target");
-                            totals.splice(0, 0, rep.total);
-                            
-                            renderReport(stores,totals);
-                        } else {
-                            console.log("an error in response");
-                        }
-                    };
-                })(this);
-                xhr.send(toSend);
-
+        function getReport() {
+            var prod = document.getElementById("product").value;
+            let rc = new ReportCriteria("", prod, 0, 0);
+            var toSend = JSON.stringify(rc);
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
             }
+            xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/report/findTopSalepersonForAProduct", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = (function (_this) {
+                return function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var rep = JSON.parse(xhr.responseText);
+                        var stores = [];
+                        var totals = [];
+                        stores.splice(i, 0, rep.id);
+                        totals.splice(i, 0, rep.rating);
+                        renderReport(stores, totals);
+                    } else {
+                        console.log("an error in response");
+                    }
+                };
+            })(this);
+            xhr.send(toSend);
 
-            function ReportCriteria(boutique, product, month, results) {
-                this.boutique = boutique;
-                this.product = product;
-                this.month = month;
-                this.results = results;
-            }
+        }
+        function ReportCriteria(boutique, product, month, results) {
+            this.boutique = boutique;
+            this.product = product;
+            this.month = month;
+            this.results = results;
+        }
 
-            function renderReport(stores,values) {
-                if(myChart !=null){
-                    myChart.destroy();
-                }
-                myChart = new Chart("myChart", {
-                    type: "pie",
-                    data: {
-                        labels: stores,
-                        datasets: [{
-                                label: "Results",
-                                backgroundColor: "blue",
-                                borderColor: "white",
-                                data: values
-                            }]},
-                    options: {}
-                });
+        function renderReport(stores, values) {
+            if (myChart != null) {
+                myChart.destroy();
             }
+            myChart = new Chart("myChart", {
+                type: "bar",
+                data: {
+                    labels: stores,
+                    datasets: [{
+                            label: "Results",
+                            backgroundColor: "orange",
+                            borderColor: "white",
+                            data: values
+                        }]},
+                options: {}
+            });
+        }
 
-            function generatePDF() {
-                const element = document.getElementById("myChart");
-                html2pdf().from(element).save("topAchievingReport.pdf");
-            }
+        function generatePDF() {
+            const element = document.getElementById("myChart");
+            html2pdf().from(element).save("topAchievingReport.pdf");
+        }
     </script>
-    
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 

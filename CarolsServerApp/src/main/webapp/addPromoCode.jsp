@@ -200,7 +200,6 @@
             <form action="ProductServlet" method="post">
                 <label>Code: <input type="text" name="code"></label><br>
                 <label>Discount(%): <input type="number" min="1" max="100" name="discount"></label><br>
-                <label>Type: <input type="numbers" min="1" max="2" name="type"></label><br>
                 <label>Expiry Date: <input type="date" name="expiry"></label><br>
                 <label>Category (optional): </label>
                 <select name="category">

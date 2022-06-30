@@ -22,7 +22,12 @@
                 padding: 10px;
                 background-color: white;
             }
-            #removeSaleLineItem{
+            #verifyManagerCode{
+                display:none;
+                position: center;
+                z-index: 90
+            }
+            #promoForm{
                 display:none;
                 position: center;
                 z-index: 90
@@ -73,6 +78,7 @@
             }
             .navbar {
                 height: 50px;
+                z-index: 100;
             }
 
             .navbar {
@@ -108,6 +114,7 @@
 
             .navbar a:hover, .dropdown:hover .dropbtn {
                 background-color: #C70039;
+                z-index: 100;
             }
 
             .dropdown-content {
@@ -239,10 +246,11 @@
         <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@9.0.2/dist/dbr.js"></script>
         <input type="text" name="id" id="prod">
         <button id="findProduct">Find Product</button>
-        <div id="display"></div><br><br>
-        <button id="removeItem">Remove Item</button>
-        <label>Customer Email: <input type="text" name="id" id="email" required></label><br>
-        <label>Card Number: <input type="text" name="id" id="card" required></label><br>
+        <div id="display"></div><br>
+        <button id="removeItem">Remove Item</button><br><br>
+        <label>Customer Email: <input type="text" name="email" id="email" required></label><br>
+        <label>Card Number: <input type="text" name="card" id="card" required></label><br>
+        <button id="addPromoCode">Add Promo</button>
         <button id="checkout">Checkout</button>
         <div id="reply"></div>
 
@@ -250,91 +258,182 @@
             let items = [];
             var index = 0;
             var totalPrice = 0;
+            var promoDiscount = 0;
+            var discountCategory = "";
             document.getElementById("findProduct").addEventListener("click", getProduct);
             document.getElementById("checkout").addEventListener("click", checkout);
-            document.getElementById("removeItem").addEventListener("click", function(){
-                document.getElementById("removeSaleLineItem").style.display = "block";
+
+
+
+            //verify Manager Code
+            document.getElementById("removeItem").addEventListener("click", function () {
+                document.getElementById("verifyManagerCode").style.display = "block";
             });
-            
-            function closePopup(){
-                 document.getElementById("removeSaleLineItem").style.display = "none";
+            function closeManagerPopup() {
+                document.getElementById("verifyManagerCode").style.display = "none";
             }
-            
-            function submitCode(){
+            function submitManagerCode() {
                 var manaCode = document.getElementById("managerCode").value;
                 var storeId = "<%=emp.getBoutique()%>";
-                var toSend = storeId+"@"+manaCode;
+                var toSend = storeId + "@" + manaCode;
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/employee/verifyManagerCode/"+toSend, true);
-                xhr.onreadystatechange = function(){
-                    if(this.readyState == 4){
+                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/employee/verifyManagerCode/" + toSend, true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
                         var rep = this.responseText;
-                        if(rep == "Code valid"){
+                        if (rep == "Code valid") {
                             var output = "<ol>";
-                            for(var i in items){
+                            for (var i in items) {
                                 output += "<li>" +
-                                        "<label>" + items[i].name + "-" + items[i].color +":  " +
-                                        "<input id='productSelected' type='radio' name='sli' value='"+items[i].id+"'>"+
+                                        "<label>" + items[i].name + "-" + items[i].color + ":  " +
+                                        "<input id='productSelected' type='radio' name='sli' value='" + items[i].id + "'>" +
                                         "</label>" +
                                         "</li><br>";
                             }
                             output += "</ol><br>";
-                            
+
                             document.getElementById("checkList").innerHTML = output;
-                            document.getElementById("removeSaleLineItem").style.display = "none";
+                            document.getElementById("managerCode").value = "";
+                            document.getElementById("verifyManagerCode").style.display = "none";
                             document.getElementById("itemToRemove").style.display = "block";
                         }
                     }
                 };
                 xhr.send();
             }
-            
-            function cancelRemove(){
+
+            //remove Sale Line Item
+            function cancelRemove() {
                 document.getElementById("itemToRemove").style.display = "none";
             }
-                
-            function removeSLI(){
+            function removeSLI() {
                 document.getElementById("itemToRemove").style.display = "none";
                 var idSelected = document.getElementById("productSelected").value;
-                for(var i in items){
-                    if(items[i].id == idSelected){
-                        items.splice(i,1);
+                for (var i in items) {
+                    if (items[i].id == idSelected) {
+                        items.splice(i, 1);
                         break;
-                    }    
+                    }
                 }
                 let output = "";
-                        output += "<table class='table table-nordered'>" +
-                                "<thead>" +
-                                "<tr>" +
-                                "<th class='per70 text-center'>Item</th>" +
-                                "<th class='per70 text-center'>Price</th>" +
-                                "<th class='per70 text-center'>Discounted Price</th>" +
-                                "</tr>" +
-                                "</thead>" +
-                                "<tbody>";
-                        let calculatedTotal = 0;
-                        for (var i in items) {
-                            calculatedTotal += items[i].discountedPrice;
-                            console.log(totalPrice);
-                            output += "<tr height='35px'>" +
-                                    "<td>" + items[i].name + "</td>" +
-                                    "<td class='text-center'>" + items[i].price + "</td>" +
-                                    "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
-                                    "</tr>";
+                output += "<table class='table table-nordered'>" +
+                        "<thead>" +
+                        "<tr>" +
+                        "<th class='per70 text-center'>Item</th>" +
+                        "<th class='per70 text-center'>Price</th>" +
+                        "<th class='per70 text-center'>Discounted Price</th>" +
+                        "</tr>" +
+                        "</thead>" +
+                        "<tbody>";
+                calculateTotal();
+                for (var i in items) {
+                    output += "<tr height='35px'>" +
+                            "<td>" + items[i].name + "</td>" +
+                            "<td class='text-center'>" + items[i].price + "</td>" +
+                            "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
+                            "</tr>";
+                }
+                output += "</tbody>" +
+                        "<tfoot>" +
+                        "<tr>" +
+                        "<th colspan='3' class='text-right'>Total</th>" +
+                        "<th class='text-center'>" + totalPrice + "</th>" +
+                        "</tr>" +
+                        "</tofoot>" +
+                        "</table>";
+                document.getElementById("display").innerHTML = output;
+            }
+
+            //add PromoCode
+            document.getElementById("addPromoCode").addEventListener("click", function () {
+                document.getElementById("promoForm").style.display = "block";
+            });
+            function closePromo() {
+                document.getElementById("promoForm").style.display = "none";
+            }
+            function submitPromoCode() {
+                document.getElementById("promoForm").style.display = "none";
+                var promoEntered = document.getElementById("getPromoCode").value;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findPromoCode/" + promoEntered, true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        var promo = JSON.parse(this.responseText);
+                        if (promo == null) {
+                            alert("promo is no longer valid");
+                        } else {
+                            promoDiscount = promo.discount;
+                            discountCategory += promo.category;
+                            calculateTotal();
+                            let output = "";
+                            output += "<table class='table table-nordered'>" +
+                                    "<thead>" +
+                                    "<tr>" +
+                                    "<th class='per70 text-center'>Item</th>" +
+                                    "<th class='per70 text-center'>Price</th>" +
+                                    "<th class='per70 text-center'>Discounted Price</th>" +
+                                    "</tr>" +
+                                    "</thead>" +
+                                    "<tbody>";
+                            for (var i in items) {
+                                output += "<tr height='35px'>" +
+                                        "<td>" + items[i].name + "</td>" +
+                                        "<td class='text-center'>" + items[i].price + "</td>" +
+                                        "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
+                                        "</tr>";
+                            }
+                            output += "</tbody>" +
+                                    "<tfoot>" +
+                                    "<tr>" +
+                                    "<th colspan='3' class='text-right'>Total</th>" +
+                                    "<th class='text-center'>" + totalPrice + "</th>" +
+                                    "</tr>" +
+                                    "</tofoot>" +
+                                    "</table>";
+                            document.getElementById("display").innerHTML = output;
+                            alert("Promo discount has been Applied");
                         }
-                        totalPrice = calculatedTotal;
-                        output += "</tbody>" +
-                                "<tfoot>" +
-                                "<tr>" +
-                                "<th colspan='3' class='text-right'>Total</th>" +
-                                "<th class='text-center'>" + totalPrice + "</th>" +
-                                "</tr>" +
-                                "</tofoot>" +
-                                "</table>";
-                        console.log(output);
-                        document.getElementById("display").innerHTML = output;
-            }    
-            
+                    }
+                };
+                xhr.send();
+            }
+
+            //play for each barcode scanned
+            function beeper(){
+                var p = document.getElementById("beep");
+                p.play();
+            }
+
+            function calculateTotal() {
+                var calculatedTotal = 0;
+                if (promoDiscount != 0) {
+                    Loop1:for (var i in items) {
+                        for (var j in items[i].categories) {
+                            if (discountCategory.localeCompare(items[i].categories[j].id)) {
+                                var price = items[i].price;
+                                var d = promoDiscount / 100;
+                                var e = price * d;
+                                var f = price - e;
+                                calculatedTotal += f;
+                                continue Loop1;
+                            }
+                        }
+                        calculatedTotal += items[i].price;
+                    }
+                } else {
+                    for (var i in items) {
+                        if (items[i].discountedPrice != 0) {
+                            calculatedTotal += items[i].discountedPrice;
+                        } else {
+                            calculatedTotal += items[i].price;
+                        }
+                    }
+                }
+                totalPrice = calculatedTotal;
+
+                return totalPrice;
+            }
+
             function getProduct() {
                 var proid = document.getElementById("prod").value;
                 var xhr = new XMLHttpRequest();
@@ -346,7 +445,6 @@
                         let categories = [];
                         for (var i in product1.categories) {
                             categories.splice(i, 0, new Category(product1.categories[i].id, product1.categories[i].name));
-                            console.log(categories[i]);
                         }
                         for (var i in product1.sizes) {
                             sizes.splice(i, 0, new Size(product1.sizes[i].id, product1.sizes[i].name));
@@ -360,8 +458,8 @@
                                 product1.price,
                                 product1.discountedPrice,
                                 categories));
-                        console.log[items[index]];
                         index++;
+                        calculateTotal();
                         let output = "";
                         output += "<table class='table table-nordered'>" +
                                 "<thead>" +
@@ -372,18 +470,13 @@
                                 "</tr>" +
                                 "</thead>" +
                                 "<tbody>";
-                        let calculatedTotal = 0;
                         for (var i in items) {
-                            console.log[items[i]];
-                            calculatedTotal += items[i].discountedPrice;
-                            console.log(totalPrice);
                             output += "<tr height='35px'>" +
                                     "<td>" + items[i].name + "</td>" +
                                     "<td class='text-center'>" + items[i].price + "</td>" +
                                     "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
                                     "</tr>";
                         }
-                        totalPrice = calculatedTotal;
                         output += "</tbody>" +
                                 "<tfoot>" +
                                 "<tr>" +
@@ -409,7 +502,6 @@
                         let categories = [];
                         for (var i in product1.categories) {
                             categories.splice(i, 0, new Category(product1.categories[i].id, product1.categories[i].name));
-                            console.log(categories[i]);
                         }
                         for (var i in product1.sizes) {
                             sizes.splice(i, 0, new Size(product1.sizes[i].id, product1.sizes[i].name));
@@ -425,6 +517,7 @@
                                 categories));
                         console.log[items[index]];
                         index++;
+                        calculateTotal();
                         let output = "";
                         output += "<table class='table table-nordered'>" +
                                 "<thead>" +
@@ -435,18 +528,13 @@
                                 "</tr>" +
                                 "</thead>" +
                                 "<tbody>";
-                        let calculatedTotal = 0;
                         for (var i in items) {
-                            console.log[items[i]];
-                            calculatedTotal += items[i].discountedPrice;
-                            console.log(totalPrice);
                             output += "<tr height='35px'>" +
                                     "<td>" + items[i].name + "</td>" +
                                     "<td class='text-center'>" + items[i].price + "</td>" +
                                     "<td class='text-center'>" + items[i].discountedPrice + "</td>" +
                                     "</tr>";
                         }
-                        totalPrice = calculatedTotal;
                         output += "</tbody>" +
                                 "<tfoot>" +
                                 "<tr>" +
@@ -455,7 +543,6 @@
                                 "</tr>" +
                                 "</tofoot>" +
                                 "</table>";
-                        console.log(output);
                         document.getElementById("display").innerHTML = output;
                     }
                 };
@@ -463,14 +550,42 @@
             }
 
             function checkout() {
+                if (items.length == 0) {
+                    alert("cannot checkout without any products in the cart");
+                    return;
+                }
                 var email = document.getElementById("email").value;
                 var card = document.getElementById("card").value;
                 var sale = new Sale("", "<%=emp.getId()%>", false, totalPrice, items, "<%=emp.getBoutique()%>", card, email);
                 var toSend = JSON.stringify(sale);
-                var xhr = new XMLHttpRequest();
+                var xhr;
+                if (window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                } else {
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
                 xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/sale/checkout", true);
                 xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = (function (_this) {
+                    return function () {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            alert(xhr.responseText);
+                        } else {
+                            console.log("an error in response");
+                        }
+                    };
+                })(this);
                 xhr.send(toSend);
+                document.getElementById("display").innerHTML = "";
+                document.getElementById("checkList").innerHTML = "";
+                document.getElementById("prod").value = "";
+                document.getElementById("email").value = "";
+                document.getElementById("card").value = "";
+                items = [];
+                index = 0;
+                totalPrice = 0;
+                promoDiscount = 0;
+                discountCategory = "";
             }
 
             function Category(id, name) {
@@ -507,9 +622,9 @@
 
             var scanner = new Instascan.Scanner({video: document.getElementById('preview'), scanPeriod: 5, mirror: false});
             scanner.addListener('scan', function (content) {
-                console.log(content);
                 if (content.length == 13) {
                     getProduct2(content);
+                    beeper();
                 }
                 //window.location.href=content;
             });
@@ -539,31 +654,35 @@
                 console.error(e);
                 alert(e);
             }); //style ="display:none;"
-        
+
         </script>
-        
-        <div class="form-popup" id="removeSaleLineItem" class="form-container">
+
+        <div class="form-popup" id="verifyManagerCode" class="form-container">
             <h1>Enter Manager Code</h1>
-            <label>Manager Unique Code: <input id="managerCode" type="text" required></label><br>
-            <button id="submitCode" style="background-color:green" onclick="submitCode()">Submit</button>
-            <button id="closePopup" style="background-color:red" onclick="closePopup()">Close</button>
+            <label>Manager Unique Code: <input id="managerCode" type="password" required></label><br>
+            <button id="submitManagerCode" style="background-color:green" onclick="submitManagerCode()">Submit</button>
+            <button id="closeManagerPopup" style="background-color:red" onclick="closeManagerPopup()">Close</button>
         </div>
-        
+
+        <div class="form-popup" id="promoForm" class="form-container">
+            <h1>Enter Promo Code</h1>
+            <label>Promo Code: <input id="getPromoCode" type="text" required></label><br>
+            <button id="submitPromo" style="background-color:green" onclick="submitPromoCode()">Submit</button>
+            <button id="closePromo" style="background-color:red" onclick="closePromo()">Close</button>
+        </div>
+
         <video id="preview"></video>
-        
-        <div class="form-popup" id="removeSaleLineItem" class="form-container">
-            <h1>Enter Manager Code</h1>
-            <label>Manager Unique Code: <input id="managerCode" type="text" required></label><br>
-            <button id="submitCode" style="background-color:green" onclick="submitCode()">Submit</button>
-            <button id="closePopup" style="background-color:red" onclick="closePopup()">Close</button>
-        </div>
-        
+        <audio id="beep">
+            <source src="C:\Users\User\Desktop\LWFD showRoom\Repository\CarolsServerApp\CarolsServerApp\src\main\webapp\audio\beep.mp3" type="audio/ogg">
+            <source src="beep.mp3" type="audio/mpeg">
+        </audio>
+
         <div class="form-popup" id="itemToRemove"> 
             <div id="checkList"></div>
             <button id='remove' style='background-color:red' onClick="removeSLI()">Remove</button>
             <button id='cancelRemove' style='background-color:grey' onclick="cancelRemove()">Cancel</button>
         </div>
-        
+
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">

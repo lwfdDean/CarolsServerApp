@@ -147,12 +147,12 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-
+                    <%if(employee.getRole().getAuthorizationLevel()==3){%>
                     <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
                     <a href="promoteEmployee.jsp">Promote Employee</a>
                     <a href="registerNewBoutique.jsp">Register new Boutique</a>
                     <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
-
+                    <%}%>
                 </div>
             </div>  
 
@@ -171,11 +171,12 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
+                    <%if(employee.getRole().getAuthorizationLevel()==3){%>
                     <a href="IbtServlet?submit=getBoutiqueIbts">Approve IBT</a>
+                    <%}%>
                     <a href="requestibt.jsp">Request IBT</a>
                 </div>
             </div>
-
             <div class="dropdown">
                 <button class="dropbtn">KEEP ASIDE
                     <i class="fa fa-caret-down"></i>
@@ -193,13 +194,13 @@
                 </button>
                 <div class="dropdown-content">
                     <a href="topAchievingReport.jsp">Top Achieving Stores</a>
-                    <a href="monthlySalesReport.jsp">Monthly Sales for any store</a>
-                    <a href="topachievingemployees.jsp">Top achieving Employees</a>
+                    <a href="BoutiqueServlet?submit=getAllForReport">Monthly Sales for any store</a>
+                    <a href="BoutiqueServlet?submit=getAllForReport2">Top achieving Employees</a>
                     <a href="reachedtarget.jsp">Reached Target</a>
                     <a href="topproducts.jsp">Top 40 products</a>
                     <a href="worstperforming.jsp">Worst Performing Stores</a>
-                    <a href="specificProductReport.jsp">Product</a>
-                    <a href="dailyreport.jsp">Current Daily Sales</a>
+                    <a href="ProductServlet?submit=getAll">Product</a>
+                    <a href="BoutiqueServlet?submit=report3">Current Daily Sales</a>
                 </div>
             </div>
             <div class="dropdown">
@@ -218,7 +219,7 @@
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
-                <strong style="color:#22075E;">© Copyright 
+                <strong style="color:#22075E;">Â© Copyright 
                     <span style="color:#22075E;" id="ctl00_YearLbl">2022</span>, Carol's Boutique (Pty) Ltd. All rights reserved.<br />A Fashion Company.<br/>      
                 </strong><p style="color:#22075E;">All brands, trademarks, tradenames, and logos are the<br/> property of Carol's Boutique.</p>
                 <strong style="color:#22075E;"><i><u>Developed by LWFD-GROUP.</u></i></strong>  
