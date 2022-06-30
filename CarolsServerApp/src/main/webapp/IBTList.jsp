@@ -4,17 +4,51 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>IBT List</title>
     </head>
     <style>
+          label {
+                display: inline-block;
+                width: 150px;
+                text-align: center;
+            }
+            select {
+                width: 150px;
+                margin: 10px;
+            }
+            select:focus {
+                min-width: 150px;
+                width: auto;
+            }
+            .button {
+                background-color: #555555;
+                border: 2px solid #555555;
+                border-radius: 15px;
+                color: white;
+                padding: 5px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                box-shadow: 0 5px #666;
+
+            }
+            .button:hover {
+                background-color: #3e8e41
+            }
             body {
                 font-family: Arial, Helvetica, sans-serif;
+            }
+            .navbar {
+                height: 50px;
             }
 
             .navbar {
                 overflow: hidden;
                 background-color: #130E3C;
+                z-index: 100;
             }
 
             .navbar a {
@@ -24,11 +58,13 @@
                 text-align: center;
                 padding: 14px 16px;
                 text-decoration: none;
+                z-index: 100;
             }
 
             .dropdown {
                 float: left;
                 overflow: hidden;
+                z-index: 100;
             }
 
             .dropdown .dropbtn {
@@ -40,10 +76,12 @@
                 background-color: inherit;
                 font-family: inherit;
                 margin: 0;
+                z-index: 100;
             }
 
             .navbar a:hover, .dropdown:hover .dropbtn {
                 background-color: #C70039;
+                z-index: 100;
             }
 
             .dropdown-content {
@@ -52,7 +90,7 @@
                 background-color: #f9f9f9;
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
+                z-index: 100;
             }
 
             .dropdown-content a {
@@ -62,14 +100,17 @@
                 text-decoration: none;
                 display: block;
                 text-align: left;
+                z-index: 100;
             }
 
             .dropdown-content a:hover {
                 background-color: #ddd;
+                z-index: 100;
             }
 
             .dropdown:hover .dropdown-content {
                 display: block;
+                z-index: 100;
             }
 
             .column {
@@ -84,19 +125,87 @@
                 clear: both;
                 display: table;
             }
-            .multicolortext {
-                background-image: linear-gradient(to left, violet, indigo, green, blue, yellow, orange, red);
-                -webkit-background-clip: text;
-                -moz-background-clip: text;
-                background-clip: text;
-                color: transparent;
+            .topnav-right {
+                float: right;
+                                
+
             }
         </style>
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
         <%List<IBT> ibtlist = (List<IBT>)request.getAttribute("ibtlist");%>
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
-        <hr color="#22075E">
+        <div class="navbar">
+            <a href="home.jsp">HOME</a>
+            <div class="dropdown">
+                <button class="dropbtn">MENU 
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
+                    <a href="promoteEmployee.jsp">Promote Employee</a>
+                    <a href="registerNewBoutique.jsp">Register new Boutique</a>
+                    <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
+                </div>
+            </div>  
+            <div class="dropdown">
+                <button class="dropbtn">SALE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="SaleServlet?submit=newSalePage">New Sale</a>
+                    <a href="exchange.jsp">Exchange product</a>
+                    <a href="refund.jsp">Refund a product</a>
+                </div>
+            </div>    
+            <div class="dropdown">
+                <button class="dropbtn">IBT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="IbtServlet?submit=getBoutiqueIbts">Approve IBT</a>
+                    <a href="requestibt.jsp">Request IBT</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn">KEEP ASIDE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="keepaside.jsp">Create</a>
+                    <a href="keepaside.jsp">Collect</a>
+                </div>
+            </div>
+            <a href="logstock.jsp">LOG STOCK</a>
+            <!-- <a href="report.jsp">REPORT</a> -->
+            
+<!--      -->      <div class="dropdown">
+                <button class="dropbtn">REPORT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="topAchievingReport.jsp">Top Achieving Stores</a>
+                    <a href="monthlySalesReport.jsp">Monthly Sales for any store</a>
+                    <a href="topachievingemployees.jsp">Top achieving Employees</a>
+                    <a href="reachedtarget.jsp">Reached Target</a>
+                    <a href="topproducts.jsp">Top 40 products</a>
+                    <a href="worstperforming.jsp">Worst Performing Stores</a>
+                    <a href="specificProductReport.jsp">Product</a>
+                    <a href="dailyreport.jsp">Current Daily Sales</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">PRODUCT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="ProductServlet?submit=addPromoPage">Add New PromoCode</a>
+                    <a href="putProductOnSale.jsp">Put Product On Sale</a>
+                </div>
+            </div>
+            <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
+        </div>
         <br>
         <h1>Approve an IBT</h1>
         <h4>Here are your stores IBT's</h4>

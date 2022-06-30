@@ -3,8 +3,45 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>register</title>
         <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            /* Create two equal columns that floats next to each other */
+            .column {
+                float: left;
+                width: 50%;
+                padding: 10px;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            /* Style the buttons */
+            .btn {
+                border: none;
+                outline: none;
+                padding: 12px 16px;
+                background-color: #f1f1f1;
+                cursor: pointer;
+            }
+
+            .btn:hover {
+                background-color: #ddd;
+            }
+
+            .btn.active {
+                background-color: #666;
+                color: white;
+            }
+
+
             label {
                 display: inline-block;
                 width: 150px;
@@ -34,16 +71,182 @@
             .button:hover {
                 background-color: #3e8e41
             }
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .navbar {
+                height: 50px;
+            }
+
+            .navbar {
+                overflow: hidden;
+                background-color: #130E3C;
+                z-index: 100;
+            }
+
+            .navbar a {
+                float: left;
+                font-size: 16px;
+                color: white;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                z-index: 100;
+            }
+
+            .dropdown {
+                float: left;
+                overflow: hidden;
+                z-index: 100;
+            }
+
+            .dropdown .dropbtn {
+                font-size: 16px;
+                border: none;
+                outline: none;
+                color: white;
+                padding: 14px 16px;
+                background-color: inherit;
+                font-family: inherit;
+                margin: 0;
+                z-index: 100;
+            }
+
+            .navbar a:hover, .dropdown:hover .dropbtn {
+                background-color: #C70039;
+                z-index: 100;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 100;
+            }
+
+            .dropdown-content a {
+                float: none;
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+                z-index: 100;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+                z-index: 100;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+                z-index: 100;
+            }
+
+            .column {
+                float: left;
+                width: 33.33%;
+                padding: 5px;
+            }
+
+            /* Clear floats after image containers */
+            .row::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
+            .topnav-right {
+                float: right;
+            }
+            
         </style>   
 
     </head>
     <body style="text-align:center; background-color:#D8C6B7;">
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
-        <hr color="#22075E"><br><br>    
-
     <body>
+        
+        <div class="navbar">
+            <a href="home.jsp">HOME</a>
+            <div class="dropdown"> 
+                <button class="dropbtn">MENU 
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+
+                    <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
+                    <a href="promoteEmployee.jsp">Promote Employee</a>
+                    <a href="registerNewBoutique.jsp">Register new Boutique</a>
+                    <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
+
+                </div>
+            </div>  
+
+            <div class="dropdown">
+                <button class="dropbtn">SALE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="SaleServlet?submit=newSalePage">New Sale</a>
+                    <a href="exchange.jsp">Exchange product</a>
+                    <a href="refund.jsp">Refund a product</a>
+                </div>
+            </div>    
+            <div class="dropdown">
+                <button class="dropbtn">IBT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="IbtServlet?submit=getBoutiqueIbts">Approve IBT</a>
+                    <a href="requestibt.jsp">Request IBT</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn">KEEP ASIDE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="keepaside.jsp">Create</a>
+                    <a href="keepaside.jsp">Collect</a>
+                </div>
+            </div>
+            <a href="logstock.jsp">LOG STOCK</a>
+            <!-- <a href="report.jsp">REPORT</a> -->
+            
+<!--      -->      <div class="dropdown">
+                <button class="dropbtn">REPORT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="topAchievingReport.jsp">Top Achieving Stores</a>
+                    <a href="monthlySalesReport.jsp">Monthly Sales for any store</a>
+                    <a href="topachievingemployees.jsp">Top achieving Employees</a>
+                    <a href="reachedtarget.jsp">Reached Target</a>
+                    <a href="topproducts.jsp">Top 40 products</a>
+                    <a href="worstperforming.jsp">Worst Performing Stores</a>
+                    <a href="specificProductReport.jsp">Product</a>
+                    <a href="dailyreport.jsp">Current Daily Sales</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">PRODUCT
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="ProductServlet?submit=addPromoPage">Add New PromoCode</a>
+                    <a href="putProductOnSale.jsp">Put Product On Sale</a>
+                </div>
+            </div>
+            <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
+        </div>
+        
     <center>
-        <center><h2 style="color:#22077E;"><i><u>REGISTER  A  NEW  BOUTIQUE</u></i></h2></center><br>
+        <center><h3 style="color:#22077E;"><i><u>REGISTER  A  NEW  BOUTIQUE</u></i></h3></center><br>
+        
         <form action="BoutiqueServlet" method="post">
             <label style="color:#22075E;"><b>Location : </b></label>
             <input type="text" placeholder="location" name="location" required>
@@ -57,7 +260,7 @@
             <label style="color:#22075E;"><b>password : </b></label>
             <input type="password" placeholder="password" name="password" required>
             <br><br>
-            <input type="submit" name="submit" value="registerNewBoutique" style="width:110px; height:35px" class="button"/>
+            <input type="submit" name="submit" value="Submit" style="width:140px; height:35px" class="button"/>
         </form>
         <br>
         <hr width="400px;" color="#22075E">       

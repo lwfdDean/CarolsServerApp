@@ -1,8 +1,3 @@
-<%-- 
-    Document   : logstock
-    Created on : 20 Jun 2022, 20:18:43
-    Author     : Administrator
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="co.za.carolsBoutiqueServer.Sale.model.Sale"%>
@@ -11,16 +6,78 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Refund</title>
     </head>
     <style>
+            .form-container{
+                max-width: 300px;
+                padding: 10px;
+                background-color: white;
+            }
+            #verifyManagerCode{
+                display:none;
+                position: center;
+                z-index: 90
+            }
+            #promoForm{
+                display:none;
+                position: center;
+                z-index: 90
+            }
+            #itemToRemove{
+                display:none;
+                position: relative;
+                z-index: 90
+            }
+            #preview{
+                width:500px;
+                height: 500px;
+                margin:0px auto;
+                display: none;
+                z-index: 20
+            }
+            label {
+                display: inline-block;
+                width: 150px;
+                text-align: center;
+            }
+            select {
+                width: 150px;
+                margin: 10px;
+            }
+            select:focus {
+                min-width: 150px;
+                width: auto;
+            }
+            .button {
+                background-color: #555555;
+                border: 2px solid #555555;
+                border-radius: 15px;
+                color: white;
+                padding: 5px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                box-shadow: 0 5px #666;
+
+            }
+            .button:hover {
+                background-color: #3e8e41
+            }
             body {
                 font-family: Arial, Helvetica, sans-serif;
+            }
+            .navbar {
+                height: 50px;
+                z-index: 100;
             }
 
             .navbar {
                 overflow: hidden;
                 background-color: #130E3C;
+
             }
 
             .navbar a {
@@ -50,6 +107,7 @@
 
             .navbar a:hover, .dropdown:hover .dropbtn {
                 background-color: #C70039;
+                z-index: 100;
             }
 
             .dropdown-content {
@@ -90,12 +148,8 @@
                 clear: both;
                 display: table;
             }
-            .multicolortext {
-                background-image: linear-gradient(to left, violet, indigo, green, blue, yellow, orange, red);
-                -webkit-background-clip: text;
-                -moz-background-clip: text;
-                background-clip: text;
-                color: transparent;
+            .topnav-right {
+                float: right;
             }
         </style>
     </head>

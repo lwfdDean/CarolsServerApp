@@ -10,6 +10,7 @@
               initial-scale=1, shrink-to-fit=no" />
         <meta charset="ISO-8859-1">
         <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"></script>
         <title>Put Product On Sale</title>
@@ -53,7 +54,7 @@
             .navbar {
                 overflow: hidden;
                 background-color: #130E3C;
-
+                z-index: 100;
             }
 
             .navbar a {
@@ -63,11 +64,13 @@
                 text-align: center;
                 padding: 14px 16px;
                 text-decoration: none;
+                z-index: 100;
             }
 
             .dropdown {
                 float: left;
                 overflow: hidden;
+                z-index: 100;
             }
 
             .dropdown .dropbtn {
@@ -79,10 +82,12 @@
                 background-color: inherit;
                 font-family: inherit;
                 margin: 0;
+                z-index: 100;
             }
 
             .navbar a:hover, .dropdown:hover .dropbtn {
                 background-color: #C70039;
+                z-index: 100;
             }
 
             .dropdown-content {
@@ -91,7 +96,7 @@
                 background-color: #f9f9f9;
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
+                z-index: 100;
             }
 
             .dropdown-content a {
@@ -101,14 +106,17 @@
                 text-decoration: none;
                 display: block;
                 text-align: left;
+                z-index: 100;
             }
 
             .dropdown-content a:hover {
                 background-color: #ddd;
+                z-index: 100;
             }
 
             .dropdown:hover .dropdown-content {
                 display: block;
+                z-index: 100;
             }
 
             .column {
