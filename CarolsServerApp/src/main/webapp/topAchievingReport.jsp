@@ -150,12 +150,14 @@
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-    
+    var myChart =null;
+    var chartType;
             document.getElementById("form").addEventListener("submit", startGen);
 
             function startGen(e) {
                 e.preventDefault();
                 document.getElementById("canvas").style.display = "block";
+                document.getElementById("myChart").innerHTML = null;
                 if (document.getElementById("type1").checked) {
                     getSalesReport();
                 } else {
@@ -167,6 +169,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 var month = document.getElementById("month").value;
                 var results = document.getElementById("result").value;
                 let rc = new ReportCriteria("", "", month, results);
+                if(results > 10){
+                    chartType = "pie";
+                }else{
+                    chartType = "bar";
+                }
                 var toSend = JSON.stringify(rc);
                 var xhr;
                 if (window.XMLHttpRequest) {
@@ -200,6 +207,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 var month = document.getElementById("month").value;
                 var results = document.getElementById("result").value;
                 let rc = new ReportCriteria("", "", month, results);
+                if(results > 10){
+                    chartType = "pie";
+                }else{
+                    chartType = "bar";
+                }
                 var toSend = JSON.stringify(rc);
                 var xhr;
                 if (window.XMLHttpRequest) {
@@ -237,8 +249,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             }
 
             function renderReport(stores,values) {
-                var myChart = new Chart("myChart", {
-                    type: "bar",
+                if(myChart !=null){
+                    myChart.destroy();
+                }
+                myChart = new Chart("myChart", {
+                    type: chartType,
                     data: {
                         labels: stores,
                         datasets: [{
@@ -246,21 +261,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                                 backgroundColor: "orange",
                                 borderColor: "white",
                                 data: values
-                            }]},
-                    options: {}
-                });
-            }
-
-            function renderRatingReport(ratings) {
-                var myChart = new Chart("myChart", {
-                    type: "bar",
-                    data: {
-                        labels: storeNames,
-                        datasets: [{
-                                label: "Average Rating",
-                                backgroundColor: "green",
-                                borderColor: "white",
-                                data: ratings
                             }]},
                     options: {}
                 });

@@ -45,6 +45,18 @@ public class BoutiqueServlet extends HttpServlet {
                 request.setAttribute("boutiques", service.getAllBoutiques());
                 request.getRequestDispatcher("ProducServlet?submit=getAllSizes").forward(request, response);
                 break;
+            case "getAllForReport":
+                request.setAttribute("boutiques", service.getAllBoutiques());
+                request.getRequestDispatcher("monthlySaleReport.jsp").forward(request, response);
+                break;
+            case "getAllForReport2":
+                request.setAttribute("boutiques", service.getAllBoutiques());
+                request.getRequestDispatcher("topachievingemployees.jsp").forward(request, response);
+                break;
+            case "report3":
+                request.setAttribute("boutiques", service.getAllBoutiques());
+                request.getRequestDispatcher("dailyreport.jsp").forward(request, response);
+                break;    
         }
     }
 
