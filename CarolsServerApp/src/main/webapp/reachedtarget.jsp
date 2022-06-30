@@ -1,16 +1,11 @@
-<%-- 
-    Document   : reachedtarget
-    Created on : 21 Jun 2022, 20:06:24
-    Author     : User
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>Reached target</title>
+        <title>Reached Target</title>
+        <!--        <script src="Chart.min.js"></script>-->
     </head>
     <style>
         .form-container{
@@ -232,16 +227,130 @@
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
         <br>
-        
-        <h3>Reached target</h3>
- <br><br><br><hr color="#22075E" width="400px;">
-    <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
-            <strong style="color:#22075E;">© Copyright 
-                <span style="color:#22075E;" id="ctl00_YearLbl">2022</span>, Carol's Boutique (Pty) Ltd. All rights reserved.<br />A Fashion Company.<br/>      
-            </strong><p style="color:#22075E;">All brands, trademarks, tradenames, and logos are the<br/> property of Carol's Boutique.</p>
-            <strong style="color:#22075E;"><i><u>Developed by LWFD-GROUP.</u></i></strong>  
-            <br />
-        </span>
+
+    <form id="form">
+        <table style="width:100">
+            <label style="color:#22075E;" for="cars">Select month</label>
+            <select name="month" id="month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+            <br><br>
+            <label style="color:#22075E;" for="">Reports  :  </label>
+            <select name="result" id="result">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+            </select>
+        </table> <br>
+        <input type="submit" value="findTopStores" name="submit" style="width:170px; height:35px" class="button"/>
+    </form><br><br><br>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<center>
+    <div id="canvas">
+        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+        <button id="download" onclick="generatePDF()">Download</button>
+    </div>
+</center>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    var myChart =null;
+            document.getElementById("form").addEventListener("submit", startGen);
+
+            function startGen(e) {
+                e.preventDefault();
+                document.getElementById("canvas").style.display = "block";
+                document.getElementById("myChart").innerHTML = null;
+                    getReport();
+                
+            }
+
+            function getReport() {
+                var month = document.getElementById("month").value;
+                var results = document.getElementById("result").value;
+                let rc = new ReportCriteria("", "", month, results);
+                var toSend = JSON.stringify(rc);
+                var xhr;
+                if (window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                } else {
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                
+                xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/report/findStoreThatAchievedMonthlyTarget", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = (function (_this) {
+                    return function () {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            var rep = JSON.parse(xhr.responseText);
+                            var stores = [];
+                            var ratings = [];
+                            for (var i in rep) {
+                                stores.splice(i, 0, rep[i].id);
+                                ratings.splice(i, 0, rep[i].rating);
+                            }
+                            renderReport(stores,ratings);
+                        } else {
+                            console.log("an error in response");
+                        }
+                    };
+                })(this);
+                xhr.send(toSend);
+            }
+
+            function ReportCriteria(boutique, product, month, results) {
+                this.boutique = boutique;
+                this.product = product;
+                this.month = month;
+                this.results = results;
+            }
+
+            function renderReport(stores,values) {
+                if(myChart !=null){
+                    myChart.destroy();
+                }
+                myChart = new Chart("myChart", {
+                    type: "bar",
+                    data: {
+                        labels: stores,
+                        datasets: [{
+                                label: "Results",
+                                backgroundColor: "orange",
+                                borderColor: "white",
+                                data: values
+                            }]},
+                    options: {}
+                });
+            }
+
+            function generatePDF() {
+                const element = document.getElementById("myChart");
+                html2pdf().from(element).save("topAchievingReport.pdf");
+            }
+</script>
+<br><br><br><hr color="#22075E" width="400px;">
+<span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
+        <strong style="color:#22075E;">© Copyright 
+            <span style="color:#22075E;" id="ctl00_YearLbl">2022</span>, Carol's Boutique (Pty) Ltd. All rights reserved.<br />A Fashion Company.<br/>      
+        </strong><p style="color:#22075E;">All brands, trademarks, tradenames, and logos are the<br/> property of Carol's Boutique.</p>
+        <strong style="color:#22075E;"><i><u>Developed by LWFD-GROUP.</u></i></strong>  
+        <br />
     </span>
-</body>
+</span></body>
 </html>

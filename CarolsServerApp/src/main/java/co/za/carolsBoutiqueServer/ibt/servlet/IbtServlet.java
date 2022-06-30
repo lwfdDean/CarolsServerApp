@@ -48,12 +48,15 @@ public class IbtServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         switch(request.getParameter("submit")){
             case "requestIBT":
+                Employee emp = (Employee)request.getSession(false).getAttribute("employee");
                 IBT ibt = new IBT();
                 ibt.setApproved(false);
+                System.out.println("****************************************line 54");
+                System.out.println("*************************************"+emp.getBoutique());
                 ibt.setCustomerEmail(request.getParameter("customerEmail"));
-                ibt.setRequestingBoutique(((Employee) request.getSession(false).getAttribute("employee")).getBoutique());
+                ibt.setRequestingBoutique(emp.getBoutique());
                 ibt.setApprovingBoutique(request.getParameter("boutique"));
-                ibt.setProductCode(request.getParameter("product"));
+                ibt.setProductCode(request.getParameter("productId"));
                 request.setAttribute("reply", service.requestIBT(ibt));
                 request.getRequestDispatcher("home.jsp").forward(request, response);
                 break;

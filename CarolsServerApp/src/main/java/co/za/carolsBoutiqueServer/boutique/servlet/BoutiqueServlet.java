@@ -43,8 +43,20 @@ public class BoutiqueServlet extends HttpServlet {
                 break;
                 case "getAllReq":
                 request.setAttribute("boutiques", service.getAllBoutiques());
-                request.getRequestDispatcher("ProducServlet?submit=getAllSizes").forward(request, response);
+                request.getRequestDispatcher("requestibt.jsp").forward(request, response);
                 break;
+            case "getAllForReport":
+                request.setAttribute("boutiques", service.getAllBoutiques());
+                request.getRequestDispatcher("monthlySaleReport.jsp").forward(request, response);
+                break;
+            case "getAllForReport2":
+                request.setAttribute("boutiques", service.getAllBoutiques());
+                request.getRequestDispatcher("topachievingemployees.jsp").forward(request, response);
+                break;
+            case "report3":
+                request.setAttribute("boutiques", service.getAllBoutiques());
+                request.getRequestDispatcher("dailyreport.jsp").forward(request, response);
+                break;  
         }
     }
 
@@ -82,6 +94,8 @@ public class BoutiqueServlet extends HttpServlet {
                 request.setAttribute("reply", service.rateTheBoutique(review));
                 request.getRequestDispatcher("").forward(request, response);//where do we send the client after leaving a review
                 break;
+                
+            
         }
     }
 

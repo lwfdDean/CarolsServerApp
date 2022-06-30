@@ -1,5 +1,6 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="co.za.carolsBoutiqueServer.boutique.model.Boutique"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -110,28 +111,15 @@
             .dropdown:hover .dropdown-content {
                 display: block;
                 z-index: 100;
-            }
-
-            .column {
-                float: left;
-                width: 33.33%;
-                padding: 5px;
-            }
-
-            /* Clear floats after image containers */
-            .row::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
-            .topnav-right {
+                }
+       .topnav-right {
                 float: right;
                                 
 
             }
-        </style>
-    </head>
-    <body style="text-align:center; background-color:#D8C6B7;">
+    </style>
+</head>
+<body style="text-align:center; background-color:#D8C6B7;">
         <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
        <div class="navbar">
             <a href="home.jsp">HOME</a>
@@ -209,22 +197,126 @@
         <br>
 
         <h1>MONTHLY REPORT</h1>
-        
-        
-        <form action="SaleServlet" method="post">
-             <table style="width:100">
+    <%List<Boutique> bouts = (List<Boutique>)request.getAttribute("boutiques");%>
+    <form id="form">
+        <br><br>
+        <table style="width:100">
+            <label style="color:#22075E;" for="cars">Select month</label>
+            <select name="month" id="month">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+            <br><br>
+            <label style="color:#22075E;" for="">Boutique  :  </label>
+            <select name="result" id="boutique">
+                <ol>
+                    <%for(Boutique b:bouts){%>
+                        <li><option value="<%=b.getId()%>"><%=b.getLocation()%></option></li>
+                    <%}%>
+                </ol>
+            </select>
+            <br><br>
+            <br>
+        </table> <br>
+        <input type="submit" value="findTopStores" name="submit" style="width:170px; height:35px" class="button"/>
+    </form><br><br><br>
 
-                    <label style="color:#22075E;"><b>Boutique  : </b></label>
-                    <input type="text" placeholder="Sale id" name="saleId" style="width:165px; height:23px" required> 
-                    <br><br/>
-                    <label style="color:#22075E;"><b>Product : </b></label>
-                    <input type="text" placeholder="Product" name="product" style="width:165px; height:23px" required>
-             </table><br>
-            <input type="submit" value="refund" name="submit" style="width:110px; height:35px" class="button"/>
-        </form>
-        
-        
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <center>
+        <div id="canvas">
+            <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+            <button id="download" onclick="generatePDF()">Download</button>
+        </div>
+    </center>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+            integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    
+    <script>
+        var myChart =null;
+        document.getElementById("form").addEventListener("submit", startGen);
+
+            function startGen(e) {
+                e.preventDefault();
+                document.getElementById("canvas").style.display = "block";
+                document.getElementById("myChart").innerHTML = null;
+                getSalesReport();
+            }
+
+            function getSalesReport() {
+                var month = document.getElementById("month").value;
+                var boutique = document.getElementById("boutique").value;
+                let rc = new ReportCriteria(boutique, "", month, 0);
+                var toSend = JSON.stringify(rc);
+                var xhr;
+                if (window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                } else {
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xhr.open("POST", "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/report/findStoreMonthlySales", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = (function (_this) {
+                    return function () {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            var rep = JSON.parse(xhr.responseText);
+                            var stores = [];
+                            var totals = [];
+                            for (var i in rep) {
+                                stores.splice(i, 0, rep[i].id);
+                                totals.splice(i, 0, rep[i].total);
+                            }
+                            renderReport(stores,totals);
+                        } else {
+                            console.log("an error in response");
+                        }
+                    };
+                })(this);
+                xhr.send(toSend);
+            }
+
+            function ReportCriteria(boutique, product, month, results) {
+                this.boutique = boutique;
+                this.product = product;
+                this.month = month;
+                this.results = results;
+            }
+
+            function renderReport(stores,values) {
+                if(myChart !=null){
+                    myChart.destroy();
+                }
+                myChart = new Chart("myChart", {
+                    type: "bar",
+                    data: {
+                        labels: stores,
+                        datasets: [{
+                                label: "Results",
+                                backgroundColor: "blue",
+                                borderColor: "white",
+                                data: values
+                            }]},
+                    options: {}
+                });
+            }
+
+            function generatePDF() {
+                const element = document.getElementById("myChart");
+                html2pdf().from(element).save("topAchievingReport.pdf");
+            }
+    </script>
+    
     <br><br><br><hr color="#22075E" width="400px;">
     <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
             <strong style="color:#22075E;">© Copyright 

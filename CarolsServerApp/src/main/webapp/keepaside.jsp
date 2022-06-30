@@ -135,6 +135,11 @@
 
     <body style="text-align:center; background-color:#D8C6B7;">
         <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
+        <%Employee employee = (Employee)request.getSession().getAttribute("employee");
+          if(employee == null){
+             employee = new Employee();
+          }
+        %>
         <br>
         <p style="color:#22075E" class="topnav-left"><b><u>Teller name</u> : <%=employee.getName()%></b></p>
         <div class="navbar">
@@ -143,15 +148,12 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-
                     <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
                     <a href="promoteEmployee.jsp">Promote Employee</a>
                     <a href="registerNewBoutique.jsp">Register new Boutique</a>
                     <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
-
                 </div>
             </div>  
-
             <div class="dropdown">
                 <button class="dropbtn">SALE
                     <i class="fa fa-caret-down"></i>
@@ -171,10 +173,8 @@
                     <a href="requestibt.jsp">Request IBT</a>
                 </div>
             </div>
-
             <a href="keepaside.jsp">KEEP ASIDE</a>
             <a href="logstock.jsp">LOG STOCK</a>
-
             <div class="dropdown">
                 <button class="dropbtn">REPORT
                     <i class="fa fa-caret-down"></i>
@@ -203,10 +203,6 @@
         </div>
     <center>
         <h1>KEEP ASIDE</h1>
-        
-        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-        <script src="<a class="vglnk" href="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" rel="nofollow"><span>https</span> < span > ://</span><span>rawgit</span><span>.</span><span>com</span><span>/</span><span>schmich</span><span>/</span><span>instascan</span><span>-</span><span>builds</span><span>/</span><span>master</span><span>/</span><span>instascan</span><span>.</span><span>min</span><span>.</span><span>js</span></a>"></script>
-        
         <br><br><br> 
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
@@ -217,8 +213,6 @@
                 <br />
             </span>
         </span>
-
     </center>    
-
 </body>
 </html>

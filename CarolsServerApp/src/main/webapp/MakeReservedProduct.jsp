@@ -1,19 +1,23 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.ArrayList"%>
-<%@ page import="co.za.carolsBoutiqueServer.boutique.model.Boutique"%>
-<%@ page import="co.za.carolsBoutiqueServer.product.model.Size"%>
-<%@page import ="co.za.carolsBoutiqueServer.employee.model.Employee" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1"%>
+<%@ page import="co.za.carolsBoutiqueServer.employee.model.Employee"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="ISO-8859-1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <title>request ibt</title>
-    </head>
-    <style>
-        label {
+        <meta name="viewport" content="width=device-width,
+              initial-scale=1, shrink-to-fit=no" />
+        <meta charset="ISO-8859-1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <title>KEEP ASIDE</title>
+        <style>
+            #preview{
+                width:500px;
+                height: 500px;
+                margin:0px auto;
+            }
+            label {
                 display: inline-block;
                 width: 150px;
                 text-align: center;
@@ -52,7 +56,7 @@
             .navbar {
                 overflow: hidden;
                 background-color: #130E3C;
-                z-index: 100;
+
             }
 
             .navbar a {
@@ -62,13 +66,11 @@
                 text-align: center;
                 padding: 14px 16px;
                 text-decoration: none;
-                z-index: 100;
             }
 
             .dropdown {
                 float: left;
                 overflow: hidden;
-                z-index: 100;
             }
 
             .dropdown .dropbtn {
@@ -80,12 +82,10 @@
                 background-color: inherit;
                 font-family: inherit;
                 margin: 0;
-                z-index: 100;
             }
 
             .navbar a:hover, .dropdown:hover .dropbtn {
                 background-color: #C70039;
-                z-index: 100;
             }
 
             .dropdown-content {
@@ -94,7 +94,7 @@
                 background-color: #f9f9f9;
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 100;
+                z-index: 1;
             }
 
             .dropdown-content a {
@@ -104,17 +104,14 @@
                 text-decoration: none;
                 display: block;
                 text-align: left;
-                z-index: 100;
             }
 
             .dropdown-content a:hover {
                 background-color: #ddd;
-                z-index: 100;
             }
 
             .dropdown:hover .dropdown-content {
                 display: block;
-                z-index: 100;
             }
 
             .column {
@@ -131,29 +128,31 @@
             }
             .topnav-right {
                 float: right;
-                                
-
             }
-    </style>
-</head>
-<body style="text-align:center; background-color:#D8C6B7;">
-    <img src="images\carolsboutique.png" alt="logo" height="150" width="190">
-    <div class="navbar">
+        </style>
+    </head>
+
+    <body style="text-align:center; background-color:#D8C6B7;">
+        <img src="images\carolsboutique.png" alt="logo" height="150" width="170">
+        <%Employee employee = (Employee)request.getSession().getAttribute("employee");
+          if(employee == null){
+             employee = new Employee();
+          }
+        %>
+        <br>
+        <p style="color:#22075E" class="topnav-left"><b><u>Teller name</u> : <%=employee.getName()%></b></p>
+        <div class="navbar">
             <div class="dropdown">
-			<a href="home.jsp">HOME</a>
                 <button class="dropbtn">MENU 
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-
                     <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
                     <a href="promoteEmployee.jsp">Promote Employee</a>
                     <a href="registerNewBoutique.jsp">Register new Boutique</a>
                     <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
-
                 </div>
             </div>  
-
             <div class="dropdown">
                 <button class="dropbtn">SALE
                     <i class="fa fa-caret-down"></i>
@@ -173,18 +172,9 @@
                     <a href="requestibt.jsp">Request IBT</a>
                 </div>
             </div>
-
-            <div class="dropdown">
-                <button class="dropbtn">KEEP ASIDE
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="keepaside.jsp">Create</a>
-                    <a href="keepaside.jsp">Collect</a>
-                </div>
-            </div>
+            <a href="keepaside.jsp">KEEP ASIDE</a>
             <a href="logstock.jsp">LOG STOCK</a>
-       <div class="dropdown">
+            <div class="dropdown">
                 <button class="dropbtn">REPORT
                     <i class="fa fa-caret-down"></i>
                 </button>
@@ -210,60 +200,28 @@
             </div>
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
-    <br>
-    <h1>Request an IBT</h1>
-
-    
-    <%Map<String, String> availableStock = (Map<String, String>)request.getAttribute("availableStock");%>
-    <%List<Boutique> boutiques = (List<Boutique>) request.getAttribute("boutiques");%>
-    <%List<Size> sizes = (List<Size>) request.getAttribute("sizes");%>
-    
-    <%if (availableStock == null) {%>
-    <form action="ProductServlet" method = "get">
-        <table style="width:100">
-            <label style="color:#22075E;"><b>Product Code   : </b></label>
-            <input type="text" placeholder="Enter a product Code" name="productId" style="width:165px; height:23px" required>
-            <br><br/>
-        </table><br>
-        <input type="submit" value="findStockOfProduct" name="submit" style="width:170px; height:35px" class="button"/>
-    </form>
-    <%}%>
-
-    <%if (availableStock != null) {%>
-
-    <form action="IbtServlet" method="post">
-        <table style="width:100">
-            <input name="productId" type="text" value="<%=(String)request.getAttribute("productId")%>" hidden>
-            <label style="color:#22075E;"><b>Email   : </b></label>
-            <input type="text" placeholder="Enter an email address" name="customerEmail" style="width:165px; height:23px" required> 
-            <br><br/>
-            <label style="color:#22075E;"><b>Boutique   : </b></label>
-            <select name="boutique">
-                <ol>
-                    <%for(Boutique bout : boutiques){%>
-                      
-                        <%if(availableStock.containsKey(bout.getId())){%>
-                        
-                    <li><option label="<%=bout.getLocation()%>" value="<%=bout.getId()%>"><%=bout.getLocation()%></option></li>
-                        <%}
-                    }%>
-                </ol>
-            </select>
-            <br><br>
-        </table><br>
-        <input type="submit" value="requestIBT" name="submit" style="width:110px; height:35px" class="button"/>
-    </form>
-    <%}%>
-
-
-    <br><br><br><hr color="#22075E" width="400px;">
-    <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
-            <strong style="color:#22075E;">Â© Copyright 
-                <span style="color:#22075E;" id="ctl00_YearLbl">2022</span>, Carol's Boutique (Pty) Ltd. All rights reserved.<br />A Fashion Company.<br/>      
-            </strong><p style="color:#22075E;">All brands, trademarks, tradenames, and logos are the<br/> property of Carol's Boutique.</p>
-            <strong style="color:#22075E;"><i><u>Developed by LWFD-GROUP.</u></i></strong>  
-            <br />
+    <center>
+        <h1 style="color:#22075E">CREATE KEEP ASIDE</h1>
+        <form action="ReserveProductServlet" method="post">
+            <table style="width:100">
+                <label style="color:#22075E;"><b>Customer Email    : </b></label>
+                <input type="text" placeholder="customerEmail" name="customerEmail" style="width:165px; height:23px" required><br><br> 
+                <label style="color:#22075E;"><b>Product Code    : </b></label>
+                <input type="text" placeholder="productCode" name="productCode" style="width:165px; height:23px" required> 
+            
+            </table> <br>
+            <input type="submit" value="Make Reserved Product" name="submit" style="width:250px; height:35px" class="button"/>
+        </form>
+        <br><br><br> 
+        <br><hr width="400px;" color="#22075E">       
+        <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
+                <strong style="color:#22075E;">© Copyright 
+                    <span style="color:#22075E;" id="ctl00_YearLbl">2022</span>, Carol's Boutique (Pty) Ltd. All rights reserved.<br />A Fashion Company.<br/>      
+                </strong><p style="color:#22075E;">All brands, trademarks, tradenames, and logos are the<br/> property of Carol's Boutique.</p>
+                <strong style="color:#22075E;"><i><u>Developed by LWFD-GROUP.</u></i></strong>  
+                <br />
+            </span>
         </span>
-    </span>
+    </center>    
 </body>
 </html>

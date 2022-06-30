@@ -35,7 +35,7 @@ public class ProductRestClient implements IServiceProduct{
         WebTarget webT = client.target(uri);
         List<Product> products = new ArrayList<>();
         try {
-            products = (List<Product>) new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), TypeReference.class);
+            products = Arrays.asList(new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class), Product[].class));
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -44,7 +44,6 @@ public class ProductRestClient implements IServiceProduct{
 
     @Override
     public Product findProduct(String productId) {
-        System.out.println("hello");
         String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findProduct/{productId}";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri).resolveTemplate("productId", productId);
@@ -195,5 +194,19 @@ public class ProductRestClient implements IServiceProduct{
             Logger.getLogger(ReportRestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sizes;
+    }
+
+    @Override
+    public Product findProduct2(String productId) {
+        String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/product/findProduct2/{productId}";
+        Client client = ClientBuilder.newClient();
+        WebTarget webT = client.target(uri).resolveTemplate("productId", productId);
+        Product product = null;
+        try {
+            product = new ObjectMapper().readValue(webT.request(MediaType.APPLICATION_JSON).get(String.class),Product.class);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(SaleRestClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return product;
     }
 }
