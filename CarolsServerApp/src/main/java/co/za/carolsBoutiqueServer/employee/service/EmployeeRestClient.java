@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.fasterxml.jackson.core.JsonParser.Feature;
 
 public class EmployeeRestClient implements IServiceEmployee{
     //http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/employee/
@@ -35,6 +36,8 @@ public class EmployeeRestClient implements IServiceEmployee{
         Response rep = webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(loginDetails)));
         Employee e = null;
         try {
+          ObjectMapper om = new ObjectMapper();
+            om.configure(Feature.AUTO_CLOSE_SOURCE, true);
             e = new ObjectMapper().readValue(rep.readEntity(String.class), Employee.class);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(EmployeeRestClient.class.getName()).log(Level.SEVERE, null, ex);
