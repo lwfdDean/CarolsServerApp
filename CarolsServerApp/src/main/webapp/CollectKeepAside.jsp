@@ -201,7 +201,7 @@
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
     <center>
-        <h1>COLLECT KEEP ASIDE</h1>
+        <h1 style="color:#22075E">COLLECT KEEP ASIDE</h1>
         <form action="ReserveProductServlet" method="post">
             <table style="width:100">
                 <label style="color:#22075E;"><b>Customer Email    : </b></label>
