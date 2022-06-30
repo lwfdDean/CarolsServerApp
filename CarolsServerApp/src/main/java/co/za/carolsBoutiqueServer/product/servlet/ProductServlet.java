@@ -64,7 +64,7 @@ public class ProductServlet extends HttpServlet {
                 break;
             case "getAllSizes":
                 request.setAttribute("sizes", service.findAllSizes());
-                request.getRequestDispatcher("requestibt.jsp").forward(request, response);
+                request.getRequestDispatcher("BoutiqueServlet?submit=getAllReq").forward(request, response);
                 break;
             case "findProduct":
                 request.setAttribute("categories", service.findAllCategories());
@@ -101,6 +101,8 @@ public class ProductServlet extends HttpServlet {
 
             case "findStockOfProduct":
                 String productId = request.getParameter("productId");
+                request.setAttribute("productId", productId);
+                request.setAttribute("sizes", service.findAllSizes());
                 request.setAttribute("availableStock", service.findStockOfProduct(productId));
                 request.getRequestDispatcher("BoutiqueServlet?submit=getAllReq").forward(request, response);
 

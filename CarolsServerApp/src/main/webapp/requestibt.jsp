@@ -10,6 +10,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page import="co.za.carolsBoutiqueServer.boutique.model.Boutique"%>
 <%@ page import="co.za.carolsBoutiqueServer.product.model.Size"%>
+<%@page import ="co.za.carolsBoutiqueServer.employee.model.Employee" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -108,6 +109,7 @@
     <br>
     <h1>Request an IBT</h1>
 
+    
     <%Map<String, String> availableStock = (Map<String, String>)request.getAttribute("availableStock");%>
     <%List<Boutique> boutiques = (List<Boutique>) request.getAttribute("boutiques");%>
     <%List<Size> sizes = (List<Size>) request.getAttribute("sizes");%>
@@ -127,6 +129,7 @@
 
     <form action="IbtServlet" method="post">
         <table style="width:100">
+            <input name="productId" type="text" value="<%=(String)request.getAttribute("productId")%>" hidden>
             <label style="color:#22075E;"><b>Email   : </b></label>
             <input type="text" placeholder="Enter an email address" name="customerEmail" style="width:165px; height:23px" required> 
             <br><br/>
