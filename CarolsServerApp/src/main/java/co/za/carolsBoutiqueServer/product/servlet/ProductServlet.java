@@ -49,7 +49,7 @@ public class ProductServlet extends HttpServlet {
         switch (request.getParameter("submit")) {
             case "findAllProducts":
                 request.setAttribute("products", service.findAllProducts());
-                request.getRequestDispatcher("").forward(request, response);
+                request.getRequestDispatcher("specificProductReport.jsp").forward(request, response);
                 break;
 
             case "findProductToUpdate":
@@ -85,7 +85,7 @@ public class ProductServlet extends HttpServlet {
             case "findProductToLogStock":
                 String prodId = request.getParameter("productId");
                 request.setAttribute("productId", prodId);
-                Product product = service.findProduct(prodId);
+                Product product = service.findProduct2(prodId);
                 if (product == null) {
                     request.setAttribute("categories", service.findAllCategories());
                     request.setAttribute("sizes", service.findAllSizes());
@@ -104,6 +104,10 @@ public class ProductServlet extends HttpServlet {
                 request.setAttribute("availableStock", service.findStockOfProduct(productId));
                 request.getRequestDispatcher("BoutiqueServlet?submit=getAllReq").forward(request, response);
 
+                break;
+            case "getAll":
+                request.setAttribute("products", service.findAllProducts());
+                request.getRequestDispatcher("specificProductReport.jsp").forward(request, response);
                 break;
         }
     }
@@ -157,11 +161,7 @@ public class ProductServlet extends HttpServlet {
 
                     for(Size prodSize: prodSizes){
                         String pCode = product.getId() + " " + prodSize.getId();
-                        try {
                             generateQRCodeImage(pCode, product.getName()+" "+prodSize.getId());
-                        } catch (Exception ex) {
-                            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-                        }
                     }
                     
                     
@@ -217,13 +217,23 @@ public class ProductServlet extends HttpServlet {
         }
     }
     
-    public static void generateQRCodeImage(String barcodeText, String fileName) throws Exception {
-        QRCodeWriter barcodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
-        BufferedImage img = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        File outputfile = new File(System.getProperty("user.home")+fileName+"QRCodeFile.png");
-        outputfile.createNewFile();
-        ImageIO.write(img, "PNG", outputfile);
+    public static void generateQRCodeImage(String barcodeText, String fileName){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    QRCodeWriter barcodeWriter = new QRCodeWriter();
+                    BitMatrix bitMatrix = barcodeWriter.encode(barcodeText, BarcodeFormat.QR_CODE, 200, 200);
+                    BufferedImage img = MatrixToImageWriter.toBufferedImage(bitMatrix);
+                    File outputfile = new File(System.getProperty("user.home")+fileName+"QRCodeFile.png");
+                    outputfile.createNewFile();
+                    ImageIO.write(img, "PNG", outputfile);
+                } catch (WriterException | IOException ex) {
+                    Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }).start();
+        
     }
 
 }

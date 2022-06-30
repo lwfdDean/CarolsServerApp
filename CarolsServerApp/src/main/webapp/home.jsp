@@ -147,12 +147,12 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-
+                    <%if(employee.getRole().getAuthorizationLevel()==3){%>
                     <a href="EmployeeServlet?submit=getAllRoles">Register new Employee</a>
                     <a href="promoteEmployee.jsp">Promote Employee</a>
                     <a href="registerNewBoutique.jsp">Register new Boutique</a>
                     <a href="BoutiqueServlet?submit=updateBoutiquePage">Update boutique's target</a>
-
+                    <%}%>
                 </div>
             </div>  
 
@@ -171,7 +171,9 @@
                     <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
+                    <%if(employee.getRole().getAuthorizationLevel()==3){%>
                     <a href="IbtServlet?submit=getBoutiqueIbts">Approve IBT</a>
+                    <%}%>
                     <a href="requestibt.jsp">Request IBT</a>
                 </div>
             </div>
@@ -185,13 +187,13 @@
                 </button>
                 <div class="dropdown-content">
                     <a href="topAchievingReport.jsp">Top Achieving Stores</a>
-                    <a href="monthlySalesReport.jsp">Monthly Sales for any store</a>
-                    <a href="topachievingemployees.jsp">Top achieving Employees</a>
+                    <a href="BoutiqueServlet?submit=getAllForReport">Monthly Sales for any store</a>
+                    <a href="BoutiqueServlet?submit=getAllForReport2">Top achieving Employees</a>
                     <a href="reachedtarget.jsp">Reached Target</a>
                     <a href="topproducts.jsp">Top 40 products</a>
                     <a href="worstperforming.jsp">Worst Performing Stores</a>
-                    <a href="specificProductReport.jsp">Product</a>
-                    <a href="dailyreport.jsp">Current Daily Sales</a>
+                    <a href="ProductServlet?submit=getAll">Product</a>
+                    <a href="BoutiqueServlet?submit=report3">Current Daily Sales</a>
                 </div>
             </div>
             <div class="dropdown">
