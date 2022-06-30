@@ -5,8 +5,55 @@
 <html>
     <head>
         <meta charset="ISO-8859-1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>home</title>
         <style>
+            div.scroll {
+                margin:4px, 4px;
+                padding:4px;
+                background-color: #E8BDB4;
+                width: 700px;
+                height: 250px;
+                overflow-x: hidden;
+                overflow-y: auto;
+                text-align:justify;
+            }
+            * {
+                box-sizing: border-box;
+            }
+
+            /* Create two equal columns that floats next to each other */
+            .column {
+                float: left;
+                width: 50%;
+                padding: 10px;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+            /* Style the buttons */
+            .btn {
+                border: none;
+                outline: none;
+                padding: 12px 16px;
+                background-color: #f1f1f1;
+                cursor: pointer;
+            }
+
+            .btn:hover {
+                background-color: #ddd;
+            }
+
+            .btn.active {
+                background-color: #666;
+                color: white;
+            }
+
+
             label {
                 display: inline-block;
                 width: 150px;
@@ -46,7 +93,7 @@
             .navbar {
                 overflow: hidden;
                 background-color: #130E3C;
-
+                z-index: 100;
             }
 
             .navbar a {
@@ -56,11 +103,13 @@
                 text-align: center;
                 padding: 14px 16px;
                 text-decoration: none;
+                z-index: 100;
             }
 
             .dropdown {
                 float: left;
                 overflow: hidden;
+                z-index: 100;
             }
 
             .dropdown .dropbtn {
@@ -72,10 +121,12 @@
                 background-color: inherit;
                 font-family: inherit;
                 margin: 0;
+                z-index: 100;
             }
 
             .navbar a:hover, .dropdown:hover .dropbtn {
                 background-color: #C70039;
+                z-index: 100;
             }
 
             .dropdown-content {
@@ -84,7 +135,7 @@
                 background-color: #f9f9f9;
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
+                z-index: 100;
             }
 
             .dropdown-content a {
@@ -94,14 +145,17 @@
                 text-decoration: none;
                 display: block;
                 text-align: left;
+                z-index: 100;
             }
 
             .dropdown-content a:hover {
                 background-color: #ddd;
+                z-index: 100;
             }
 
             .dropdown:hover .dropdown-content {
                 display: block;
+                z-index: 100;
             }
 
             .column {
@@ -118,6 +172,8 @@
             }
             .topnav-right {
                 float: right;
+
+
             }
         </style>
     </head>
@@ -176,8 +232,17 @@
                 </div>
             </div>
 
-            <a href="keepaside.jsp">KEEP ASIDE</a>
+            <div class="dropdown">
+                <button class="dropbtn">KEEP ASIDE
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="keepaside.jsp">Create</a>
+                    <a href="keepaside.jsp">Collect</a>
+                </div>
+            </div>
             <a href="logstock.jsp">LOG STOCK</a>
+            <!-- <a href="report.jsp">REPORT</a> -->
 
             <div class="dropdown">
                 <button class="dropbtn">REPORT
@@ -205,9 +270,48 @@
             </div>
             <div class="topnav-right"><a href="EmployeeServlet?submit=logout">LOGOUT</a></div>
         </div>
+        <h3 style="color:#22075E"><u>HOW TO USE CAROL'S BOUTIQUE SYSTEM</u></h3>
+        
+        <!--The manual start here-->
     <center>
-
-        <br><br><br> 
+        <div class="scroll">
+        
+            <h5></h5><br><u>MENU OPTION </u><br><br>Tab Menu for employee and boutique's related settings.<br>* To register a new employee<br><!--  -->
+        * To promote employee to teller.<br>* To register a new boutique.<br>* to update boutique's targets.<br><br><!-- comment -->
+        <u>SALE OPTION </u><br><br>Tab Sale for sale related things.<br><strong>*</strong> To make a sale click new sale<br> Scan product's barcode<br>
+        * Exchange a product (Enter product id to exchange)<br><!-- comment -->
+        * Return a product (Enter product id to return to stock).<br>
+        <br><u>IBT OPTION </u><br><br>
+        IBT means Inter Branch Transfer of a product.<br>
+        * Approve IBT (Aprrove ibt request from<br>other stores only if you have <br> the requested product).<br><!-- comment -->
+        * Request an IBT (Request a product from other branch for a customer).<br>when your store has no stock or size<br>
+         
+        <br><!-- comment -->
+        <br><u>KEEP ASIDE OPTION </u><br><br>
+        Keep aside a product for a customer for later purchase<br><!-- comment -->
+        And capture a sale when a customer collect the item.<br><br><!-- comment -->
+        
+        <br><u>LOGS STOCK OPTION </u><br><br>
+        Capture new stock <br><!-- comment -->
+        
+        <br><u>REPORTS OPTION</u><br><br>
+        * View Top achieving store <br>Report of the highest rated store in terms of sales.<br><!-- comment -->
+        * View selling employee <br>Report of the highest selling employee in terms product.<br>
+        * Monthly sales<br>View report of total sales made for specific month<br><!-- comment -->
+        * Reached target<br> View boutique that reached the daily target.<br><!-- comment -->
+        * Top 40 product <br> View report on the top 40 highest selling,<br> product and the store that sold the most.<br><!-- comment -->
+        * Worst performing stores <br> View the least performing stores for a certain period<br>(intervals of 3 and 6 months).<br><!-- comment -->
+        * Product Report <br> View report on a chosen product i.e how many were sold,<br> and the top salesperson across all stores.<br>
+        * Current daily sales <br> View current sales for the current day.<br>
+        
+        <br><u> PRODUCT OPTION</u><br><br>
+        * Add promocode<br><!-- comment -->
+        Add promotional code for product on special.<br><!-- comment -->
+        * Put product on sale.<br>
+        
+        
+        </div>
+        <!<!-- Manual ends here -->
         <br><hr width="400px;" color="#22075E">       
         <span style="Font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"><span style="font-size:8pt; vertical-align: text-bottom;">
                 <strong style="color:#22075E;">© Copyright 
