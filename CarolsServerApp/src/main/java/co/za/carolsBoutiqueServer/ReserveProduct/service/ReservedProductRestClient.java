@@ -21,6 +21,7 @@ public class ReservedProductRestClient implements IServiceReservedproduct{
         String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/KeepAside/addKeepAside";
         Client client = ClientBuilder.newClient();
         WebTarget webT = client.target(uri);
+        reserveProduct.setDate(null);
         return webT.request(MediaType.APPLICATION_JSON).post(Entity.json(toJsonString(reserveProduct))).readEntity(String.class);
     }
     
@@ -28,6 +29,7 @@ public class ReservedProductRestClient implements IServiceReservedproduct{
     public Product collectKeepAside(String customerEmail) {
         String uri = "http://localhost:8080/carolsBoutiqueRest/CarolsBoutique/KeepAside/findKeepAside/{email}";
         Client client = ClientBuilder.newClient();
+        System.out.println(customerEmail);
         WebTarget webT = client.target(uri).resolveTemplate("email", customerEmail);
         Product product = null;
         try {

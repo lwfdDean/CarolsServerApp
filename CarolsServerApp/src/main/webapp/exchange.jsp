@@ -125,10 +125,8 @@
                 <label style="color:#22075E;"><b>Product to be exchanged: </b></label>
                 <ol>
                     <%for(Product p : sale.getItems()){%>
-                        <%if(p.get)%>
                             <li><input type="radio" value="<%=p.getId()%>" name="oldProduct"><%=p.getName()%>   <%=p.getPrice()%></option></li>
                             <input name="price" type="text" value="<%=p.getPrice()%>"hidden>
-                        <%}%>    
                     <%}%>
                 </ol>         
                 <input type="submit" name="submit" value="exchange">

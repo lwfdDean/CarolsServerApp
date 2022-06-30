@@ -63,6 +63,7 @@ public class EmployeeServlet extends HttpServlet {
                 Employee employee = service.login(loginDetails);
                 if (employee != null) {
                     request.getSession().setAttribute("employee", employee);
+                    System.out.println("Employee set in session");
                     request.getRequestDispatcher("home.jsp").forward(request, response);
                 } else {
                     request.getSession().setAttribute("empReply", "employee not found");

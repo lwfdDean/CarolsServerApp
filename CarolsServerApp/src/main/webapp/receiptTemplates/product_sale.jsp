@@ -40,6 +40,7 @@
                                     <div class="invoice-details mt25">
                                         <div class="well">
                                             <ul class="list-unstyled mb0">
+                                                <%Employee employee = (Employee)request.getSession(false).getAttribute("employee");%>
                                                 <li><strong>SaleId&nbsp;&nbsp; :&nbsp; </strong> #936988</li>
                                                 <li><strong>Teller&nbsp;&nbsp;&nbsp; :&nbsp; </strong><%=employee.getName()%></li>
                                                 <li><strong>StoreId :&nbsp; </strong> PTA</li>
@@ -97,6 +98,7 @@
                                     </div>
                                     <div class="invoice-footer mt25">
                                         <p class="text-center">Thank you please call again</p>
+                                        <a ref ="ratestore.html">Rate our store</a>
                                     </div>
                                 </div>
                             </div>
